@@ -1,9 +1,12 @@
-import React from 'react'
+import React from 'react';
+import { useEffect } from 'react';
 
 const Course = () => {
-  return (
-    <div>Course</div>
-  )
-}
+  useEffect(() => {
+    document.title = 'Danh sách khóa học';
+  }, []);
 
-export default Course
+  return <div>Course</div>;
+};
+
+export default Course;

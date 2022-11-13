@@ -1,7 +1,9 @@
-import React from 'react';
-import Sidebar from '../../components/sidebar';
+import React, { useEffect } from 'react';
 
 const Home = () => {
+  useEffect(() => {
+    document.title = 'Trang chủ';
+  }, []);
   return <>HOME</>;
 };
 

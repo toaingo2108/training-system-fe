@@ -56,14 +56,12 @@ const Sidebar = () => {
     >
       <List>
         {menuSidebar.map((item, index) => (
-          <>
-            <ListItem key={item.key} disablePadding>
-              <ListItemButton onClick={() => navigate(item.link)}>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItemButton>
-            </ListItem>
-          </>
+          <ListItem key={item.key} disablePadding>
+            <ListItemButton onClick={() => navigate(item.link)}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <ListItemText primary={item.title} />
+            </ListItemButton>
+          </ListItem>
         ))}
       </List>
     </Box>

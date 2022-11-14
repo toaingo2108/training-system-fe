@@ -7,8 +7,10 @@ import {
   Typography
 } from '@mui/material';
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Course = ({ course }) => {
+  const navigate = useNavigate();
   return (
     <Card sx={{ height: '100%', width: '100%' }}>
       <CardMedia component='img' alt={course.name} image={course.imgLink} />
@@ -19,7 +21,7 @@ const Course = ({ course }) => {
         <Typography
           variant='body2'
           color='text.secondary'
-          sx={{ height: '24px',overflow: 'hidden' }}
+          sx={{ height: '24px', overflow: 'hidden' }}
         >
           {course.description}
         </Typography>
@@ -28,8 +30,15 @@ const Course = ({ course }) => {
         </Typography>
       </CardContent>
       <CardActions>
-        <Button size='small' variant='contained'>Đăng ký</Button>
-        <Button size='small'>Learn More</Button>
+        <Button size='small' variant='contained'>
+          Đăng ký
+        </Button>
+        <Button
+          size='small'
+          onClick={() => navigate(`/course/detail/${course.id}`)}
+        >
+          Xem thêm
+        </Button>
       </CardActions>
     </Card>
   );

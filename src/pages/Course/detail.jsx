@@ -7,7 +7,11 @@ const CourseDetail = () => {
   useEffect(() => {
     document.title = `Chi tiết khóa học - ${courseId}`;
   }, [courseId]);
-  return <div>CourseDetail {courseId}</div>;
+  return (
+    <>
+      <div>CourseDetail {courseId}</div>;
+    </>
+  );
 };
 
 export default CourseDetail;

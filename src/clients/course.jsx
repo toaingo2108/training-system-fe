@@ -10,7 +10,7 @@ class CourseClient extends BaseClient {
   }
   async testApi() {
     const q = { a: 1, b: 2 };
-    return await super.callApi('get', '/hahaha', { q });
+    return await super.callApi('get', '/posts', { q });
   }
 }
 

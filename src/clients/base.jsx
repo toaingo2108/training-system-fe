@@ -1,33 +1,22 @@
 import axios from 'axios';
-import { baseURL } from '../constants/baseURl';
 
+const baseURL = process.env.REACT_APP_BASE_URL;
 export class BaseClient {
   /**
    *
-   * @param {string} method
+   * @param {'get' | 'post' | 'put' | 'delete'} method
    * @param {string} url
    * @param {any} data
    * @returns {Promise<any>}
    */
   async callApi(method, url, data) {
-    // if (!data) {
-    //   data = {};
-    // }
-    // if (data.q) {
-    //   let q = JSON.parse(data.q);
-    //   data.q = JSON.stringify({ ...q });
-    // }
-    console.log({
+    if (!data) data = {};
+    if (data.q) data.q = JSON.stringify({ ...data.q });
+    return await axios({
       method,
       baseURL: baseURL,
       url,
       data
     });
-    // return await axios({
-    //   method,
-    //   baseURL: process.env.BASE_URL,
-    //   url,
-    //   data
-    // });
   }
 }

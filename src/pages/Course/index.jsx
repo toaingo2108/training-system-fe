@@ -18,6 +18,7 @@ const Course = () => {
   useEffect(() => {
     const courses = courseClient().getAllCourses();
     setCourses(courses);
+    courseClient().testApi();
   }, []);
 
   const handleChangeSearch = (e) => {

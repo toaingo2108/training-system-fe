@@ -73,7 +73,7 @@ const Sidebar = () => {
         {listMenu()}
       </Drawer>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position='static'>
+        <AppBar position='fixed' sx={{ background: 'rgba(0, 74, 153, 0.7)' }}>
           <Toolbar>
             <IconButton
               size='large'
@@ -85,14 +85,17 @@ const Sidebar = () => {
             >
               <MenuIcon />
             </IconButton>
-            <Typography
-              variant='h6'
-              component='div'
-              sx={{ flexGrow: 1, cursor: 'pointer' }}
-              onClick={() => navigate('/')}
-            >
-              Training System
-            </Typography>
+            <div className='w-full'>
+              <Typography
+                variant='h6'
+                component='div'
+                sx={{ flexGrow: 1 }}
+                onClick={() => navigate('/')}
+                className='w-max cursor-pointer'
+              >
+                Training System
+              </Typography>
+            </div>
             {auth && (
               <div>
                 <IconButton

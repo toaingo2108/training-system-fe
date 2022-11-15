@@ -3,7 +3,7 @@ import Sidebar from '../sidebar';
 
 const Layout = ({ children }) => {
   return (
-    <div className=''>
+    <div style={{ position: 'relative' }}>
       <Sidebar />
       {children}
     </div>

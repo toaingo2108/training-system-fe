@@ -10,8 +10,9 @@ export class BaseClient {
    * @returns {Promise<any>}
    */
   async callApi(method, url, data) {
-    if (!data) data = {};
-    if (data.q) data.q = JSON.stringify({ ...data.q });
+    if (!data) {
+      data = {};
+    }
     return await axios({
       method,
       baseURL: baseURL,

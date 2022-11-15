@@ -12,7 +12,7 @@ import { useNavigate } from 'react-router-dom';
 const Course = ({ course }) => {
   const navigate = useNavigate();
   return (
-    <Card sx={{ height: '100%', width: '100%' }}>
+    <Card sx={{ height: '100%', width: '100%', borderRadius: 3 }}>
       <CardMedia component='img' alt={course.name} image={course.imgLink} />
       <CardContent>
         <Typography gutterBottom variant='h5' component='div'>

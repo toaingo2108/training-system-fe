@@ -3,7 +3,7 @@ import React from 'react';
 
 const MyContainer = ({ children, ...props }) => {
   return (
-    <Container sx={{ margin: '48px auto' }} {...props}>
+    <Container sx={{ margin: '84px auto 48px' }} {...props}>
       {children}
     </Container>
   );

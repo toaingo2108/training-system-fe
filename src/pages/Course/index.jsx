@@ -3,17 +3,14 @@ import { Grid, TextField } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 import React, { useState } from 'react';
 import { useEffect } from 'react';
-import { courseClient } from '../../clients/course';
+import { courseClient } from '../../clients';
 import CourseItem from '../../components/course';
 import MySpeedDial from '../../components/speed-dial';
-import { FileCopy, Save, Print, Share } from '@mui/icons-material';
+import { LibraryAddOutlined } from '@mui/icons-material';
 import MyContainer from '../../components/container';
 
 const actions = [
-  { icon: <FileCopy />, name: 'Copy' },
-  { icon: <Save />, name: 'Save' },
-  { icon: <Print />, name: 'Print' },
-  { icon: <Share />, name: 'Share' }
+  { icon: <LibraryAddOutlined />, name: 'Tạo khóa học', link: '/course/create' }
 ];
 
 const Course = () => {
@@ -45,7 +42,7 @@ const Course = () => {
 
   return (
     <>
-      <MyContainer sx={{ margin: '48px auto' }}>
+      <MyContainer>
         <Grid
           container
           justifyContent='flex-end'
@@ -73,7 +70,9 @@ const Course = () => {
           ))}
         </Grid>
       </MyContainer>
-      <MySpeedDial actions={actions} />
+      <div style={{ position: 'fixed' }}>
+        <MySpeedDial actions={actions} />
+      </div>
     </>
   );
 };

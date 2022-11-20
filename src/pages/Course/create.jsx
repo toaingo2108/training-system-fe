@@ -4,11 +4,16 @@ import {
   Card,
   CardContent,
   CardMedia,
+  FormControlLabel,
+  FormGroup,
   Grid,
   Paper,
-  TextField
+  Switch,
+  TextField,
+  Typography
 } from '@mui/material';
 import React, { useState } from 'react';
+import { courseClient } from '../../clients/course';
 import MyContainer from '../../components/container';
 
 const CourseCreate = () => {
@@ -22,25 +27,31 @@ const CourseCreate = () => {
     name: '',
     imgLink: '',
     description: '',
-    online: false
+    online: true
   };
   const [createForm, setCreateForm] = useState(initCreateForm);
   const [creating, setCreating] = useState(false);
 
   const handleChangeCreateForm = (e) => {
-    const { name, value } = e.target;
-    createForm[name] = value;
+    const { name, value, checked } = e.target;
+    if (name === fieldForm.online) {
+      createForm[name] = checked;
+    } else {
+      createForm[name] = value;
+    }
     setCreateForm({ ...createForm });
   };
 
   const handleSubmitCreateForm = async (newCourse = createForm) => {
     setCreating(true);
     console.log(newCourse, 'newCourse');
+    // const res = await courseClient().createCourse(newCourse);
+    // console.log(res, 'res');
     setCreating(false);
   };
 
   return (
-    <MyContainer>
+    <MyContainer title='Thêm khóa học mới'>
       <Grid container spacing={3}>
         <Grid
           item
@@ -82,19 +93,37 @@ const CourseCreate = () => {
               variant='outlined'
               fullWidth
               required
+              multiline
+              rows={3}
             />
           </Grid>
         </Grid>
         <Grid item container xs={12} sm={4} spacing={2} justifyContent='center'>
-          <Grid item className='w-full'>
-            <img
-              className='w-full h-full rounded-lg object-cover'
-              src={createForm.imgLink}
-              alt={createForm.name}
-            />
+          <Grid item className='w-full' sx={{ minHeight: '150px' }}>
+            <div className='border-2 w-full h-full rounded-lg relative'>
+              <img
+                className='w-full h-full rounded-lg object-cover absolute top-0'
+                src={createForm.imgLink}
+                alt={createForm.name}
+              />
+            </div>
           </Grid>
         </Grid>
-        <Grid item container>
+        <Grid item>
+          <FormGroup>
+            <FormControlLabel
+              control={
+                <Switch
+                  checked={createForm.online}
+                  name={fieldForm.online}
+                  onChange={handleChangeCreateForm}
+                />
+              }
+              label='Hỗ trợ học Online'
+            />
+          </FormGroup>
+        </Grid>
+        <Grid item container justifyContent='flex-end'>
           <LoadingButton
             loading={creating}
             size='large'
@@ -105,52 +134,6 @@ const CourseCreate = () => {
           </LoadingButton>
         </Grid>
       </Grid>
-      <Card sx={{ height: '100%', width: '100%', borderRadius: 3 }}>
-        <CardMedia
-          component='img'
-          alt={createForm.name}
-          height="100"
-          image={createForm.imgLink}
-        />
-        <CardContent>
-          <TextField
-            name={fieldForm.name}
-            onChange={handleChangeCreateForm}
-            label='Tên khóa học'
-            size='small'
-            variant='outlined'
-            fullWidth
-            required
-          />
-          <TextField
-            name={fieldForm.imgLink}
-            onChange={handleChangeCreateForm}
-            label='Image URL'
-            size='small'
-            variant='outlined'
-            fullWidth
-            required
-          />
-          <TextField
-            name={fieldForm.description}
-            onChange={handleChangeCreateForm}
-            label='Mô tả'
-            size='small'
-            variant='outlined'
-            fullWidth
-            required
-          />
-          <TextField
-            name={fieldForm.description}
-            onChange={handleChangeCreateForm}
-            label='Mô tả'
-            size='small'
-            variant='outlined'
-            fullWidth
-            required
-          />
-        </CardContent>
-      </Card>
     </MyContainer>
   );
 };

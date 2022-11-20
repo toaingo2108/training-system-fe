@@ -5,6 +5,14 @@ class CourseClient extends BaseClient {
   getAllCourses() {
     return courses;
   }
+
+  /**
+   *
+   * @param {{
+   *  id: number
+   * }} param0
+   * @returns
+   */
   getDetailCourse({ id }) {
     return courses.find((course) => course.id === id);
   }

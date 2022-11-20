@@ -1,16 +1,41 @@
-import React, { useEffect } from 'react';
+import { Grid } from '@mui/material';
+import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
+import { courseClient } from '../../clients';
+import MyContainer from '../../components/container';
+import CourseItem from '../../components/course';
 
 const CourseDetail = () => {
   const { courseId } = useParams();
+  // state
+  const [courseDetail, setCourseDetail] = useState({});
 
   useEffect(() => {
     document.title = `Chi tiết khóa học - ${courseId}`;
   }, [courseId]);
+
+  // get detail course
+  useEffect(() => {
+    const resCourse = courseClient().getDetailCourse({
+      id: parseInt(courseId)
+    });
+    if (resCourse) {
+      setCourseDetail(resCourse);
+    }
+    return () => {
+      setCourseDetail({});
+    };
+  }, [courseId]);
+
   return (
-    <>
-      <div>CourseDetail {courseId}</div>;
-    </>
+    <MyContainer>
+      <Grid container>
+        <Grid item xs={12} sm={3}>
+          <CourseItem course={courseDetail} isRedirect={false} />
+        </Grid>
+        <Grid item xs={12} sm={9}></Grid>
+      </Grid>
+    </MyContainer>
   );
 };
 

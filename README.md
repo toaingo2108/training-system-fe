@@ -1,1 +1,3 @@
-## ĐỒ ÁN MÔN HỌC: PHÁT TRIỂN ỨNG DỤNG HỆ THÔNG THÔNG TIN HIỆN ĐẠI
+## ĐỒ ÁN MÔN HỌC
+
+# Phát Triển Ứng Dụng HTTT Hiện Đại

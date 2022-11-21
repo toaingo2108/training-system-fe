@@ -6,6 +6,7 @@ import CourseCreate from './pages/Course/create';
 import CourseDetail from './pages/Course/detail';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
+import Trainer from './pages/Trainer';
 
 const App = () => {
   return (
@@ -14,6 +15,9 @@ const App = () => {
         <Route path='/course' element={<Course />} />
         <Route path='/course/detail/:courseId' element={<CourseDetail />} />
         <Route path='/course/create' element={<CourseCreate />} />
+
+        <Route path='/trainer' element={<Trainer />} />
+
         <Route path='/' element={<Home />} />
         <Route path='*' element={<NotFound />} />
       </Routes>

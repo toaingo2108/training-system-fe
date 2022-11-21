@@ -70,6 +70,7 @@ const Sidebar = () => {
   return (
     <div>
       <Drawer anchor='left' open={state} onClose={toggleDrawer(false)}>
+        Training System
         {listMenu()}
       </Drawer>
       <Box sx={{ flexGrow: 1 }}>

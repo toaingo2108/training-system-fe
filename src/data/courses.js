@@ -1,3 +1,14 @@
+/**
+ * @param {number} id
+ * @param {string} name
+ * @param {boolean} online
+ * @param {string} duration
+ * @param {string} learningObjective
+ * @param {string} imgLink
+ * @param {string} description
+ * @param {number} trainerID
+ * @param {string} skillID
+ */
 export const courses = [
   {
     id: 1,
@@ -7,7 +18,7 @@ export const courses = [
     learningObjective: '',
     imgLink: 'https://mui.com/static/images/cards/contemplative-reptile.jpg',
     description: '',
-    trainerID: '',
+    trainerID: 1,
     skillID: ''
   },
   {
@@ -18,7 +29,7 @@ export const courses = [
     learningObjective: '',
     imgLink: 'https://mui.com/static/images/cards/contemplative-reptile.jpg',
     description: '',
-    trainerID: '',
+    trainerID: 2,
     skillID: ''
   },
   {
@@ -29,7 +40,7 @@ export const courses = [
     learningObjective: '',
     imgLink: 'https://mui.com/static/images/cards/contemplative-reptile.jpg',
     description: '',
-    trainerID: '',
+    trainerID: 3,
     skillID: ''
   },
   {
@@ -40,7 +51,7 @@ export const courses = [
     learningObjective: '',
     imgLink: 'https://mui.com/static/images/cards/contemplative-reptile.jpg',
     description: '',
-    trainerID: '',
+    trainerID: 4,
     skillID: ''
   },
   {
@@ -51,7 +62,7 @@ export const courses = [
     learningObjective: '',
     imgLink: 'https://mui.com/static/images/cards/contemplative-reptile.jpg',
     description: '',
-    trainerID: '',
+    trainerID: 5,
     skillID: ''
   }
 ];

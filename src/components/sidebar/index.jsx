@@ -70,11 +70,13 @@ const Sidebar = () => {
   return (
     <div>
       <Drawer anchor='left' open={state} onClose={toggleDrawer(false)}>
-        Training System
         {listMenu()}
       </Drawer>
       <Box sx={{ flexGrow: 1 }}>
-        <AppBar position='fixed' sx={{ background: 'rgba(0, 74, 153, 0.7)' }}>
+        <AppBar
+          position='fixed'
+          sx={{ display: 'flex', justifyContent: 'center' }}
+        >
           <Toolbar>
             <IconButton
               size='large'

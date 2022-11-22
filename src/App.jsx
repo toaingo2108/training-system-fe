@@ -1,3 +1,4 @@
+import { CssBaseline } from '@mui/material';
 import React from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/layout';
@@ -10,18 +11,21 @@ import Trainer from './pages/Trainer';
 
 const App = () => {
   return (
-    <Layout>
-      <Routes>
-        <Route path='/course' element={<Course />} />
-        <Route path='/course/detail/:courseId' element={<CourseDetail />} />
-        <Route path='/course/create' element={<CourseCreate />} />
+    <>
+      <CssBaseline />
+      <Layout>
+        <Routes>
+          <Route path='/course' element={<Course />} />
+          <Route path='/course/detail/:courseId' element={<CourseDetail />} />
+          <Route path='/course/create' element={<CourseCreate />} />
 
-        <Route path='/trainer' element={<Trainer />} />
+          <Route path='/trainer' element={<Trainer />} />
 
-        <Route path='/' element={<Home />} />
-        <Route path='*' element={<NotFound />} />
-      </Routes>
-    </Layout>
+          <Route path='/' element={<Home />} />
+          <Route path='*' element={<NotFound />} />
+        </Routes>
+      </Layout>
+    </>
   );
 };
 

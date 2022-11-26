@@ -15,8 +15,12 @@ import {
 import React, { useState } from 'react';
 import { courseClient } from '../../clients/course';
 import MyContainer from '../../components/container';
+import { useLoading } from '../../hooks/loading';
+import { useToast } from '../../hooks/toast';
 
 const CourseCreate = () => {
+  const loading = useLoading();
+  const toast = useToast()
   const fieldForm = {
     name: 'name',
     imgLink: 'imgLink',
@@ -43,11 +47,14 @@ const CourseCreate = () => {
   };
 
   const handleSubmitCreateForm = async (newCourse = createForm) => {
+    loading.show();
     setCreating(true);
     console.log(newCourse, 'newCourse');
+    toast.error('Tao khoa hoc moi')
     // const res = await courseClient().createCourse(newCourse);
     // console.log(res, 'res');
     setCreating(false);
+    loading.hide()
   };
 
   return (

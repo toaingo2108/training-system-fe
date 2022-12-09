@@ -9,6 +9,7 @@ import CourseCreate from './pages/Course/create';
 import CourseDetail from './pages/Course/detail';
 import Home from './pages/Home';
 import NotFound from './pages/NotFound';
+import Trainee from './pages/Trainee';
 import Trainer from './pages/Trainer';
 
 const App = () => {
@@ -29,6 +30,8 @@ const App = () => {
               <Route path='/course/create' element={<CourseCreate />} />
 
               <Route path='/trainer' element={<Trainer />} />
+
+              <Route path='/trainee' element={<Trainee />} />
 
               <Route path='/' element={<Home />} />
               <Route path='*' element={<NotFound />} />

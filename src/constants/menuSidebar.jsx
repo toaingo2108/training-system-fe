@@ -1,4 +1,4 @@
-import { Hail, Home, LocalLibrary } from '@mui/icons-material';
+import { Group, Hail, Home, LocalLibrary } from '@mui/icons-material';
 
 export const menuSidebar = [
   {
@@ -8,15 +8,21 @@ export const menuSidebar = [
     icon: <Home />
   },
   {
-    key: 'LIST_COURSES',
+    key: 'COURSES',
     title: 'Danh sách khóa học',
     link: '/course',
     icon: <LocalLibrary />
   },
   {
-    key: 'LIST_TRAINERS',
+    key: 'TRAINERS',
     title: 'Danh sách trainer',
     link: '/trainer',
     icon: <Hail />
+  },
+  {
+    key: 'TRAINEES',
+    title: 'Danh sách trainee',
+    link: '/trainee',
+    icon: <Group />
   }
 ];

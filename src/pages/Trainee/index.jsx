@@ -4,8 +4,24 @@ import MyContainer from '../../components/container';
 import { useEffect } from 'react';
 import { traineeClient } from '../../clients/trainee';
 import { Avatar } from '@mui/material';
+import MySpeedDial from '../../components/speed-dial';
+import { LibraryAddOutlined, LocalLibrary } from '@mui/icons-material';
+import TraineeDialogCreate from '../../components/trainee/dialog-create';
+import { useLoading } from '../../hooks/loading';
+import { useToast } from '../../hooks/toast';
 
 const columns = [
+  {
+    field: 'imgLink',
+    headerName: 'Ảnh',
+    width: 80,
+    renderCell: ({ row }) => {
+      return <Avatar alt='Error' src={row.imgLink} />;
+    },
+    sortable: false,
+    filterable: false,
+    description: 'Cột này ghép họ và tên, không có sort'
+  },
   { field: 'id', headerName: 'ID', width: 70 },
   {
     field: 'role',
@@ -23,34 +39,60 @@ const columns = [
       return `${row.departmentId}`;
     }
   },
-  {
-    field: 'imgLink',
-    headerName: 'Ảnh',
-    width: 80,
-    renderCell: ({ row }) => {
-      return <Avatar alt='Error' src={row.imgLink} />;
-    },
-    sortable: false,
-    filterable: false,
-    description: 'Cột này ghép họ và tên, không có sort'
-  },
-  { field: 'firstName', headerName: 'Họ', width: 130 },
-  { field: 'lastName', headerName: 'Tên', width: 130 },
+
+  { field: 'firstName', headerName: 'Họ', width: 150 },
+  { field: 'lastName', headerName: 'Tên', width: 150 },
   {
     field: 'fullName',
     headerName: 'Họ và tên',
     description: 'Cột này ghép họ và tên, không có sort',
     sortable: false,
-    width: 160,
+    width: 200,
     valueGetter: ({ row }) => `${row.firstName || ''} ${row.lastName || ''}`
   }
 ];
 
 const Trainee = () => {
+  const loading = useLoading();
+  const toast = useToast();
+
   const [pageSize, setPageSize] = useState(5);
   const [trainees, setTrainees] = useState([]);
+  const [showAddTrainee, setShowAddTrainee] = useState(false);
 
-  console.log(trainees, 'trainees');
+  const actions = [
+    {
+      icon: <LibraryAddOutlined />,
+      name: 'Thêm mới trainee',
+      onClick: () => {
+        setShowAddTrainee(true);
+      }
+    },
+    {
+      icon: <LocalLibrary />,
+      name: 'Xem khóa học đã đăng ký',
+      onClick: () => {
+        setShowAddTrainee(true);
+      }
+    }
+  ];
+
+  const handleCloseAddTraineePopup = () => {
+    setShowAddTrainee(false);
+  };
+
+  const handleCreateTrainee = async (newTrainee) => {
+    loading.show('Đang thêm trainee mới!');
+    let resTrainee = await traineeClient().createTrainee(newTrainee);
+    if (resTrainee) {
+      loading.hide();
+      handleCloseAddTraineePopup();
+      console.log(newTrainee, 'newTrainee');
+      toast.success('Thêm trainee mới thành công!');
+    } else {
+      toast.error('Thêm trainee mới thất bại!');
+    }
+  };
 
   useEffect(() => {
     const fetchTrainees = traineeClient().getAllTrainees();
@@ -64,19 +106,29 @@ const Trainee = () => {
   }, []);
 
   return (
-    <MyContainer>
-      <div style={{ height: 500, width: '100%' }}>
-        <DataGrid
-          rows={trainees}
-          columns={columns}
-          onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
-          pageSize={pageSize}
-          pagination
-          rowsPerPageOptions={[5, 10, 20]}
-          checkboxSelection
-        />
+    <>
+      <MyContainer>
+        <div style={{ height: 500, width: '100%' }}>
+          <DataGrid
+            rows={trainees}
+            columns={columns}
+            onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
+            pageSize={pageSize}
+            pagination
+            rowsPerPageOptions={[5, 10, 20]}
+            // checkboxSelection
+          />
+        </div>
+      </MyContainer>
+      <div style={{ position: 'fixed' }}>
+        <MySpeedDial actions={actions} />
       </div>
-    </MyContainer>
+      <TraineeDialogCreate
+        open={showAddTrainee}
+        onClose={handleCloseAddTraineePopup}
+        onSubmit={handleCreateTrainee}
+      />
+    </>
   );
 };
 

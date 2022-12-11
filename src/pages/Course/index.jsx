@@ -8,15 +8,24 @@ import CourseItem from '../../components/course';
 import MySpeedDial from '../../components/speed-dial';
 import { LibraryAddOutlined } from '@mui/icons-material';
 import MyContainer from '../../components/container';
-
-const actions = [
-  { icon: <LibraryAddOutlined />, name: 'Tạo khóa học', link: '/course/create' }
-];
+import { useNavigate } from 'react-router-dom';
 
 const Course = () => {
+  const navigate = useNavigate();
+
   const [courses, setCourses] = useState([]);
   const [filterCourses, setFilterCourses] = useState(courses);
   const [searchText, setSearchText] = useState('');
+
+  const actions = [
+    {
+      icon: <LibraryAddOutlined />,
+      name: 'Tạo khóa học',
+      onClick: () => {
+        navigate('/course/create');
+      }
+    }
+  ];
 
   useEffect(() => {
     document.title = 'Danh sách khóa học';

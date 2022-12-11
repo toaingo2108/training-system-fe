@@ -5,6 +5,12 @@ class TraineeClient extends BaseClient {
   getAllTrainees() {
     return trainees;
   }
+
+  createTrainee(newTrainee) {
+    let _trainee = { id: trainees.length + 1, ...newTrainee };
+    // trainees.push(_trainee);
+    return _trainee;
+  }
 }
 
 export const traineeClient = () => {

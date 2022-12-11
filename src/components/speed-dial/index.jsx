@@ -1,10 +1,7 @@
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
-import { Box } from '@mui/system';
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
 
 const MySpeedDial = ({ actions }) => {
-  const navigate = useNavigate();
   return (
     <SpeedDial
       ariaLabel='SpeedDial basic example'
@@ -17,7 +14,7 @@ const MySpeedDial = ({ actions }) => {
             key={action.name}
             icon={action.icon}
             tooltipTitle={action.name}
-            onClick={() => navigate(action.link)}
+            onClick={action.onClick}
           />
         );
       })}

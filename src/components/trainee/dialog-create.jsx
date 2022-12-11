@@ -8,7 +8,9 @@ import {
   DialogTitle,
   Grid,
   MenuItem,
-  TextField
+  Slider,
+  TextField,
+  Typography
 } from '@mui/material';
 import React, { useState } from 'react';
 
@@ -37,6 +39,10 @@ const TraineeDialogCreate = ({
     departmentId: {
       name: 'departmentId',
       label: 'Phòng ban'
+    },
+    level: {
+      name: 'level',
+      label: 'Level'
     }
   };
 
@@ -45,7 +51,8 @@ const TraineeDialogCreate = ({
     lastName: '',
     imgLink: '',
     roleId: 1,
-    departmentId: 1
+    departmentId: 1,
+    level: 1
   };
 
   const [formCreate, setFormCreate] = useState(initFromCreate);
@@ -160,6 +167,21 @@ const TraineeDialogCreate = ({
                 </MenuItem>
               ))}
             </TextField>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography id='input-slider' gutterBottom>
+              {fieldFormCreate.level.label}
+            </Typography>
+            <Slider
+              name={fieldFormCreate.level.name}
+              value={formCreate.level}
+              onChange={handleChangeFormCreate}
+              valueLabelDisplay='on'
+              step={1}
+              marks
+              min={0}
+              max={10}
+            />
           </Grid>
         </Grid>
       </DialogContent>

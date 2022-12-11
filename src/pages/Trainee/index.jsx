@@ -16,7 +16,13 @@ const columns = [
     headerName: 'Ảnh',
     width: 80,
     renderCell: ({ row }) => {
-      return <Avatar alt='Error' src={row.imgLink} />;
+      return (
+        <Avatar
+          className='hover:scale-125 duration-100'
+          alt='Error'
+          src={row.imgLink}
+        />
+      );
     },
     sortable: false,
     filterable: false,
@@ -72,7 +78,7 @@ const Trainee = () => {
       icon: <LocalLibrary />,
       name: 'Xem khóa học đã đăng ký',
       onClick: () => {
-        setShowAddTrainee(true);
+        toast.info('Tính năng đang được phát triển');
       }
     }
   ];

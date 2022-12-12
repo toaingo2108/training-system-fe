@@ -11,9 +11,10 @@ import NotFound from './pages/NotFound';
 import SignUpPage from './pages/SignUp';
 import Trainee from './pages/Trainee';
 import Trainer from './pages/Trainer';
+import { fetchUser } from './utils';
 
 const App = (props) => {
-  const { user } = useAuth();
+  const user = fetchUser();
   const navigate = useNavigate();
 
   useLayoutEffect(() => {

@@ -1,6 +1,7 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { createContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { fetchUser } from '../utils';
 
 const users = [
   {
@@ -15,14 +16,20 @@ const users = [
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState({});
+  const [user, setUser] = useState(null);
+
+  useLayoutEffect(() => {
+    const _user = fetchUser();
+    setUser(_user);
+  }, []);
 
   const login = async (userLogin) => {
-    const _user = users.find(
-      (user) =>
-        user.username === userLogin.username &&
-        user.password === userLogin.password
-    );
+    const _user =
+      users.find(
+        (user) =>
+          user.username === userLogin.username &&
+          user.password === userLogin.password
+      ) || null;
     if (_user) {
       setUser(_user);
       localStorage.setItem('_user', JSON.stringify(_user));
@@ -33,13 +40,13 @@ export const AuthProvider = ({ children }) => {
     } else {
       return {
         status: 'FAILED',
-        data: []
+        data: null
       };
     }
   };
 
   const logout = () => {
-    setUser({});
+    setUser(null);
     localStorage.removeItem('_user');
   };
 

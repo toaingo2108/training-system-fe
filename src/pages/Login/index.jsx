@@ -13,11 +13,12 @@ import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 import { useLoading } from '../../hooks/loading';
 import { useEffect } from 'react';
+import { fetchUser } from '../../utils';
 
 const LoginPage = () => {
   const navigate = useNavigate();
-
-  const { user, login } = useAuth();
+  const userInfo = fetchUser();
+  const { login } = useAuth();
   const toast = useToast();
   const loading = useLoading();
 
@@ -38,6 +39,13 @@ const LoginPage = () => {
       toast.warning('Tên đăng nhập hoặc mật khẩu không chính xác!');
     }
   };
+
+  useEffect(() => {
+    if (userInfo) {
+      navigate('/');
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <div className='h-screen w-screen bg-gradient-to-r from-sky-500 to-indigo-500 flex justify-center items-center p-12'>

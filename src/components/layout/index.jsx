@@ -1,10 +1,13 @@
 import React from 'react';
+import { useAuth } from '../../hooks/auth';
 import Sidebar from '../sidebar';
 
 const Layout = ({ children }) => {
+  const { user } = useAuth();
+
   return (
     <div style={{ position: 'relative' }}>
-      <Sidebar />
+      {user && <Sidebar />}
       {children}
     </div>
   );

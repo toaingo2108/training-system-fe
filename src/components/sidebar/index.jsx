@@ -18,13 +18,15 @@ import { Menu as MenuIcon } from '@mui/icons-material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import { menuSidebar } from '../../constants/menuSidebar';
 import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../hooks/auth';
 
 const Sidebar = () => {
   // const
   const navigate = useNavigate();
+  // hook
+  const { user, logout } = useAuth();
   // state
   const [state, setState] = React.useState(false);
-  const [auth, setAuth] = React.useState(true);
   const [anchorEl, setAnchorEl] = React.useState(null);
 
   // method
@@ -99,7 +101,7 @@ const Sidebar = () => {
                 Training System
               </Typography>
             </div>
-            {auth && (
+            {user && (
               <div>
                 <IconButton
                   size='large'
@@ -130,6 +132,14 @@ const Sidebar = () => {
                     Xem thông tin cá nhân
                   </MenuItem>
                   <MenuItem onClick={handleClose}>Cài đặt</MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      logout();
+                      navigate('/login');
+                    }}
+                  >
+                    Đăng xuất
+                  </MenuItem>
                 </Menu>
               </div>
             )}

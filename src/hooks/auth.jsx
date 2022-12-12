@@ -1,5 +1,6 @@
-import { useContext, useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { createContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const users = [
   {
@@ -16,9 +17,7 @@ export const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState({});
 
-  const [isAuth, setIsAuth] = useState(false);
-
-  const login = (userLogin) => {
+  const login = async (userLogin) => {
     const _user = users.find(
       (user) =>
         user.username === userLogin.username &&
@@ -26,18 +25,26 @@ export const AuthProvider = ({ children }) => {
     );
     if (_user) {
       setUser(_user);
-      setIsAuth(true);
-      localStorage.setItem('user', user);
+      localStorage.setItem('_user', JSON.stringify(_user));
+      return {
+        status: 'OK',
+        data: _user
+      };
+    } else {
+      return {
+        status: 'FAILED',
+        data: []
+      };
     }
   };
 
   const logout = () => {
     setUser({});
-    setIsAuth(false);
+    localStorage.removeItem('_user');
   };
 
   return (
-    <AuthContext.Provider value={{ user, isAuth, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
@@ -52,7 +59,6 @@ export const AuthProvider = ({ children }) => {
  *    firstName: string,
  *    lastName: string,
  *  },
- *  isAuth: boolean,
  *  login(user: {
  *    username: string,
  *    password: string,

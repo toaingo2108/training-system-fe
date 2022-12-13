@@ -1,17 +1,9 @@
-import { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { useContext, useLayoutEffect, useState } from 'react';
 import { createContext } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { trainees } from '../data/trainee';
 import { fetchUser } from '../utils';
 
-const users = [
-  {
-    id: 1,
-    firstName: 'Ngô Quốc',
-    lastName: 'Toại',
-    username: 'toaingo',
-    password: '123456'
-  }
-];
+const users = [...trainees];
 
 export const AuthContext = createContext();
 

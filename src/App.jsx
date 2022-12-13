@@ -8,6 +8,7 @@ import CourseDetail from './pages/Course/detail';
 import Home from './pages/Home';
 import LoginPage from './pages/Login';
 import NotFound from './pages/NotFound';
+import Role from './pages/Role';
 import SignUpPage from './pages/SignUp';
 import Trainee from './pages/Trainee';
 import Trainer from './pages/Trainer';
@@ -36,7 +37,9 @@ const App = (props) => {
 
           <Route path='/trainee' element={<Trainee />} />
 
-          <Route path='/*' element={<Home />} />
+          <Route path='/role' element={<Role />} />
+
+          <Route path='/' element={<Home />} />
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Layout>

@@ -7,7 +7,8 @@ export const ToastProvider = ({ children }) => {
   const [toast, setToast] = useState({
     isOpen: false,
     type: 'info',
-    message: ''
+    message: '',
+    horizontal: 'right'
   });
 
   const hide = () => {
@@ -15,21 +16,21 @@ export const ToastProvider = ({ children }) => {
     setToast({ ...toast });
   };
 
-  const show = (type, message) => {
-    setToast({ isOpen: true, type, message });
+  const show = (type, message, horizontal = 'right') => {
+    setToast({ isOpen: true, type, message, horizontal });
   };
 
-  const success = (message) => {
-    show('success', message);
+  const success = (message, horizontal = 'right') => {
+    show('success', message, horizontal);
   };
-  const info = (message) => {
-    show('info', message);
+  const info = (message, horizontal = 'right') => {
+    show('info', message, horizontal);
   };
-  const warning = (message) => {
-    show('warning', message);
+  const warning = (message, horizontal = 'right') => {
+    show('warning', message, horizontal);
   };
-  const error = (message) => {
-    show('error', message);
+  const error = (message, horizontal = 'right') => {
+    show('error', message, horizontal);
   };
 
   return (
@@ -41,7 +42,7 @@ export const ToastProvider = ({ children }) => {
         onClose={hide}
         anchorOrigin={{
           vertical: 'top',
-          horizontal: 'right'
+          horizontal: toast.horizontal
         }}
       >
         <Alert
@@ -60,10 +61,10 @@ export const ToastProvider = ({ children }) => {
 /**
  *
  * @returns {{
- *  success(message: string),
- *  info(message: string),
- *  warning(message: string),
- *  error(message: string),
+ *  success(message: string, horizontal?: 'right' | 'center' | 'left'),
+ *  info(message: string, horizontal?: 'right' | 'center' | 'left'),
+ *  warning(message: string, horizontal?: 'right' | 'center' | 'left'),
+ *  error(message: string, horizontal?: 'right' | 'center' | 'left'),
  * }}
  */
 export const useToast = () => {

@@ -20,9 +20,10 @@ import {
 } from '@mui/material';
 import { Menu as MenuIcon } from '@mui/icons-material';
 import AccountCircle from '@mui/icons-material/AccountCircle';
-import { menuSidebar } from '../../constants/menuSidebar';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
+import { menuSidebar } from './menuSidebar';
+import User from '../user';
 
 // const Sidebar = () => {
 //   // const
@@ -167,16 +168,6 @@ export default function Sidebar() {
   const { user, logout } = useAuth();
   // state
   const [state, setState] = React.useState(false);
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  // method
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleClose = () => {
-    setAnchorEl(null);
-  };
 
   const toggleDrawer = (open) => (event) => {
     if (
@@ -189,75 +180,24 @@ export default function Sidebar() {
     setState(open);
   };
 
-  const listMenu = () => (
-    <Box
-      className='w-full'
-      role='presentation'
-      onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-    >
-      <MenuList>
-        {menuSidebar.map((item, index) => (
-          <MenuItem key={item.key} onClick={() => navigate(item.link)}>
-            <ListItemIcon>{item.icon}</ListItemIcon>
-            <Typography noWrap>{item.title}</Typography>
-          </MenuItem>
-        ))}
-      </MenuList>
-    </Box>
-  );
-
   return (
-    <div className='w-full h-screen p-1'>
-      <div className='h-full w-full bg-slate-300 p-2 rounded-md flex flex-col justify-between'>
-        {listMenu()}
-        <div>
-          <Divider />
-          {user && (
-            <div className='mt-2'>
-              <Button
-                fullWidth
-                size='large'
-                color='inherit'
-                onClick={handleMenu}
-              >
-                {user?.imgLink ? (
-                  <Avatar src={user?.imgLink} />
-                ) : (
-                  <AccountCircle />
-                )}
-                <span className='ml-4'>{`${user.firstName} ${user.lastName}`}</span>
-              </Button>
-              <Menu
-                id='menu-appbar'
-                anchorEl={anchorEl}
-                anchorOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                keepMounted
-                transformOrigin={{
-                  vertical: 'top',
-                  horizontal: 'right'
-                }}
-                open={Boolean(anchorEl)}
-                onClose={handleClose}
-              >
-                <MenuItem onClick={handleClose}>Xem thông tin cá nhân</MenuItem>
-                <MenuItem onClick={handleClose}>Cài đặt</MenuItem>
-                <MenuItem
-                  onClick={() => {
-                    logout();
-                    navigate('/login');
-                  }}
-                >
-                  Đăng xuất
-                </MenuItem>
-              </Menu>
-            </div>
-          )}
-        </div>
-      </div>
+    <div className='top-16 sticky'>
+      <Box
+        className='w-full'
+        role='presentation'
+        onClick={toggleDrawer(false)}
+        onKeyDown={toggleDrawer(false)}
+      >
+        <MenuList>
+          {menuSidebar.map((item, index) => (
+            <MenuItem className='!p-5' key={item.key} onClick={() => navigate(item.link)}>
+              <ListItemIcon>{item.icon}</ListItemIcon>
+              <Typography noWrap>{item.title}</Typography>
+            </MenuItem>
+          ))}
+        </MenuList>
+      </Box>
     </div>
   );
 }
+ 

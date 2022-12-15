@@ -1,6 +1,7 @@
 import { Grid } from '@mui/material';
 import React from 'react';
 import { useAuth } from '../../hooks/auth';
+import Header from '../header';
 import Sidebar from '../sidebar';
 
 const Layout = ({ children }) => {
@@ -8,13 +9,14 @@ const Layout = ({ children }) => {
 
   return (
     <Grid container style={{ position: 'relative' }}>
-      {user && (
-        <Grid item xs={2}>
+      <Header />
+      <Grid item container xs={12} className='min-h-screen'>
+        <Grid item className='min-w-14 bg-slate-100'>
           <Sidebar />
         </Grid>
-      )}
-      <Grid item xs={10}>
-        {children}
+        <Grid item xs>
+          {children}
+        </Grid>
       </Grid>
     </Grid>
   );

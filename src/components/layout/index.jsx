@@ -11,7 +11,7 @@ const Layout = ({ children }) => {
     <Grid container style={{ position: 'relative' }}>
       <Header />
       <Grid item container xs={12} className='min-h-screen'>
-        <Grid item className='min-w-14 bg-slate-100'>
+        <Grid item className='min-w-14 '>
           <Sidebar />
         </Grid>
         <Grid item xs>

@@ -3,31 +3,31 @@ import { AccountTree, Group, Hail, Home, LocalLibrary } from '@mui/icons-materia
 export const menuSidebar = [
   {
     key: 'HOME',
-    title: 'Trang chủ',
+    title: 'Home',
     link: '/',
     icon: <Home />
   },
   {
     key: 'COURSES',
-    title: 'Danh sách khóa học',
+    title: 'Course',
     link: '/course',
     icon: <LocalLibrary />
   },
   {
     key: 'TRAINERS',
-    title: 'Danh sách trainer',
+    title: 'Trainer',
     link: '/trainer',
     icon: <Hail />
   },
   {
     key: 'TRAINEES',
-    title: 'Danh sách trainee',
+    title: 'Trainee',
     link: '/trainee',
     icon: <Group />
   },
   {
     key: 'ROLES',
-    title: 'Quản lý role',
+    title: 'Role',
     link: '/role',
     icon: <AccountTree />
   }

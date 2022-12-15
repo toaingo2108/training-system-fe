@@ -1,34 +1,76 @@
 import { AccountCircle } from '@mui/icons-material';
-import { Avatar, Button, Menu, MenuItem } from '@mui/material';
-import React from 'react';
+import { Avatar, Button, IconButton, Menu, MenuItem } from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
+import ModalUser from './modal';
 
 const User = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [isOpenMenu, setIsOpenMenu] = useState(false);
 
   // method
-  const handleMenu = (event) => {
-    setAnchorEl(event.currentTarget);
+  const handleMenu = () => {
+    setIsOpenMenu(true);
   };
 
   const handleClose = () => {
-    setAnchorEl(null);
+    setIsOpenMenu(false);
   };
   if (!user) {
     return;
   }
   return (
-    <div>
-      <Button fullWidth size='large' color='inherit' onClick={handleMenu}>
-        {user?.imgLink ? <Avatar src={user?.imgLink} /> : <AccountCircle />}
-        <span className='ml-4'>{`${user.firstName} ${user.lastName}`}</span>
-      </Button>
-      <Menu
-        id='menu-appbar'
-        anchorEl={anchorEl}
+    <div className='relative'>
+      <IconButton
+        fullWidth
+        size='small'
+        color='inherit'
+        onClick={() => setIsOpenMenu(!isOpenMenu)}
+      >
+        {user?.imgLink ? (
+          <Avatar sx={{ width: 24, height: 24 }} src={user?.imgLink} />
+        ) : (
+          <AccountCircle sx={{ width: 24, height: 24 }} />
+        )}
+      </IconButton>
+      {isOpenMenu && (
+        <div
+          className={`absolute px-6 py-4 bg-white rounded-lg opacity-0 right-0 transition-all animate-[fadeIn]`}
+          style={{
+            boxShadow: '0 -4px 32px rgb(0 0 0 / 20%)'
+          }}
+        >
+          <div className='py-2 hover:scale-105 cursor-pointer flex items-center'>
+            <Avatar src={user?.imgLink} />
+            <div className='ml-4 flex flex-col'>
+              <b className='whitespace-nowrap'>{`${user?.firstName || ''} ${
+                user?.lastName || ''
+              }`}</b>
+              <i className='text-xs'>@{user?.username || ''}</i>
+            </div>
+          </div>
+          <hr />
+          <div className='py-2 hover:scale-105 cursor-pointer'>
+            Trang cá nhân
+          </div>
+          <hr />
+          <div className='py-2 hover:scale-105 cursor-pointer'>Cài đặt</div>
+          <div
+            className='py-2 hover:scale-105 cursor-pointer'
+            onClick={() => {
+              logout();
+              navigate('/login');
+            }}
+          >
+            Đăng xuất
+          </div>
+        </div>
+      )}
+      {/* <Menu
+      id='menu-appbar'
+      anchorEl={anchorEl}
         anchorOrigin={{
           vertical: 'top',
           horizontal: 'right'
@@ -51,7 +93,7 @@ const User = () => {
         >
           Đăng xuất
         </MenuItem>
-      </Menu>
+      </Menu> */}
     </div>
   );
 };

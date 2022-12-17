@@ -1,5 +1,7 @@
 import React, { useCallback, useEffect } from 'react';
 
+const main = document.querySelector('#main');
+
 const Dropdown = ({
   id,
   open,
@@ -22,17 +24,19 @@ const Dropdown = ({
   );
 
   useEffect(() => {
-    window.addEventListener('click', handleEventClick);
+    if (open) {
+      window.addEventListener('click', handleEventClick);
+    }
     return () => {
       window.removeEventListener('click', handleEventClick);
     };
-  }, [handleEventClick]);
+  }, [handleEventClick, open]);
 
   return (
     <div className={`relative ${className}`}>
       <div
         id={`drop-button-${id}`}
-        className='relative w-6 h-6 rounded-full cursor-pointer'
+        className='relative rounded-full cursor-pointer'
         onClick={() => setOpen(!open)}
       >
         {buttonRender()}
@@ -40,7 +44,7 @@ const Dropdown = ({
       <div
         id={`drop-menu-${id}`}
         className={`absolute px-6 py-2 top-0 right-0 w-max bg-white rounded-2xl transition-all ${
-          open ? 'translate-y-8 opacity-100 visible' : 'opacity-0 invisible'
+          open ? 'translate-y-10 opacity-100 visible' : 'opacity-0 invisible'
         }`}
         style={{
           boxShadow: '0 -4px 32px rgb(0 0 0 / 20%)'

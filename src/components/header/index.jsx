@@ -27,7 +27,10 @@ const Header = () => {
         {user ? (
           <User />
         ) : (
-          <button className='bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl px-4 py-1 text-white border-none outline-none text-sm hover:opacity-80 transition-all'>
+          <button
+            onClick={() => navigate('/login')}
+            className='bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl px-4 py-1 text-white border-none outline-none text-sm hover:opacity-80 transition-all'
+          >
             Đăng nhập
           </button>
         )}

@@ -23,7 +23,7 @@ const App = (props) => {
   }, []);
 
   return (
-    <>
+    <div id='main'>
       <Layout>
         <Routes>
           <Route path='/login' element={<LoginPage />} />
@@ -42,7 +42,7 @@ const App = (props) => {
           <Route path='*' element={<NotFound />} />
         </Routes>
       </Layout>
-    </>
+    </div>
   );
 };
 

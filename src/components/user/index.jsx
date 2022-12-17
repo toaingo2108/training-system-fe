@@ -30,7 +30,7 @@ const User = () => {
       buttonRender={() => {
         return (
           <img
-            className='object-cover rounded-full pointer-events-none'
+            className='w-6 h-6 object-cover rounded-full pointer-events-none'
             src={user?.imgLink}
             alt={user?.lastName}
           />

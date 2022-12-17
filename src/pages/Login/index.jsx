@@ -33,7 +33,6 @@ const LoginPage = () => {
     const res = await login(user);
     loading.hide();
     if (res.status === 'OK') {
-      toast.success('Đăng nhập thành công!', 'center');
       navigate('/', { replace: true });
     } else {
       toast.warning('Tên đăng nhập hoặc mật khẩu không chính xác!');

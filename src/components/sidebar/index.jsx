@@ -14,6 +14,10 @@ export default function Sidebar() {
     setActive(menuSidebar.findIndex((item) => location.pathname === item.link));
   }, [location.pathname]);
 
+  if(location.pathname === '/login' || location.pathname ==='/sign-up') {
+    return;
+  }
+
   return (
     <div className='top-20 sticky'>
       <div className='w-full'>

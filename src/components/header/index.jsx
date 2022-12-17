@@ -1,6 +1,4 @@
-import { Search } from '@mui/icons-material';
-import { Box, TextField } from '@mui/material';
-import React, { useState } from 'react';
+import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import SearchHeader from '../search';
@@ -26,7 +24,13 @@ const Header = () => {
       </div>
 
       <div className='flex justify-end'>
-        {user ? <User /> : <>Đăng nhập </>}
+        {user ? (
+          <User />
+        ) : (
+          <button className='bg-gradient-to-r from-yellow-500 to-orange-500 rounded-2xl px-4 py-1 text-white border-none outline-none text-sm hover:opacity-80 transition-all'>
+            Đăng nhập
+          </button>
+        )}
       </div>
     </div>
   );

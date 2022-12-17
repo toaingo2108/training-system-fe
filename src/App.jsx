@@ -1,7 +1,6 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Layout from './components/layout';
-import { useAuth } from './hooks/auth';
 import Course from './pages/Course';
 import CourseCreate from './pages/Course/create';
 import CourseDetail from './pages/Course/detail';
@@ -18,7 +17,7 @@ const App = (props) => {
   const user = fetchUser();
   const navigate = useNavigate();
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if (!user) navigate('/login');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);

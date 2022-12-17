@@ -1,12 +1,9 @@
 import { Grid } from '@mui/material';
 import React from 'react';
-import { useAuth } from '../../hooks/auth';
 import Header from '../header';
 import Sidebar from '../sidebar';
 
 const Layout = ({ children }) => {
-  const { user } = useAuth();
-
   return (
     <Grid container style={{ position: 'relative' }}>
       <Header />

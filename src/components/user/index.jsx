@@ -1,128 +1,105 @@
-import { AccountCircle } from '@mui/icons-material';
-import { Avatar, Button, IconButton, Menu, MenuItem } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Logout, Settings } from '@mui/icons-material';
+import {
+  Avatar,
+  Box,
+  Divider,
+  IconButton,
+  ListItemIcon,
+  Menu,
+  MenuItem
+} from '@mui/material';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
-
-const modal = document.getElementById('modal-user');
-const button = document.getElementById('button-user');
 
 const User = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-  const [isOpenMenu, setIsOpenMenu] = useState(false);
-
-  // method
-  const handleMenu = () => {
-    setIsOpenMenu(true);
-  };
-
-  const handleClose = () => {
-    setIsOpenMenu(false);
-  };
-
+  const [anchorEl, setAnchorEl] = useState(null);
+  const open = Boolean(anchorEl);
   const handleClick = (event) => {
-    console.log(event.target);
-    handleClose(false);
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
-  const handleToggleModal = (event) => {
-    event.preventDefault();
-    setIsOpenMenu(!isOpenMenu);
-  };
-
-  useEffect(() => {
-    window.addEventListener('click', handleClick);
-    return () => {
-      window.removeEventListener('click', handleClick);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
-
-  if (!user) {
-    return;
-  }
   return (
-    <div className='relative'>
-      <IconButton
-        id='button-user'
-        size='small'
-        color='inherit'
-        onClick={handleToggleModal}
-      >
-        {user?.imgLink ? (
-          <Avatar
-            sx={{ width: 24, height: 24 }}
-            src={user?.imgLink}
-            imgProps={{}}
-          />
-        ) : (
-          <AccountCircle sx={{ width: 24, height: 24 }} />
-        )}
-      </IconButton>
-      <div
-        id='modal-user'
-        className={`absolute px-6 py-4 bg-white rounded-lg  right-0 transition-all animate-[fadeIn] ${
-          isOpenMenu ? 'opacity-1 visible translate-y-2' : 'opacity-0 invisible'
-        }`}
-        style={{
-          boxShadow: '0 -4px 32px rgb(0 0 0 / 20%)'
-        }}
-      >
-        <div className='transition-all py-2  cursor-pointer flex items-center'>
-          <Avatar src={user?.imgLink} />
-          <div className='ml-4 flex flex-col'>
-            <b className='whitespace-nowrap'>{`${user?.firstName || ''} ${
-              user?.lastName || ''
-            }`}</b>
-            <i className='text-xs'>@{user?.username || ''}</i>
-          </div>
-        </div>
-        <hr />
-        <div className='transition-all py-2 hover:bg-gray-100 cursor-pointer'>
-          Trang cá nhân
-        </div>
-        <hr />
-        <div className='transition-all py-2 hover:bg-gray-100 cursor-pointer'>
-          Cài đặt
-        </div>
-        <div
-          className='transition-all py-2 hover:bg-gray-100 cursor-pointer'
-          onClick={() => {
-            logout();
-            navigate('/login');
-          }}
+    <>
+      <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+        <IconButton
+          onClick={handleClick}
+          size='small'
+          sx={{ ml: 2 }}
+          aria-controls={open ? 'account-menu' : undefined}
+          aria-haspopup='true'
+          aria-expanded={open ? 'true' : undefined}
         >
-          Đăng xuất
-        </div>
-      </div>
-      {/* <Menu
-      id='menu-appbar'
-      anchorEl={anchorEl}
-        anchorOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        keepMounted
-        transformOrigin={{
-          vertical: 'top',
-          horizontal: 'right'
-        }}
-        open={Boolean(anchorEl)}
+          <Avatar sx={{ width: 24, height: 24 }} src={user?.imgLink} />
+        </IconButton>
+      </Box>
+      <Menu
+        anchorEl={anchorEl}
+        id='account-menu'
+        open={open}
         onClose={handleClose}
+        onClick={handleClose}
+        PaperProps={{
+          elevation: 0,
+          sx: {
+            overflow: 'visible',
+            filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+            mt: 1.5,
+            '& .MuiAvatar-root': {
+              width: 32,
+              height: 32,
+              ml: -0.5,
+              mr: 1
+            },
+            '&:before': {
+              content: '""',
+              display: 'block',
+              position: 'absolute',
+              top: 0,
+              right: 14,
+              width: 10,
+              height: 10,
+              bgcolor: 'background.paper',
+              transform: 'translateY(-50%) rotate(45deg)',
+              zIndex: 0
+            }
+          }
+        }}
+        transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+        anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
       >
-        <MenuItem onClick={handleClose}>Xem thông tin cá nhân</MenuItem>
-        <MenuItem onClick={handleClose}>Cài đặt</MenuItem>
+        <MenuItem>
+          <Avatar src={user?.imgLink} />
+          <div className='flex flex-col mx-2 text-sm'>
+            <b>{`${user?.firstName || ''} ${user?.lastName || ''}`}</b>
+            <i>@{user?.username}</i>
+          </div>
+        </MenuItem>
+        <Divider />
+        <MenuItem>
+          <ListItemIcon>
+            <Settings fontSize='small' />
+          </ListItemIcon>
+          Cài đặt
+        </MenuItem>
         <MenuItem
           onClick={() => {
             logout();
             navigate('/login');
           }}
         >
+          <ListItemIcon>
+            <Logout fontSize='small' />
+          </ListItemIcon>
           Đăng xuất
         </MenuItem>
-      </Menu> */}
-    </div>
+      </Menu>
+    </>
   );
 };
 

@@ -1,20 +1,7 @@
-import { Logout, Settings } from '@mui/icons-material';
-import {
-  Avatar,
-  Box,
-  Divider,
-  IconButton,
-  ListItemIcon,
-  Menu,
-  MenuItem
-} from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import Dropdown from '../dropdown';
-
-const dropButton = document.querySelector('#drop-button');
-const dropMenu = document.querySelector('#drop-menu');
 
 const User = () => {
   const navigate = useNavigate();
@@ -39,10 +26,7 @@ const User = () => {
     >
       <div className='text-sm'>
         <div className='flex items-center cursor-pointer'>
-          <div
-            className='w-8 h-8 rounded-full'
-            onClick={(e) => console.log(e.currentTarget)}
-          >
+          <div className='w-8 h-8 rounded-full'>
             <img
               className='object-cover rounded-full hover:scale-125 ease-in-out duration-500'
               src={user?.imgLink}

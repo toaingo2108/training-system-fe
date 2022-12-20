@@ -52,25 +52,6 @@ const Course = () => {
   return (
     <>
       <MyContainer>
-        <Grid
-          container
-          justifyContent='flex-end'
-          sx={{ marginBottom: '24px' }}
-          spacing={2}
-        >
-          <Grid item>
-            <TextField
-              size='small'
-              value={searchText}
-              onChange={handleChangeSearch}
-            />
-          </Grid>
-          <Grid item>
-            <LoadingButton variant='contained' sx={{ height: '100%' }}>
-              <Search />
-            </LoadingButton>
-          </Grid>
-        </Grid>
         <Grid container spacing={2}>
           {filterCourses.map((course) => (
             <Grid key={course.id} item xs={12} sm={6} md={4} lg={3}>

@@ -1,52 +1,33 @@
-import {
-  Button,
-  Card,
-  CardActions,
-  CardContent,
-  CardMedia,
-  Typography
-} from '@mui/material';
-import React from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
-const Course = ({ course, isRegister = true, isRedirect = true }) => {
+const Course = ({ course }) => {
   const navigate = useNavigate();
   return (
-    <Card sx={{ height: '100%', width: '100%', borderRadius: '12px' }}>
-      <CardMedia component='img' alt={course.name} image={course.imgLink} />
-      <CardContent>
-        <Typography gutterBottom variant='h5' component='div'>
-          {course.name}
-        </Typography>
-        <Typography
-          variant='body2'
-          color='text.secondary'
-          sx={{ height: '24px', overflow: 'hidden' }}
+    <>
+      <div
+        style={{
+          backgroundImage: `url(${course.imgLink})`,
+          backgroundRepeat: 'no-repeat',
+          paddingTop: '56.25%',
+          objectFit: 'cover',
+          backgroundSize: 'cover',
+          backgroundPosition: '50%'
+        }}
+        className='w-full rounded-xl relative'
+      >
+        <div
+          className='card-course absolute inset-0 flex justify-center items-center rounded-xl hover:bg-black/40 cursor-pointer opacity-0 hover:opacity-100'
+          onClick={() => navigate(`/course/detail/${course?.id}`)}
         >
-          {course.description}
-        </Typography>
-        <Typography variant='body2' color='text.secondary'>
-          Hình thức: Offline{course.online && '/Online'}
-        </Typography>
-      </CardContent>
-      {(isRegister || isRedirect) && (
-        <CardActions>
-          {isRegister && (
-            <Button size='small' variant='contained'>
-              Đăng ký
-            </Button>
-          )}
-          {isRedirect && (
-            <Button
-              size='small'
-              onClick={() => navigate(`/course/detail/${course.id}`)}
-            >
-              Xem thêm
-            </Button>
-          )}
-        </CardActions>
-      )}
-    </Card>
+          <button className='card-course-button absolute bg-white text-sm tracking-wide px-4 py-2 rounded-2xl'>
+            Xem khóa học
+          </button>
+        </div>
+      </div>
+      <div className='text-sm font-medium tracking-wide mt-2 ml-1'>
+        <Link to={`/course/detail/${course.id}`}>{course.name}</Link>
+      </div>
+    </>
   );
 };
 

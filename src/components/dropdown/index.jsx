@@ -1,7 +1,5 @@
 import React, { useCallback, useEffect } from 'react';
 
-const main = document.querySelector('#main');
-
 const Dropdown = ({
   id,
   open,
@@ -16,7 +14,6 @@ const Dropdown = ({
   const handleEventClick = useCallback(
     ({ target }) => {
       if (target !== dropButton && target !== dropMenu) {
-        console.log(target);
         setOpen(false);
       }
     },

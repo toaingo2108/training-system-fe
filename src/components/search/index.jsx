@@ -1,18 +1,23 @@
-import { Search } from '@mui/icons-material';
+import { Close, Search } from '@mui/icons-material';
 import React, { useRef, useState } from 'react';
 import { useEffect } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import { courseClient } from '../../clients/course';
 const SearchHeader = () => {
+  // hooks
   const location = useLocation();
+  const navigate = useNavigate();
+
+  // state
   const [open, setOpen] = useState(false);
   const [courses, setCourses] = useState([]);
   const [filterCourses, setFilterCourses] = useState([]);
   const [searchValue, setSearchValue] = useState('');
 
+  // method
   const handleChangeSearch = (event) => {
     const value = event.target.value || '';
-    console.log(value);
+    setSearchValue(value);
     if (value === '') {
       setOpen(false);
       return;
@@ -23,14 +28,22 @@ const SearchHeader = () => {
         course.name?.toUpperCase()?.includes(value?.toUpperCase())
       )
     );
-    setSearchValue(value);
   };
 
+  const handleRedirectCourse = (id) => {
+    setSearchValue('');
+    setOpen(false);
+    setFilterCourses([]);
+    navigate(`/course/detail/${id}`);
+  };
+
+  // side effect
   useEffect(() => {
     const resCourse = courseClient().getAllCourses();
     setCourses(resCourse);
   }, []);
 
+  // UI
   if (location.pathname === '/login' || location.pathname === '/sign-up') {
     return;
   }
@@ -48,10 +61,21 @@ const SearchHeader = () => {
           <input
             type='text'
             placeholder='Tìm kiếm theo khóa học...'
+            value={searchValue}
             onChange={handleChangeSearch}
-            onBlur={() => setOpen(false)}
-            className='focus:outline-none focus:ring-1 focus:ring-black border rounded-3xl pl-10 pr-4 py-1 transition-all text-sm w-full'
+            onFocus={() => {
+              if (searchValue !== '') setOpen(true);
+            }}
+            className='focus:outline-none focus:ring-1 focus:ring-black border rounded-3xl px-10 py-1 transition-all text-sm w-full'
           />
+          {searchValue !== '' && (
+            <div
+              className='absolute  inset-y-0 right-2 flex items-center pl-3 text-gray-300 hover:text-gray-600 transition-all'
+              onClick={() => handleChangeSearch({ target: { value: '' } })}
+            >
+              <Close fontSize='small' />
+            </div>
+          )}
         </div>
       </div>
       <div
@@ -68,19 +92,26 @@ const SearchHeader = () => {
         <div>
           <div className='text-sm text-gray-500 spcaing tracking-wider pt-2 flex items-center'>
             <Search sx={{ fontSize: 18 }} className='text-gray-700 mr-1' />
-            {filterCourses.length > 0
-              ? 'Kết quả cho'
-              : 'Không có kết quả cho'}{' '}
+            {searchValue !== '' &&
+              (filterCourses.length > 0
+                ? 'Kết quả cho '
+                : 'Không có kết quả cho ')}
             '{searchValue}'
           </div>
           {filterCourses.length > 0 && (
             <>
               <div className='pt-4 uppercase text-sm'>Khóa học</div>
               <hr />
-              {filterCourses?.map((course) => (
-                <div key={course?.id} className='flex items-center py-1'>
+              {filterCourses?.map((course, index) => (
+                <div
+                  key={course.name + course.id + index}
+                  onClick={(e) => {
+                    handleRedirectCourse(course?.id);
+                  }}
+                  className='flex items-center py-1 cursor-pointer hover:border-r-4 hover:bg-gradient-to-r hover:from-white hover:to-gray-100'
+                >
                   <img
-                    className='w-9 h-9 rounded-full'
+                    className='w-9 h-9 rounded-full object-cover'
                     src={course?.imgLink}
                     alt={course?.name}
                   />

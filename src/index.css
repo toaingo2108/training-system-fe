@@ -31,3 +31,21 @@ hr {
   border-top: 1px solid rgba(0, 0, 0, 0.05);
   margin: 8px 0;
 }
+
+.card-course {
+  transition: 0.3s ease;
+}
+
+.card-course-button {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: 0.3s ease;
+  font-size: 12px;
+  line-height: 12px;
+  font-weight: 600;
+}
+
+.card-course:hover .card-course-button {
+  opacity: 1;
+  transform: translateY(0);
+}

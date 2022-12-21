@@ -10,6 +10,10 @@ class TrainerClient extends BaseClient {
   getCourseByTrainer({ trainerId }) {
     return courses.find((course) => course.trainerID === trainerId);
   }
+
+  getTrainer({ trainerId }) {
+    return trainers.find((trainer) => trainer.id === trainerId);
+  }
 }
 
 export const trainerClient = () => {

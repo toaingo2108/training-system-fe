@@ -3,6 +3,7 @@ import React, { useRef, useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { courseClient } from '../../clients/course';
+import { learningPathClient } from '../../clients/learningPath';
 const SearchHeader = () => {
   // hooks
   const location = useLocation();
@@ -13,6 +14,8 @@ const SearchHeader = () => {
   const [courses, setCourses] = useState([]);
   const [filterCourses, setFilterCourses] = useState([]);
   const [searchValue, setSearchValue] = useState('');
+  const [learningPaths, setLearningPaths] = useState([]);
+  const [filterLearningPaths, setFilterLearningPaths] = useState([]);
 
   // method
   const handleChangeSearch = (event) => {
@@ -28,19 +31,30 @@ const SearchHeader = () => {
         course.name?.toUpperCase()?.includes(value?.toUpperCase())
       )
     );
+    setFilterLearningPaths(
+      learningPaths?.filter((learningPath) =>
+        learningPath.name?.toUpperCase()?.includes(value?.toUpperCase())
+      )
+    );
   };
 
-  const handleRedirectCourse = (id) => {
+  const handleRedirect = (path, id) => {
     setSearchValue('');
     setOpen(false);
     setFilterCourses([]);
-    navigate(`/course/detail/${id}`);
+    setFilterLearningPaths([]);
+    navigate(`/${path}/${id}`);
   };
 
   // side effect
   useEffect(() => {
     const resCourse = courseClient().getAllCourses();
     setCourses(resCourse);
+  }, []);
+
+  useEffect(() => {
+    const resLearningPath = learningPathClient().getAllLearningPath();
+    setLearningPaths(resLearningPath);
   }, []);
 
   // UI
@@ -60,7 +74,7 @@ const SearchHeader = () => {
           </div>
           <input
             type='text'
-            placeholder='Tìm kiếm theo khóa học...'
+            placeholder='Tìm kiếm theo khóa học, learning path...'
             value={searchValue}
             onChange={handleChangeSearch}
             onFocus={() => {
@@ -93,11 +107,38 @@ const SearchHeader = () => {
           <div className='text-sm text-gray-500 spcaing tracking-wider pt-2 flex items-center'>
             <Search sx={{ fontSize: 18 }} className='text-gray-700 mr-1' />
             {searchValue !== '' &&
-              (filterCourses.length > 0
+              (filterCourses.length > 0 || filterLearningPaths.length > 0
                 ? 'Kết quả cho '
                 : 'Không có kết quả cho ')}
             '{searchValue}'
           </div>
+          {filterLearningPaths.length > 0 && (
+            <>
+              <div className='pt-4 uppercase text-sm'>Learning Path</div>
+              <hr />
+              {filterLearningPaths?.map((learningPath, index) => (
+                <div
+                  key={learningPath.name + learningPath.id + index}
+                  onClick={(e) => {
+                    handleRedirect('learning-path/detail', learningPath?.id);
+                  }}
+                  className='flex items-center py-2 cursor-pointer hover:border-r-4 hover:bg-gradient-to-r hover:from-white hover:to-gray-100'
+                >
+                  {/* <img
+                    className='w-9 h-9 rounded-full object-cover'
+                    src={course?.imgLink}
+                    alt={course?.name}
+                  /> */}
+                  <div className='ml-3 font-light text-sm whitespace-nowrap text-ellipsis overflow-hidden'>
+                    {learningPath?.name || ''}
+                    <i className='text-xs ml-2'>
+                      {learningPath?.description || ''}
+                    </i>
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
           {filterCourses.length > 0 && (
             <>
               <div className='pt-4 uppercase text-sm'>Khóa học</div>
@@ -106,7 +147,7 @@ const SearchHeader = () => {
                 <div
                   key={course.name + course.id + index}
                   onClick={(e) => {
-                    handleRedirectCourse(course?.id);
+                    handleRedirect('course/detail', course?.id);
                   }}
                   className='flex items-center py-1 cursor-pointer hover:border-r-4 hover:bg-gradient-to-r hover:from-white hover:to-gray-100'
                 >
@@ -115,7 +156,7 @@ const SearchHeader = () => {
                     src={course?.imgLink}
                     alt={course?.name}
                   />
-                  <div className='ml-3 font-light text-sm'>
+                  <div className='ml-3 font-light text-sm whitespace-nowrap text-ellipsis overflow-hidden'>
                     {course?.name || ''}
                   </div>
                 </div>

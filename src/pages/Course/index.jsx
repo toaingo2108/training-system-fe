@@ -1,7 +1,5 @@
-import { Search } from '@mui/icons-material';
-import { Grid, TextField } from '@mui/material';
-import { LoadingButton } from '@mui/lab';
-import React, { useState } from 'react';
+import { Grid } from '@mui/material';
+import { useState } from 'react';
 import { useEffect } from 'react';
 import { courseClient } from '../../clients';
 import CourseItem from '../../components/course';
@@ -14,8 +12,6 @@ const Course = () => {
   const navigate = useNavigate();
 
   const [courses, setCourses] = useState([]);
-  const [filterCourses, setFilterCourses] = useState(courses);
-  const [searchText, setSearchText] = useState('');
 
   const actions = [
     {
@@ -34,26 +30,13 @@ const Course = () => {
   useEffect(() => {
     const courses = courseClient().getAllCourses();
     setCourses(courses);
-    courseClient().testApi();
   }, []);
-
-  const handleChangeSearch = (e) => {
-    const value = e.target.value;
-    setSearchText(value);
-  };
-
-  useEffect(() => {
-    const filteredCourses = courses.filter((course) =>
-      course.name.toUpperCase().includes(searchText.trim().toUpperCase())
-    );
-    setFilterCourses(filteredCourses);
-  }, [searchText, courses]);
 
   return (
     <>
       <MyContainer>
         <Grid container spacing={2}>
-          {filterCourses.map((course) => (
+          {courses.map((course) => (
             <Grid key={course.id} item xs={12} sm={6} md={4} lg={3}>
               <CourseItem course={course} />
             </Grid>

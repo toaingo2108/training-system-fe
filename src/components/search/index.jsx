@@ -1,5 +1,5 @@
 import { Close, Search } from '@mui/icons-material';
-import React, { useRef, useState } from 'react';
+import { useState } from 'react';
 import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { courseClient } from '../../clients/course';

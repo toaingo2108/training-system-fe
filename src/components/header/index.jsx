@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import SearchHeader from '../search';
 import User from '../user';
+import ClassesOfUser from '../user/classesOfUser';
 
 const Header = () => {
   const navigate = useNavigate();
@@ -23,9 +24,16 @@ const Header = () => {
         <SearchHeader />
       </div>
 
-      <div className='flex justify-end'>
+      <div className='flex justify-end items-center'>
         {user ? (
-          <User />
+          <>
+            <div className='mr-4'>
+              <ClassesOfUser />
+            </div>
+            <div>
+              <User />
+            </div>
+          </>
         ) : (
           <button
             onClick={() => navigate('/login')}

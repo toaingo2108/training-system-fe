@@ -70,6 +70,9 @@ const CourseDetail = () => {
             {courseDetail.name}
           </div>
           <div className='font-light text-xs'>{courseDetail.description}</div>
+          <div className='mt-6'>
+            <div className='font-semibold'>Lớp học liên quan</div>
+          </div>
         </Grid>
         <Grid item xs={12} sm={4}>
           <img
@@ -95,20 +98,31 @@ const CourseDetail = () => {
               <div className='ml-1'>{listInterested.length}</div>
             </div>
             <div className='flex items-center cursor-pointer'>
-              {!!trainerOfCourse && (
+              {!!trainerOfCourse ? (
                 <>
-                  <div className='w-8 h-8 rounded-full'>
+                  <div className='w-6 h-6 rounded-full'>
                     <img
-                      className='object-cover rounded-full hover:scale-125 ease-in-out duration-500'
+                      className='w-full h-full object-cover rounded-full hover:scale-125 ease-in-out duration-500'
                       src={trainerOfCourse?.imgLink}
-                      alt={trainerOfCourse?.lastName}
+                      alt=''
                     />
                   </div>
                   <div className='ml-2'>{`${trainerOfCourse?.firstName || ''} ${
                     trainerOfCourse?.lastName || ''
                   }`}</div>
                 </>
+              ) : (
+                <button className='text-xs bg-yellow-400 hover:bg-yellow-300 px-2 py-1 rounded-3xl uppercase transition-all'>
+                  Đăng ký dạy
+                </button>
               )}
+            </div>
+          </div>
+          <div className='mt-6 w-full'>
+            <div className='w-full flex justify-center'>
+              <button className='rounded-2xl text-xs font-semibold text-white bg-red-500 hover:bg-red-400 px-8 py-2 uppercase transition-all'>
+                Đăng ký
+              </button>
             </div>
           </div>
         </Grid>

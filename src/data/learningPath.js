@@ -16,5 +16,11 @@ export const learningPath = [
     name: 'Fullstack roadmap',
     description: 'Cần học gì để trở thành 1 FullStack Dev',
     forRole: 1
+  },
+  {
+    id: 4,
+    name: 'Fullstack roadmap 2',
+    description: 'Cần học gì để trở thành 1 FullStack Dev',
+    forRole: 2
   }
 ];

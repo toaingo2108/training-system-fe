@@ -5,6 +5,7 @@ import Course from './pages/Course';
 import CourseCreate from './pages/Course/create';
 import CourseDetail from './pages/Course/detail';
 import Home from './pages/Home';
+import LearningPathDetail from './pages/learningPath/detail';
 import LoginPage from './pages/Login';
 import NotFound from './pages/NotFound';
 import Role from './pages/Role';
@@ -28,6 +29,12 @@ const App = (props) => {
         <Routes>
           <Route path='/login' element={<LoginPage />} />
           <Route path='/sign-up' element={<SignUpPage />} />
+
+          <Route
+            path='/learning-path/detail/:learningPathID'
+            element={<LearningPathDetail />}
+          />
+
           <Route path='/course' element={<Course />} />
           <Route path='/course/detail/:courseId' element={<CourseDetail />} />
           <Route path='/course/create' element={<CourseCreate />} />

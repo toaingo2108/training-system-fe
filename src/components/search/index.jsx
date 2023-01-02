@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { courseClient } from '../../clients/course';
 import { learningPathClient } from '../../clients/learningPath';
+import { textAbstract } from '../../utils';
 const SearchHeader = () => {
   // hooks
   const location = useLocation();
@@ -132,7 +133,7 @@ const SearchHeader = () => {
                   <div className='ml-3 font-light text-sm whitespace-nowrap text-ellipsis overflow-hidden'>
                     {learningPath?.name || ''}
                     <i className='text-xs ml-2'>
-                      {learningPath?.description || ''}
+                      {textAbstract(learningPath?.description || '', 40)}
                     </i>
                   </div>
                 </div>

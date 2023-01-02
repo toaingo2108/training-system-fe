@@ -1,9 +1,23 @@
 import { learningPath } from '../data/learningPath';
+import { roles } from '../data/roles';
+import { groupBy } from '../utils';
 import { BaseClient } from './base';
 
 class LearningPathClient extends BaseClient {
   getAllLearningPath() {
     return learningPath;
+  }
+
+  getLearningPathWithRole() {
+    return groupBy(
+      learningPath.map((item) => {
+        return {
+          ...item,
+          roleName: roles.find((r) => r.id === item.forRole)?.name || ''
+        };
+      }),
+      'forRole'
+    );
   }
 }
 

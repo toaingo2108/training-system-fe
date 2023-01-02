@@ -9,6 +9,7 @@ import { LibraryAddOutlined, LocalLibrary } from '@mui/icons-material';
 import TraineeDialogCreate from '../../components/trainee/dialog-create';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
+import CustomNoRows from '../../components/customs/no-rows';
 
 const columns = [
   {
@@ -19,7 +20,7 @@ const columns = [
       return (
         <Avatar
           className='hover:scale-125 duration-100'
-          alt='Error'
+          alt={row.lastName}
           src={row.imgLink}
         />
       );
@@ -113,9 +114,13 @@ const Trainee = () => {
 
   return (
     <>
-      <MyContainer>
+      <MyContainer title='Trainee'>
         <div style={{ height: 500, width: '100%' }}>
           <DataGrid
+            components={{
+              NoRowsOverlay: CustomNoRows,
+              NoResultsOverlay: CustomNoRows
+            }}
             rows={trainees}
             columns={columns}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}

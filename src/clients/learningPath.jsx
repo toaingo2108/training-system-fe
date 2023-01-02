@@ -8,6 +8,10 @@ class LearningPathClient extends BaseClient {
     return learningPath;
   }
 
+  getLearningPath({ learningPathId }) {
+    return learningPath.find((item) => item.id === learningPathId);
+  }
+
   getLearningPathWithRole() {
     return groupBy(
       learningPath.map((item) => {

@@ -18,7 +18,9 @@ const Header = () => {
         >
           T
         </div>
-        Training System
+        <div className='uppercase font-black tracking-widest underline decoration-sky-500'>
+          Training System
+        </div>
       </div>
       <div>
         <SearchHeader />

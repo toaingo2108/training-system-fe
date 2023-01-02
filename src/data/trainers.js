@@ -33,5 +33,12 @@ export const trainers = [
     lastName: 'Phat',
     imgLink:
       'https://www.jamsadr.com/images/neutrals/person-donald-900x1080.jpg'
+  },
+  {
+    id: 6,
+    firstName: 'Nguyen Van',
+    lastName: 'Phat',
+    imgLink:
+      'https://www.jamsadr.com/images/neutrals/person-donald-900x1080.jpg'
   }
 ];

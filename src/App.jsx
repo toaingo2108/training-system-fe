@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Layout from './components/layout';
 import Course from './pages/Course';
-import CourseCreate from './pages/Course/create';
 import CourseDetail from './pages/Course/detail';
 import Home from './pages/Home';
 import LearningPathDetail from './pages/learningPath/detail';
@@ -37,7 +36,6 @@ const App = (props) => {
 
           <Route path='/course' element={<Course />} />
           <Route path='/course/detail/:courseId' element={<CourseDetail />} />
-          <Route path='/course/create' element={<CourseCreate />} />
 
           <Route path='/trainer' element={<Trainer />} />
 

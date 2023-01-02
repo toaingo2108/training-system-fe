@@ -1,15 +1,21 @@
-import { AccountTree, Group, Hail, Home, LocalLibrary } from '@mui/icons-material';
+import {
+  AccountTree,
+  Group,
+  Hail,
+  LocalLibrary,
+  Route
+} from '@mui/icons-material';
 
 export const menuSidebar = [
   {
     key: 'HOME',
-    title: 'Home',
+    title: 'Lộ trình',
     link: '/',
-    icon: <Home />
+    icon: <Route />
   },
   {
     key: 'COURSES',
-    title: 'Course',
+    title: 'Học',
     link: '/course',
     icon: <LocalLibrary />
   },
@@ -27,7 +33,7 @@ export const menuSidebar = [
   },
   {
     key: 'ROLES',
-    title: 'Role',
+    title: 'Vai trò',
     link: '/role',
     icon: <AccountTree />
   }

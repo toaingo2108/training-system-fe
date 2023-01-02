@@ -1,4 +1,3 @@
-import { Typography } from '@mui/material';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { menuSidebar } from './menuSidebar';
 import { useEffect, useState } from 'react';
@@ -38,9 +37,9 @@ export default function Sidebar() {
                 }}
               >
                 {item.icon}
-                <Typography variant='subtitle2' noWrap>
+                <div className='text-xs whitespace-nowrap font-semibold tracking-wider'>
                   {item.title}
-                </Typography>
+                </div>
               </div>
             );
           })}

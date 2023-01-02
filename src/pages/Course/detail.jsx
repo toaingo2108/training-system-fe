@@ -14,6 +14,7 @@ import { traineeCourseInterestedClient } from '../../clients/traineeCourseIntere
 import { trainerClient } from '../../clients/trainer';
 import ClassAddIntoCourseDialog from '../../components/classes/dialog-add-into-course';
 import MyContainer from '../../components/container';
+import CustomNoRows from '../../components/customs/no-rows';
 import { useAuth } from '../../hooks/auth';
 
 const columnsClasses = [
@@ -127,7 +128,8 @@ const CourseDetail = () => {
               <div className='h-96 w-full mt-4'>
                 <DataGrid
                   components={{
-                    LoadingOverlay: LinearProgress
+                    LoadingOverlay: LinearProgress,
+                    NoRowsOverlay: CustomNoRows
                   }}
                   loading={loadingTableClasses}
                   rows={classesOfCourse}

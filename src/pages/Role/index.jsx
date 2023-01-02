@@ -22,7 +22,7 @@ export default function Role() {
   };
 
   return (
-    <MyContainer>
+    <MyContainer title='Vai trò'>
       <Grid container spacing={4}>
         <Grid item xs={12} md={6}>
           <Box sx={{ height: 400, width: '100%' }}>

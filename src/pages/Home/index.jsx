@@ -20,9 +20,9 @@ const Home = () => {
   }, []);
 
   return (
-    <MyContainer>
+    <MyContainer title='Lộ trình'>
       <div>
-        <div className='font-black text-2xl mb-4'>Learning path cho</div>
+        <div className='font-black text-2xl mb-4 tracking-wider'>Lộ trình học cho</div>
         <Splide
           options={{
             perPage: 4,

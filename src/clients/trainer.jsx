@@ -3,7 +3,7 @@ import { trainers } from '../data/trainers';
 import { BaseClient } from './base';
 
 class TrainerClient extends BaseClient {
-  getAllTrainer() {
+  getAllTrainers() {
     return trainers;
   }
 
@@ -13,6 +13,12 @@ class TrainerClient extends BaseClient {
 
   getTrainer({ trainerId }) {
     return trainers.find((trainer) => trainer.id === trainerId);
+  }
+  
+  createTrainer(newTrainer) {
+    let _trainer = { id: trainers.length + 1, ...newTrainer };
+    // trainers.push(_trainer);
+    return _trainer;
   }
 }
 

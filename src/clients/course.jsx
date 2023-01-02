@@ -1,4 +1,5 @@
 import { courses } from '../data/courses';
+import { learningPathCourse } from '../data/learningPathCourse';
 import { BaseClient } from './base';
 
 class CourseClient extends BaseClient {
@@ -34,6 +35,17 @@ class CourseClient extends BaseClient {
   }
 
   // async updateCourse(props: {courseId})
+
+  getCoursesOfLearningPath({ learningPathId }) {
+    return learningPathCourse
+      .filter((item) => item.learningPathId === learningPathId)
+      .map((item) => {
+        return {
+          ...item,
+          course: courses.find((course) => course.id === item.courseId)
+        };
+      });
+  }
 }
 
 export const courseClient = () => {

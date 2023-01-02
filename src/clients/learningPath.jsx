@@ -1,5 +1,7 @@
 import { learningPath } from '../data/learningPath';
+import { learningPathCertificate } from '../data/learningPathCertificate';
 import { roles } from '../data/roles';
+import { trainees } from '../data/trainee';
 import { groupBy } from '../utils';
 import { BaseClient } from './base';
 
@@ -22,6 +24,17 @@ class LearningPathClient extends BaseClient {
       }),
       'forRole'
     );
+  }
+
+  getLearningPathCertificate({ learningPathId }) {
+    return learningPathCertificate
+      .filter((item) => item.learningPathId === learningPathId)
+      .map((item) => {
+        return {
+          ...item,
+          ...trainees.find((trainee) => trainee.id === item.traineeId)
+        };
+      });
   }
 }
 

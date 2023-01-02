@@ -7,7 +7,7 @@ import {
 import { Grid, IconButton, LinearProgress, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { courseClient } from '../../clients';
 import { classesClient } from '../../clients/classes';
 import { traineeCourseInterestedClient } from '../../clients/traineeCourseInterested';
@@ -31,10 +31,11 @@ const columnsClasses = [
 const CourseDetail = () => {
   // hooks
   const params = useParams();
-  const { user } = useAuth();
+  const navigate = useNavigate();
 
   // constants
   const { courseId } = params;
+  const { user } = useAuth();
 
   // state
   const [courseDetail, setCourseDetail] = useState({});
@@ -51,6 +52,10 @@ const CourseDetail = () => {
 
   const handleAddClassIntoCourse = (form) => {
     console.log(form);
+  };
+
+  const handleClickRow = ({ row }) => {
+    navigate(`/class/detail/${row.id}`);
   };
 
   // get detail course
@@ -134,6 +139,7 @@ const CourseDetail = () => {
                   loading={loadingTableClasses}
                   rows={classesOfCourse}
                   columns={columnsClasses}
+                  onRowClick={handleClickRow}
                 />
               </div>
             </div>

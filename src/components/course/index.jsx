@@ -6,7 +6,7 @@ const CourseItem = ({ course }) => {
     <>
       <div
         style={{
-          backgroundImage: `url(${course.imgLink})`,
+          backgroundImage: `url(${course?.imgLink})`,
           backgroundRepeat: 'no-repeat',
           paddingTop: '56.25%',
           objectFit: 'cover',
@@ -25,7 +25,7 @@ const CourseItem = ({ course }) => {
         </div>
       </div>
       <div className='text-sm font-medium tracking-wide mt-2 ml-1'>
-        <Link to={`/course/detail/${course.id}`}>{course.name}</Link>
+        <Link to={`/course/detail/${course?.id}`}>{course?.name}</Link>
       </div>
     </>
   );

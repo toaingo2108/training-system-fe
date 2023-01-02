@@ -5,6 +5,11 @@ class ClassesClient extends BaseClient {
   getAllClasses() {
     return classes;
   }
+
+  getClass({ classId }) {
+    return classes.find((item) => item.id === classId);
+  }
+
   getClassesByCourse({ courseId }) {
     return classes.filter((item) => item.courseID === courseId);
   }

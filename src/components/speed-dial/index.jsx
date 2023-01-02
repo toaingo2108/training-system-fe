@@ -1,3 +1,4 @@
+import { Edit } from '@mui/icons-material';
 import { SpeedDial, SpeedDialAction, SpeedDialIcon } from '@mui/material';
 import React from 'react';
 
@@ -6,7 +7,7 @@ const MySpeedDial = ({ actions }) => {
     <SpeedDial
       ariaLabel='SpeedDial basic example'
       sx={{ position: 'fixed', bottom: 16, right: 16 }}
-      icon={<SpeedDialIcon />}
+      icon={<SpeedDialIcon openIcon={<Edit />} />}
     >
       {actions.map((action) => {
         return (

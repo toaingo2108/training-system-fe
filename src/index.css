@@ -12,6 +12,10 @@ body {
   user-select: none;
 }
 
+body {
+  overflow-x: hidden;
+}
+
 ::-webkit-scrollbar {
   width: 8px;
 }

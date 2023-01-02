@@ -10,8 +10,9 @@ import TraineeDialogCreate from '../../components/trainee/dialog-create';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
 import CustomNoRows from '../../components/customs/no-rows';
+import { useNavigate } from 'react-router-dom';
 
-const columns = [
+const columnsTrainee = [
   {
     field: 'imgLink',
     headerName: 'Ảnh',
@@ -60,9 +61,12 @@ const columns = [
 ];
 
 const Trainee = () => {
+  // hooks
   const loading = useLoading();
   const toast = useToast();
+  const navigate = useNavigate();
 
+  // states
   const [pageSize, setPageSize] = useState(5);
   const [trainees, setTrainees] = useState([]);
   const [showAddTrainee, setShowAddTrainee] = useState(false);
@@ -84,6 +88,7 @@ const Trainee = () => {
     }
   ];
 
+  // methods
   const handleCloseAddTraineePopup = () => {
     setShowAddTrainee(false);
   };
@@ -122,11 +127,12 @@ const Trainee = () => {
               NoResultsOverlay: CustomNoRows
             }}
             rows={trainees}
-            columns={columns}
+            columns={columnsTrainee}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             pageSize={pageSize}
             pagination
             rowsPerPageOptions={[5, 10, 20]}
+            onRowClick={(row) => navigate(`/trainee/detail/${row.id}`)}
             // checkboxSelection
           />
         </div>

@@ -5,7 +5,7 @@ import ClassDetail from './pages/Class/detail';
 import Course from './pages/Course';
 import CourseDetail from './pages/Course/detail';
 import Home from './pages/Home';
-import LearningPathDetail from './pages/LearningPath/detail';
+// import LearningPathDetail from './pages/LearningPath/detail';
 import LoginPage from './pages/Login';
 import NotFound from './pages/NotFound';
 import Role from './pages/Role';
@@ -31,10 +31,10 @@ const App = (props) => {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/sign-up' element={<SignUpPage />} />
 
-          <Route
+          {/* <Route
             path='/learning-path/detail/:learningPathId'
             element={<LearningPathDetail />}
-          />
+          /> */}
 
           <Route path='/course' element={<Course />} />
           <Route path='/course/detail/:courseId' element={<CourseDetail />} />

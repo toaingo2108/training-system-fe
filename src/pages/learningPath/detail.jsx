@@ -1,4 +1,4 @@
-import { Avatar, Grid } from '@mui/material';
+import { Avatar } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useEffect, useState } from 'react';

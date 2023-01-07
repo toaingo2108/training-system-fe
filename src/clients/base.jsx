@@ -1,7 +1,6 @@
 import axios from 'axios';
 import { fetchUser } from '../utils';
 
-const user = fetchUser();
 const baseURL = process.env.REACT_APP_BASE_URL;
 export class BaseClient {
   /**
@@ -12,6 +11,7 @@ export class BaseClient {
    * @returns {Promise<any>}
    */
   async callApi(method, url, data) {
+    const user = fetchUser();
     if (!data) {
       data = {};
     }

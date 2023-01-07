@@ -8,6 +8,7 @@ import { learningPathClient } from '../../clients/learningPath';
 import MyContainer from '../../components/container';
 import CourseItem from '../../components/course';
 import CustomNoRows from '../../components/customs/no-rows';
+import { useLoading } from '../../hooks/loading';
 
 const columnsTraineeCertificate = [
   {
@@ -66,6 +67,7 @@ const columnsTraineeCertificate = [
 const LearningPathDetail = () => {
   // hooks
   const params = useParams();
+  const loading = useLoading();
 
   // constants
   const { learningPathId } = params;
@@ -80,17 +82,20 @@ const LearningPathDetail = () => {
   // call api
   useEffect(() => {
     const fetchData = async () => {
-      const resLearningPath = learningPathClient().getLearningPath({
+      loading.show();
+      const resLearningPath = await learningPathClient().getLearningPath({
         learningPathId: parseInt(learningPathId)
       });
-      if (resLearningPath) {
-        setLearningPath(resLearningPath);
+      loading.hide();
+      if (resLearningPath.success) {
+        setLearningPath(resLearningPath.data[0]);
       }
     };
     fetchData();
     return () => {
       setLearningPath(null);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [learningPathId]);
 
   useEffect(() => {

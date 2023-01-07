@@ -113,7 +113,7 @@ const LearningPathDialogCreate = ({
               onChange={handleChangeFormCreate}
             />
           </Grid>
-          {/* <Grid item xs={8}>
+          <Grid item xs={8}>
             <TextField
               margin='dense'
               name={fieldFormCreate.imgLink.name}
@@ -134,8 +134,8 @@ const LearningPathDialogCreate = ({
             >
               <Assignment />
             </Avatar>
-          </Grid> */}
-          <Grid item xs={8}>
+          </Grid>
+          <Grid item xs={12}>
             <TextField
               margin='dense'
               select

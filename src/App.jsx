@@ -4,6 +4,7 @@ import Layout from './components/layout';
 import ClassDetail from './pages/class/detail';
 import Course from './pages/course';
 import CourseDetail from './pages/course/detail';
+import Department from './pages/department';
 import Home from './pages/home';
 import LearningPathDetail from './pages/learning-path/detail';
 import LoginPage from './pages/login';
@@ -39,6 +40,8 @@ const App = (props) => {
           />
 
           <Route path='/role' element={<Role />} />
+
+          <Route path='/department' element={<Department />} />
 
           <Route
             path='/learning-path/detail/:learningPathId'

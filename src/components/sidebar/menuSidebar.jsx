@@ -36,5 +36,11 @@ export const menuSidebar = [
     title: 'Vai trò',
     link: '/role',
     icon: <AccountTree />
+  },
+  {
+    key: 'DEPARTMENTS',
+    title: 'Phòng ban',
+    link: '/department',
+    icon: <AccountTree />
   }
 ];

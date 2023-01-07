@@ -1,34 +1,19 @@
-import { learningPath } from '../data/learningPath';
 import { learningPathCertificate } from '../data/learningPathCertificate';
-import { roles } from '../data/roles';
 import { trainees } from '../data/trainee';
-import { groupBy } from '../utils';
 import { BaseClient } from './base';
 
 class LearningPathClient extends BaseClient {
-  getAllLearningPath() {
-    return super.callApi('get', '/learningpath', {});
+  async getAllLearningPath() {
+    return await super.callApi('get', '/learningpath', {});
   }
 
-  createLearningPath(newLearningPath) {
-    return super.callApi('post', '/learningpath', newLearningPath);
+  async createLearningPath(newLearningPath) {
+    return await super.callApi('post', '/learningpath', newLearningPath);
   }
 
-  getLearningPath({ learningPathId }) {
-    return learningPath.find((item) => item.id === learningPathId);
+  async getLearningPath({ learningPathId }) {
+    return super.callApi('get', `/learningpath/${learningPathId}`, {});
   }
-
-  // getLearningPathWithRole() {
-  //   return groupBy(
-  //     learningPath.map((item) => {
-  //       return {
-  //         ...item,
-  //         roleName: roles.find((r) => r.id === item.forRole)?.name || ''
-  //       };
-  //     }),
-  //     'forRoleId'
-  //   );
-  // }
 
   getLearningPathCertificate({ learningPathId }) {
     return learningPathCertificate

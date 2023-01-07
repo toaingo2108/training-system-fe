@@ -1,10 +1,9 @@
 export const fetchUser = () => {
-  const userInfo =
-    localStorage.getItem('_user') !== 'undefined'
-      ? JSON.parse(localStorage.getItem('_user'))
-      : localStorage.clear();
-
-  return userInfo;
+  if (localStorage.getItem('_user') !== 'undefined') {
+    return JSON.parse(localStorage.getItem('_user'));
+  }
+  localStorage.clear();
+  return {};
 };
 
 /**
@@ -14,10 +13,12 @@ export const fetchUser = () => {
  * @returns {Object}
  */
 export const groupBy = (xs, key) => {
-  return xs.reduce(function (rv, x) {
-    (rv[x[key]] = rv[x[key]] || []).push(x);
-    return rv;
-  }, {});
+  return Object.values(
+    xs.reduce(function (rv, x) {
+      (rv[x[key]] = rv[x[key]] || []).push(x);
+      return rv;
+    }, {})
+  );
 };
 
 /**

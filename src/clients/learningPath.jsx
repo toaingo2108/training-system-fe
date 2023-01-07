@@ -7,24 +7,28 @@ import { BaseClient } from './base';
 
 class LearningPathClient extends BaseClient {
   getAllLearningPath() {
-    return learningPath;
+    return super.callApi('get', '/learningpath', {});
+  }
+
+  createLearningPath(newLearningPath) {
+    return super.callApi('post', '/learningpath', newLearningPath);
   }
 
   getLearningPath({ learningPathId }) {
     return learningPath.find((item) => item.id === learningPathId);
   }
 
-  getLearningPathWithRole() {
-    return groupBy(
-      learningPath.map((item) => {
-        return {
-          ...item,
-          roleName: roles.find((r) => r.id === item.forRole)?.name || ''
-        };
-      }),
-      'forRole'
-    );
-  }
+  // getLearningPathWithRole() {
+  //   return groupBy(
+  //     learningPath.map((item) => {
+  //       return {
+  //         ...item,
+  //         roleName: roles.find((r) => r.id === item.forRole)?.name || ''
+  //       };
+  //     }),
+  //     'forRoleId'
+  //   );
+  // }
 
   getLearningPathCertificate({ learningPathId }) {
     return learningPathCertificate

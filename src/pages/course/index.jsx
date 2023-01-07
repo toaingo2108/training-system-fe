@@ -33,10 +33,10 @@ const Course = () => {
   };
 
   const handleCreateCourse = async (newCourse) => {
-    loading.show('Đang thêm khóa học mới!');
+    // loading.show('Đang thêm khóa học mới!');
     console.log(newCourse, 'newCourse');
     let resCourse = await courseClient().createCourse(newCourse);
-    if (resCourse) {
+    if (resCourse.success) {
       loading.hide();
       handleCloseAddCoursePopup();
       console.log(newCourse, 'newCourse');
@@ -51,8 +51,18 @@ const Course = () => {
   }, []);
 
   useEffect(() => {
-    const courses = courseClient().getAllCourses();
-    setCourses(courses);
+    const fetchData = async () => {
+      loading.show();
+      const resCourses = await courseClient().getAllCourses();
+      loading.hide();
+      if (resCourses.success) {
+        setCourses(resCourses.data);
+      }
+    };
+    fetchData();
+    return () => {
+      setCourses([]);
+    };
   }, []);
 
   return (

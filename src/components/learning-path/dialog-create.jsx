@@ -12,9 +12,10 @@ import {
   TextField
 } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { roleClient } from '../../clients/role';
 import { trainerClient } from '../../clients/trainer';
 
-const CourseDialogCreate = ({
+const LearningPathDialogCreate = ({
   open = false,
   onClose = () => {},
   onSubmit = () => {}
@@ -22,31 +23,20 @@ const CourseDialogCreate = ({
   const fieldFormCreate = {
     name: {
       name: 'name',
-      label: 'Tên khóa học'
+      label: 'Tên lộ trình'
     },
-    online: {
-      name: 'online',
-      label: 'Hỗ trợ dạy trực tuyến'
-    },
-    duration: {
-      name: 'duration',
-      label: 'Thời lượng (Tháng)'
-    },
-    learningObjective: {
-      name: 'learningObjective',
-      label: 'Mục tiêu khóa học'
-    },
+
     imgLink: {
       name: 'imgLink',
-      label: 'Hình ảnh khóa học'
+      label: 'Hình ảnh lộ trình'
     },
     description: {
       name: 'description',
-      label: 'Mô tả khóa học'
+      label: 'Mô tả lộ trình'
     },
-    trainerID: {
-      name: 'trainerID',
-      label: 'Trainer'
+    forRoleId: {
+      name: 'forRoleId',
+      label: 'Dành cho vai trò'
     }
   };
 
@@ -61,7 +51,7 @@ const CourseDialogCreate = ({
   };
 
   const [formCreate, setFormCreate] = useState(initFromCreate);
-  const [trainers, setTrainers] = useState([]);
+  const [roles, setRoles] = useState([]);
 
   const handleChangeFormCreate = (e) => {
     const { name, value } = e.target;
@@ -80,20 +70,23 @@ const CourseDialogCreate = ({
   };
 
   useEffect(() => {
-    const resTrainers = trainerClient().getAllTrainers();
-    if (resTrainers) {
-      setTrainers(resTrainers);
-    }
+    const fetchData = async () => {
+      const resRoles = await roleClient().getListRoles();
+      if (resRoles.success) {
+        setRoles(resRoles.data);
+      }
+    };
+    fetchData();
   }, []);
 
   return (
     <Dialog open={open} onClose={handleClose}>
       <DialogTitle className='text-center uppercase text-blue-600'>
-        Thêm mới khóa học
+        Thêm mới lộ trình
       </DialogTitle>
       <DialogContent>
         <DialogContentText>
-          Vui lòng điền đầy đủ thông tin khóa học!
+          Vui lòng điền đầy đủ thông tin lộ trình!
         </DialogContentText>
         <Grid container spacing={2}>
           <Grid item xs={12}>
@@ -111,17 +104,6 @@ const CourseDialogCreate = ({
           <Grid item xs={12}>
             <TextField
               margin='dense'
-              name={fieldFormCreate.learningObjective.name}
-              label={fieldFormCreate.learningObjective.label}
-              fullWidth
-              variant='filled'
-              value={formCreate.learningObjective}
-              onChange={handleChangeFormCreate}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              margin='dense'
               name={fieldFormCreate.description.name}
               label={fieldFormCreate.description.label}
               fullWidth
@@ -132,7 +114,7 @@ const CourseDialogCreate = ({
               onChange={handleChangeFormCreate}
             />
           </Grid>
-          <Grid item xs={8}>
+          {/* <Grid item xs={8}>
             <TextField
               margin='dense'
               name={fieldFormCreate.imgLink.name}
@@ -149,68 +131,25 @@ const CourseDialogCreate = ({
               variant='rounded'
               sx={{ width: '100%', height: 80 }}
               src={formCreate.imgLink}
-              alt='Khóa học'
+              alt='lộ trình'
             >
               <Assignment />
             </Avatar>
-          </Grid>
+          </Grid> */}
           <Grid item xs={8}>
             <TextField
               margin='dense'
               select
-              name={fieldFormCreate.trainerID.name}
-              label={fieldFormCreate.trainerID.label}
+              name={fieldFormCreate.forRoleId.name}
+              label={fieldFormCreate.forRoleId.label}
               fullWidth
               variant='filled'
-              value={formCreate.trainerID}
+              value={formCreate.forRoleId}
               onChange={handleChangeFormCreate}
             >
-              {trainers?.map((option) => (
+              {roles?.map((option) => (
                 <MenuItem key={`trainer-${option.id}`} value={option.id}>
-                  {`[${option?.id || ''}] - ${option?.firstName || ''} ${
-                    option?.lastName || ''
-                  }`}
-                </MenuItem>
-              ))}
-            </TextField>
-          </Grid>
-          <Grid item xs={4}>
-            <TextField
-              margin='dense'
-              name={fieldFormCreate.duration.name}
-              label={fieldFormCreate.duration.label}
-              fullWidth
-              variant='filled'
-              value={formCreate.duration}
-              onChange={handleChangeFormCreate}
-              required
-              type='number'
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              margin='dense'
-              select
-              name={fieldFormCreate.online.name}
-              label={fieldFormCreate.online.label}
-              fullWidth
-              variant='filled'
-              value={formCreate.online}
-              onChange={handleChangeFormCreate}
-              required
-            >
-              {[
-                {
-                  value: true,
-                  label: 'Có'
-                },
-                {
-                  value: false,
-                  label: 'Không'
-                }
-              ].map((option) => (
-                <MenuItem key={`online-${option.label}`} value={option.value}>
-                  {`${option.label}`}
+                  {`[${option?.id || ''}] - ${option?.name || ''}`}
                 </MenuItem>
               ))}
             </TextField>
@@ -229,4 +168,4 @@ const CourseDialogCreate = ({
   );
 };
 
-export default CourseDialogCreate;
+export default LearningPathDialogCreate;

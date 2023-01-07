@@ -1,5 +1,7 @@
 import axios from 'axios';
+import { fetchUser } from '../utils';
 
+const user = fetchUser();
 const baseURL = process.env.REACT_APP_BASE_URL;
 export class BaseClient {
   /**
@@ -20,6 +22,9 @@ export class BaseClient {
         url,
         data,
         headers: {
+          Authorization: !!user?.accessToken
+            ? `Bearer ${user?.accessToken}`
+            : 'No Auth',
           'Content-Type': 'application/json'
         }
       });

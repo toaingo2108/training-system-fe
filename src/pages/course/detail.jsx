@@ -16,6 +16,7 @@ import ClassAddIntoCourseDialog from '../../components/classes/dialog-add-into-c
 import MyContainer from '../../components/container';
 import CustomNoRows from '../../components/customs/no-rows';
 import { useAuth } from '../../hooks/auth';
+import { useLoading } from '../../hooks/loading';
 
 const columnsClasses = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -32,6 +33,7 @@ const CourseDetail = () => {
   // hooks
   const params = useParams();
   const navigate = useNavigate();
+  const loading = useLoading();
 
   // constants
   const { courseId } = params;
@@ -60,22 +62,28 @@ const CourseDetail = () => {
 
   // get detail course
   useEffect(() => {
-    const resCourse = courseClient().getDetailCourse({
-      id: parseInt(courseId)
-    });
-    if (resCourse) {
-      setCourseDetail(resCourse);
-      const resTrainer = trainerClient().getTrainer({
-        trainerId: resCourse.id
+    const fetchData = async () => {
+      loading.show();
+      const resCourse = await courseClient().getDetailCourse({
+        id: courseId
       });
-      if (resTrainer) {
-        setTrainerOfCourse(resTrainer);
+      loading.hide();
+      if (resCourse.success) {
+        setCourseDetail(resCourse.data[0]);
+        // const resTrainer = trainerClient().getTrainer({
+        //   trainerId: resCourse.id
+        // });
+        // if (resTrainer) {
+        //   setTrainerOfCourse(resTrainer);
+        // }
       }
-    }
+    };
+    fetchData();
     return () => {
       setCourseDetail({});
       setTrainerOfCourse(null);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseId]);
 
   // get list trainee interested
@@ -93,13 +101,15 @@ const CourseDetail = () => {
 
   // get classes of course
   useEffect(() => {
-    const resListClasses = classesClient().getClassesByCourse({
-      courseId: parseInt(courseId)
-    });
-    if (resListClasses) {
-      setClassesOfCourse(resListClasses);
-      setLoadingTableClasses(false);
-    }
+    const fetchData = async () => {
+      const resListClasses = classesClient().getClassesByCourse({
+        courseId: parseInt(courseId)
+      });
+      if (resListClasses) {
+        setClassesOfCourse(resListClasses);
+        setLoadingTableClasses(false);
+      }
+    };
     return () => {
       setClassesOfCourse([]);
     };

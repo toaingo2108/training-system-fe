@@ -49,8 +49,13 @@ const SearchHeader = () => {
 
   // side effect
   useEffect(() => {
-    const resCourse = courseClient().getAllCourses();
-    setCourses(resCourse);
+    courseClient()
+      .getAllCourses()
+      .then((res) => {
+        if (res.success) {
+          setCourses(res.data);
+        }
+      });
   }, []);
 
   useEffect(() => {

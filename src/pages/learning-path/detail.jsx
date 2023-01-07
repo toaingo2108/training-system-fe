@@ -79,12 +79,15 @@ const LearningPathDetail = () => {
 
   // call api
   useEffect(() => {
-    const resLearningPath = learningPathClient().getLearningPath({
-      learningPathId: parseInt(learningPathId)
-    });
-    if (resLearningPath) {
-      setLearningPath(resLearningPath);
-    }
+    const fetchData = async () => {
+      const resLearningPath = learningPathClient().getLearningPath({
+        learningPathId: parseInt(learningPathId)
+      });
+      if (resLearningPath) {
+        setLearningPath(resLearningPath);
+      }
+    };
+    fetchData();
     return () => {
       setLearningPath(null);
     };

@@ -4,18 +4,11 @@ import { BaseClient } from './base';
 
 class CourseClient extends BaseClient {
   getAllCourses() {
-    return courses;
+    return super.callApi('get', '/course', {});
   }
 
-  /**
-   *
-   * @param {{
-   *  id: number
-   * }} param0
-   * @returns
-   */
-  getDetailCourse({ id }) {
-    return courses.find((course) => course.id === id);
+  async getDetailCourse({ id }) {
+    return super.callApi('get', `/course/${id}`, {});
   }
   async testApi() {
     const q = { a: 1, b: 2 };

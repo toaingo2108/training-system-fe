@@ -1,7 +1,11 @@
 import { DataGrid } from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
 import { Grid, Box, TextField, Button } from '@mui/material';
-import { roles } from '../../data/roles';
+import { useEffect, useState } from 'react';
+import { roleClient } from '../../clients/role';
+import CustomNoRows from '../../components/customs/no-rows';
+import { useLoading } from '../../hooks/loading';
+import { useToast } from '../../hooks/toast';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -13,13 +17,51 @@ const columns = [
 ];
 
 export default function Role() {
-  const handleCreateRole = (event) => {
+  // hooks
+  const loading = useLoading();
+  const toast = useToast();
+
+  // constants
+
+  // states
+  const [roles, setRoles] = useState([]);
+
+  // methods
+  const handleCreateRole = async (event) => {
+    loading.show('Đang thêm vai trò mới...');
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const name = data.get('name');
-    console.log(name);
-    // create role
+    const resCreateRole = await roleClient().createRole({
+      name
+    });
+    loading.hide();
+    if (resCreateRole.success) {
+      setRoles([...roles, resCreateRole.data[0]]);
+      toast.success('Thêm thành công!');
+    } else {
+      toast.success('Thêm thất bại!');
+    }
   };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      loading.show();
+      const resRoles = await roleClient().getListRoles();
+      loading.hide();
+      if (resRoles.success) {
+        setRoles(resRoles.data);
+      }
+    };
+
+    fetchData();
+
+    return () => {};
+  }, []);
+
+  useEffect(() => {
+    document.title = 'Vai trò';
+  }, []);
 
   return (
     <MyContainer title='Vai trò'>
@@ -31,6 +73,10 @@ export default function Role() {
               columns={columns}
               pageSize={5}
               rowsPerPageOptions={[5]}
+              components={{
+                NoResultsOverlay: CustomNoRows,
+                NoRowsOverlay: CustomNoRows
+              }}
             />
           </Box>
         </Grid>

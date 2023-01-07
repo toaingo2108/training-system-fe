@@ -27,9 +27,8 @@ export const AuthProvider = ({ children }) => {
 
   useLayoutEffect(() => {
     const _user = fetchUser();
-    if (!!_user?.userInfo) {
-      const res = login(_user?.userInfo);
-      if (res.success) setUser(_user);
+    if (_user) {
+      setUser(_user);
     }
   }, []);
 

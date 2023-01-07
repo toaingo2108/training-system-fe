@@ -31,11 +31,6 @@ const App = (props) => {
           <Route path='/login' element={<LoginPage />} />
           <Route path='/sign-up' element={<SignUpPage />} />
 
-          <Route
-            path='/learning-path/detail/:learningPathId'
-            element={<LearningPathDetail />}
-          />
-
           <Route path='/course' element={<Course />} />
           <Route path='/course/detail/:courseId' element={<CourseDetail />} />
 
@@ -50,6 +45,11 @@ const App = (props) => {
           />
 
           <Route path='/role' element={<Role />} />
+
+          <Route
+            path='/learning-path/detail/:learningPathId'
+            element={<LearningPathDetail />}
+          />
 
           <Route path='/' element={<Home />} />
           <Route path='*' element={<NotFound />} />

@@ -32,9 +32,9 @@ const LoginPage = () => {
     };
     const res = await login(user);
     loading.hide();
-    console.log(res, 'res')
+    console.log(res, 'res');
     if (res.success) {
-      navigate('/', { replace: true });
+      window.location.reload();
     } else {
       toast.warning('Tên đăng nhập hoặc mật khẩu không chính xác!');
     }
@@ -42,7 +42,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     if (userInfo) {
-      navigate('/');
+      window.location.reload();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
@@ -96,16 +96,16 @@ const LoginPage = () => {
           </Button>
           <Grid container justifyContent='flex-end'>
             <Grid item>
-              <Link
+              {/* <Link
                 component='button'
                 onClick={(e) => {
                   e.preventDefault();
                   navigate('/sign-up');
                 }}
                 variant='body2'
-              >
-                Bạn chưa có tài khoản? Đăng ký
-              </Link>
+              > */}
+              Bạn chưa có tài khoản? Hãy liên hệ admin
+              {/* </Link> */}
             </Grid>
           </Grid>
         </Box>

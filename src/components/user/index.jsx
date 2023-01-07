@@ -52,7 +52,7 @@ const User = () => {
           className='mt-2 text-gray-500 hover:text-red-700 hover:font-bold cursor-pointer transition-all'
           onClick={() => {
             logout();
-            navigate('/login');
+            window.location.reload();
           }}
         >
           Đăng xuất

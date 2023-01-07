@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/layout';
 import ClassDetail from './pages/class/detail';
@@ -17,12 +17,8 @@ import { fetchUser } from './utils';
 const App = (props) => {
   const user = fetchUser();
 
-  if (!user) {
-    return (
-      <div id='main'>
-        <LoginPage />
-      </div>
-    );
+  if (!user?.accessToken || user?.accessToken === '') {
+    return <LoginPage />;
   }
 
   return (

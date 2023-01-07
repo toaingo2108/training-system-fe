@@ -3,14 +3,12 @@ import { traineeClass } from '../data/traineeClass';
 import { BaseClient } from './base';
 
 class TraineeClient extends BaseClient {
-  getAllTrainees() {
-    return trainees;
+  async getAllTrainees() {
+    return await super.callApi('get', '/trainee', {});
   }
 
-  createTrainee(newTrainee) {
-    let _trainee = { id: trainees.length + 1, ...newTrainee };
-    // trainees.push(_trainee);
-    return _trainee;
+  async createTrainee(newTrainee) {
+    return await super.callApi('post', '/trainee', newTrainee);
   }
 
   getTraineeOfClass({ classId }) {
@@ -24,8 +22,8 @@ class TraineeClient extends BaseClient {
       });
   }
 
-  getTraineeDetail({ traineeId }) {
-    return trainees.find((trainee) => trainee.id === traineeId);
+  async getTraineeDetail({ traineeId }) {
+    return await super.callApi('get', `/trainee/${traineeId}`, {});
   }
 }
 

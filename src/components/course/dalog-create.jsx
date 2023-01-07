@@ -80,10 +80,13 @@ const CourseDialogCreate = ({
   };
 
   useEffect(() => {
-    const resTrainers = trainerClient().getAllTrainers();
-    if (resTrainers) {
-      setTrainers(resTrainers);
-    }
+    const fetchData = async () => {
+      const resTrainers = await trainerClient().getAllTrainers();
+      if (resTrainers.success) {
+        setTrainers(resTrainers.data);
+      }
+    };
+    fetchData();
   }, []);
 
   return (
@@ -154,7 +157,7 @@ const CourseDialogCreate = ({
               <Assignment />
             </Avatar>
           </Grid>
-          <Grid item xs={8}>
+          <Grid item xs={6}>
             <TextField
               margin='dense'
               select
@@ -173,6 +176,22 @@ const CourseDialogCreate = ({
                 </MenuItem>
               ))}
             </TextField>
+          </Grid>
+          <Grid
+            item
+            xs={2}
+            container
+            alignItems='center'
+            justifyContent='center'
+          >
+            <Avatar
+              sx={{ width: 56, height: 56 }}
+              src={
+                trainers?.find((trainer) => trainer.id === formCreate.trainerID)
+                  ?.imgLink
+              }
+              alt={formCreate.trainerID}
+            />
           </Grid>
           <Grid item xs={4}>
             <TextField

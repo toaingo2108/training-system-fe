@@ -17,6 +17,8 @@ import MyContainer from '../../components/container';
 import CustomNoRows from '../../components/customs/no-rows';
 import { useAuth } from '../../hooks/auth';
 import { useLoading } from '../../hooks/loading';
+import { useToast } from '../../hooks/toast';
+import { formatDate } from '../../utils';
 
 const columnsClasses = [
   { field: 'id', headerName: 'ID', width: 70 },
@@ -25,8 +27,22 @@ const columnsClasses = [
     headerName: 'Tên lớp học',
     width: 250
   },
-  { field: 'startDate', headerName: 'Ngày bắt đầu', width: 200 },
-  { field: 'endDate', headerName: 'Ngày kết thúc', width: 200 }
+  {
+    field: 'startDate',
+    headerName: 'Ngày bắt đầu',
+    width: 200,
+    valueGetter: ({ row }) => {
+      return formatDate(row.startDate);
+    }
+  },
+  {
+    field: 'endDate',
+    headerName: 'Ngày kết thúc',
+    width: 200,
+    valueGetter: ({ row }) => {
+      return formatDate(row.endDate);
+    }
+  }
 ];
 
 const CourseDetail = () => {
@@ -34,6 +50,7 @@ const CourseDetail = () => {
   const params = useParams();
   const navigate = useNavigate();
   const loading = useLoading();
+  const toast = useToast();
 
   // constants
   const { courseId } = params;
@@ -52,8 +69,15 @@ const CourseDetail = () => {
     setOpenAddClassDialog(false);
   };
 
-  const handleAddClassIntoCourse = (form) => {
-    console.log(form);
+  const handleAddClassIntoCourse = async (form) => {
+    const resCreateClass = await classesClient().createClass(form);
+    if (resCreateClass.success) {
+      handleCloseAddClassDialog();
+      setClassesOfCourse([...classesOfCourse, resCreateClass.data[0]]);
+      toast.success('Thêm lớp học mới thành công!');
+    } else {
+      toast.error('Thêm lớp học mới thất bại!');
+    }
   };
 
   const handleClickRow = ({ row }) => {
@@ -102,14 +126,16 @@ const CourseDetail = () => {
   // get classes of course
   useEffect(() => {
     const fetchData = async () => {
-      const resListClasses = classesClient().getClassesByCourse({
+      const resListClasses = await classesClient().getClassesByCourseId({
         courseId: parseInt(courseId)
       });
-      if (resListClasses) {
-        setClassesOfCourse(resListClasses);
-        setLoadingTableClasses(false);
+      setLoadingTableClasses(false);
+      console.log(resListClasses);
+      if (resListClasses.success) {
+        setClassesOfCourse(resListClasses.data);
       }
     };
+    fetchData();
     return () => {
       setClassesOfCourse([]);
     };

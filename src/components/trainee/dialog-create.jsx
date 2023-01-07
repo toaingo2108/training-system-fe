@@ -12,12 +12,14 @@ import {
   TextField,
   Typography
 } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import { roleClient } from '../../clients/role';
 
 const TraineeDialogCreate = ({
   open = false,
   onClose = () => {},
-  onSubmit = () => {}
+  onSubmit = () => {},
+  roles = []
 }) => {
   const fieldFormCreate = {
     firstName: {
@@ -27,6 +29,14 @@ const TraineeDialogCreate = ({
     lastName: {
       name: 'lastName',
       label: 'Tên'
+    },
+    username: {
+      name: 'username',
+      label: 'Username'
+    },
+    password: {
+      name: 'password',
+      label: 'Password'
     },
     imgLink: {
       name: 'imgLink',
@@ -42,7 +52,7 @@ const TraineeDialogCreate = ({
     },
     level: {
       name: 'level',
-      label: 'Level'
+      label: 'Chức vụ'
     }
   };
 
@@ -50,16 +60,16 @@ const TraineeDialogCreate = ({
     firstName: '',
     lastName: '',
     imgLink: '',
-    roleId: 1,
-    departmentId: 1,
-    level: 1
+    roleId: 0,
+    departmentId: 0,
+    level: ''
   };
 
   const [formCreate, setFormCreate] = useState(initFromCreate);
+  const [departments, setDepartments] = useState([]);
 
   const handleChangeFormCreate = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     formCreate[name] = value;
     setFormCreate({ ...formCreate });
   };
@@ -107,6 +117,31 @@ const TraineeDialogCreate = ({
               required
             />
           </Grid>
+          <Grid item xs={6}>
+            <TextField
+              margin='dense'
+              name={fieldFormCreate.username.name}
+              label={fieldFormCreate.username.label}
+              fullWidth
+              variant='filled'
+              value={formCreate.username}
+              onChange={handleChangeFormCreate}
+              required
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              margin='dense'
+              name={fieldFormCreate.password.name}
+              label={fieldFormCreate.password.label}
+              fullWidth
+              variant='filled'
+              value={formCreate.password}
+              onChange={handleChangeFormCreate}
+              required
+              type='password'
+            />
+          </Grid>
           <Grid item xs={10}>
             <TextField
               margin='dense'
@@ -134,11 +169,7 @@ const TraineeDialogCreate = ({
               onChange={handleChangeFormCreate}
               required
             >
-              {[
-                { id: 1, name: 'role 1' },
-                { id: 2, name: 'role 2' },
-                { id: 3, name: 'role 3' }
-              ].map((option) => (
+              {roles?.map((option) => (
                 <MenuItem key={`role-${option.id}`} value={option.id}>
                   {`[${option.id}] - ${option.name}`}
                 </MenuItem>
@@ -155,20 +186,15 @@ const TraineeDialogCreate = ({
               variant='filled'
               value={formCreate.departmentId}
               onChange={handleChangeFormCreate}
-              required
             >
-              {[
-                { id: 1, name: 'department 1' },
-                { id: 2, name: 'department 2' },
-                { id: 3, name: 'department 3' }
-              ].map((option) => (
+              {departments?.map((option) => (
                 <MenuItem key={`department-${option.id}`} value={option.id}>
                   {`[${option.id}] - ${option.name}`}
                 </MenuItem>
               ))}
             </TextField>
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <Typography id='input-slider' gutterBottom>
               {fieldFormCreate.level.label}
             </Typography>
@@ -181,6 +207,17 @@ const TraineeDialogCreate = ({
               marks
               min={0}
               max={10}
+            />
+          </Grid> */}
+          <Grid item xs={12}>
+            <TextField
+              margin='dense'
+              name={fieldFormCreate.level.name}
+              label={fieldFormCreate.level.label}
+              fullWidth
+              variant='filled'
+              value={formCreate.level}
+              onChange={handleChangeFormCreate}
             />
           </Grid>
         </Grid>

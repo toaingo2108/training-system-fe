@@ -1,6 +1,6 @@
 import { DataGrid } from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
-import { Grid, Box, TextField, Button } from '@mui/material';
+import { Grid, Box, TextField, Button, LinearProgress } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { roleClient } from '../../clients/role';
 import CustomNoRows from '../../components/customs/no-rows';
@@ -25,6 +25,7 @@ export default function Role() {
 
   // states
   const [roles, setRoles] = useState([]);
+  const [loadingTable, setLoadingTable] = useState(false);
 
   // methods
   const handleCreateRole = async (event) => {
@@ -46,17 +47,14 @@ export default function Role() {
 
   useEffect(() => {
     const fetchData = async () => {
-      loading.show();
+      setLoadingTable(true);
       const resRoles = await roleClient().getListRoles();
-      loading.hide();
+      setLoadingTable(false);
       if (resRoles.success) {
         setRoles(resRoles.data);
       }
     };
-
     fetchData();
-
-    return () => {};
   }, []);
 
   useEffect(() => {
@@ -75,8 +73,10 @@ export default function Role() {
               rowsPerPageOptions={[5]}
               components={{
                 NoResultsOverlay: CustomNoRows,
-                NoRowsOverlay: CustomNoRows
+                NoRowsOverlay: CustomNoRows,
+                LoadingOverlay: LinearProgress
               }}
+              loading={loadingTable}
             />
           </Box>
         </Grid>

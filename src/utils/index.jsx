@@ -39,3 +39,13 @@ export const textAbstract = (text, length = 20) => {
   text = text.substring(0, last);
   return text + '...';
 };
+
+/**
+ *
+ * @param {Date} date
+ * @returns {string}
+ */
+export const formatDate = (date) => {
+  const newDate = new Date(date);
+  return newDate.toLocaleDateString('en-GB');
+};

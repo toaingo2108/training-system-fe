@@ -3,7 +3,7 @@ import { DataGrid } from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
 import { useEffect } from 'react';
 import { trainerClient } from '../../clients/trainer';
-import { Avatar } from '@mui/material';
+import { Avatar, LinearProgress } from '@mui/material';
 import MySpeedDial from '../../components/speed-dial';
 import { LibraryAddOutlined, LocalLibrary } from '@mui/icons-material';
 import { useLoading } from '../../hooks/loading';
@@ -43,12 +43,15 @@ const columns = [
 ];
 
 const Trainer = () => {
+  //hooks
   const loading = useLoading();
   const toast = useToast();
 
+  // states
   const [pageSize, setPageSize] = useState(5);
   const [trainers, setTrainers] = useState([]);
   const [showAddTrainer, setShowAddTrainer] = useState(false);
+  const [loadingTable, setLoadingTable] = useState(false);
 
   const actions = [
     {
@@ -86,7 +89,9 @@ const Trainer = () => {
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoadingTable(true);
       const resTrainers = await trainerClient().getAllTrainers();
+      setLoadingTable(false);
       if (resTrainers.success) {
         setTrainers(resTrainers.data);
       }
@@ -105,15 +110,16 @@ const Trainer = () => {
           <DataGrid
             components={{
               NoRowsOverlay: CustomNoRows,
-              NoResultsOverlay: CustomNoRows
+              NoResultsOverlay: CustomNoRows,
+              LoadingOverlay: LinearProgress
             }}
+            loading={loadingTable}
             rows={trainers}
             columns={columns}
             onPageSizeChange={(newPageSize) => setPageSize(newPageSize)}
             pageSize={pageSize}
             pagination
             rowsPerPageOptions={[5, 10, 20]}
-            // checkboxSelection
           />
         </div>
       </MyContainer>

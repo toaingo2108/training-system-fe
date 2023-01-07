@@ -49,18 +49,23 @@ const SearchHeader = () => {
 
   // side effect
   useEffect(() => {
-    courseClient()
-      .getAllCourses()
-      .then((res) => {
-        if (res.success) {
-          setCourses(res.data);
-        }
-      });
+    const fetchData = async () => {
+      const resCourses = await courseClient().getAllCourses();
+      if (resCourses.success) {
+        setCourses(resCourses.data);
+      }
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {
-    const resLearningPath = learningPathClient().getAllLearningPath();
-    setLearningPaths(resLearningPath);
+    const fetchData = async () => {
+      const resLearningPaths = await learningPathClient().getAllLearningPath();
+      if (resLearningPaths.success) {
+        setLearningPaths(resLearningPaths.data);
+      }
+    };
+    fetchData();
   }, []);
 
   // UI

@@ -43,7 +43,7 @@ const Home = () => {
     loading.hide();
     if (resLearningPath.success) {
       handleCloseAddLearningPathPopup();
-      setListLearningPath([...listLearningPath, resLearningPath.data[0]]);
+      window.location.reload(false);
       toast.success('Thêm lộ trình mới thành công!');
     } else {
       toast.error('Thêm lộ trình mới thất bại!');
@@ -72,9 +72,6 @@ const Home = () => {
       }
     };
     fetchData();
-    return () => {
-      setListLearningPath([]);
-    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -87,7 +84,7 @@ const Home = () => {
       {listLearningPath.map((learningPath) => (
         <div key={learningPath[0].forRoleId} className='pb-10'>
           <div className='font-black text-2xl mb-4 tracking-wider'>
-            Lộ trình học cho {learningPath[0].roleName}
+            {learningPath[0].roleName}
           </div>
           <Splide
             options={{

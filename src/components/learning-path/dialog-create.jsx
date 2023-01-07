@@ -13,7 +13,6 @@ import {
 } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { roleClient } from '../../clients/role';
-import { trainerClient } from '../../clients/trainer';
 
 const LearningPathDialogCreate = ({
   open = false,

@@ -3,8 +3,12 @@ import { trainers } from '../data/trainers';
 import { BaseClient } from './base';
 
 class TrainerClient extends BaseClient {
-  getAllTrainers() {
-    return trainers;
+  async getAllTrainers() {
+    return await super.callApi('get', '/trainer', {});
+  }
+
+  async createTrainer(newTrainer) {
+    return await super.callApi('post', '/trainer', newTrainer);
   }
 
   getCourseByTrainer({ trainerId }) {
@@ -13,12 +17,6 @@ class TrainerClient extends BaseClient {
 
   getTrainer({ trainerId }) {
     return trainers.find((trainer) => trainer.id === trainerId);
-  }
-  
-  createTrainer(newTrainer) {
-    let _trainer = { id: trainers.length + 1, ...newTrainer };
-    // trainers.push(_trainer);
-    return _trainer;
   }
 }
 

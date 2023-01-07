@@ -73,11 +73,11 @@ const Trainer = () => {
 
   const handleCreateTrainer = async (newTrainer) => {
     loading.show('Đang thêm trainer mới!');
-    let resTrainer = await trainerClient().createTrainer(newTrainer);
-    if (resTrainer) {
-      loading.hide();
+    const resTrainer = await trainerClient().createTrainer(newTrainer);
+    loading.hide();
+    if (resTrainer.success) {
       handleCloseAddTrainerPopup();
-      console.log(newTrainer, 'newTrainer');
+      setTrainers([...trainers, resTrainer.data[0]]);
       toast.success('Thêm trainer mới thành công!');
     } else {
       toast.error('Thêm trainer mới thất bại!');
@@ -85,10 +85,13 @@ const Trainer = () => {
   };
 
   useEffect(() => {
-    const fetchTrainers = trainerClient().getAllTrainers();
-    if (fetchTrainers.length) {
-      setTrainers(fetchTrainers);
-    }
+    const fetchData = async () => {
+      const resTrainers = await trainerClient().getAllTrainers();
+      if (resTrainers.success) {
+        setTrainers(resTrainers.data);
+      }
+    };
+    fetchData();
   }, []);
 
   useEffect(() => {

@@ -28,13 +28,23 @@ const TrainerDialogCreate = ({
     imgLink: {
       name: 'imgLink',
       label: 'Image link'
+    },
+    username: {
+      name: 'username',
+      label: 'Username'
+    },
+    password: {
+      name: 'password',
+      label: 'Password'
     }
   };
 
   const initFromCreate = {
     firstName: '',
     lastName: '',
-    imgLink: ''
+    imgLink: '',
+    username: '',
+    password: ''
   };
 
   const [formCreate, setFormCreate] = useState(initFromCreate);
@@ -87,6 +97,31 @@ const TrainerDialogCreate = ({
               value={formCreate.lastName}
               onChange={handleChangeFormCreate}
               required
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              margin='dense'
+              name={fieldFormCreate.username.name}
+              label={fieldFormCreate.username.label}
+              fullWidth
+              variant='filled'
+              value={formCreate.username}
+              onChange={handleChangeFormCreate}
+              required
+            />
+          </Grid>
+          <Grid item xs={6}>
+            <TextField
+              margin='dense'
+              name={fieldFormCreate.password.name}
+              label={fieldFormCreate.password.label}
+              fullWidth
+              variant='filled'
+              value={formCreate.password}
+              onChange={handleChangeFormCreate}
+              required
+              type='password'
             />
           </Grid>
           <Grid item xs={10}>

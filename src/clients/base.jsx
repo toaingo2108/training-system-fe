@@ -25,7 +25,9 @@ export class BaseClient {
           Authorization: !!user?.accessToken
             ? `Bearer ${user?.accessToken}`
             : 'No Auth',
-          'Content-Type': 'application/json'
+          'Content-Type': 'application/json',
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET,PUT,POST,DELETE'
         }
       });
       return response.data;

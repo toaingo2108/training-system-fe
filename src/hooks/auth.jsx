@@ -1,46 +1,37 @@
 import { useContext, useLayoutEffect, useState } from 'react';
 import { createContext } from 'react';
-import { trainees } from '../data/trainee';
+import { adminUserClient } from '../clients/adminUser';
 import { fetchUser } from '../utils';
-
-const users = [...trainees];
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
 
-  useLayoutEffect(() => {
-    const _user = fetchUser();
-    setUser(_user);
-  }, []);
-
   const login = async (userLogin) => {
-    const _user =
-      users.find(
-        (user) =>
-          user.username === userLogin.username &&
-          user.password === userLogin.password
-      ) || null;
-    if (_user) {
-      setUser(_user);
-      localStorage.setItem('_user', JSON.stringify(_user));
-      return {
-        status: 'OK',
-        data: _user
-      };
-    } else {
-      return {
-        status: 'FAILED',
-        data: null
-      };
+    const _res = await adminUserClient().adminUserLogin({
+      username: userLogin.username,
+      password: userLogin.password
+    });
+    if (_res.success) {
+      setUser(_res.data[0]);
+      localStorage.setItem('_user', JSON.stringify(_res.data[0]));
     }
+    return _res;
   };
 
   const logout = () => {
     setUser(null);
     localStorage.removeItem('_user');
   };
+
+  useLayoutEffect(() => {
+    const _user = fetchUser();
+    if (!!_user?.userInfo) {
+      const res = login(_user?.userInfo);
+      if (res.success) setUser(_user);
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={{ user, login, logout }}>
@@ -52,12 +43,7 @@ export const AuthProvider = ({ children }) => {
 /**
  *
  * @returns {{
- *  user: {
- *    id: number,
- *    username: string,
- *    firstName: string,
- *    lastName: string,
- *  },
+ *  user: any
  *  login(user: {
  *    username: string,
  *    password: string,

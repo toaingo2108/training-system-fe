@@ -13,11 +13,19 @@ export class BaseClient {
     if (!data) {
       data = {};
     }
-    return await axios({
-      method,
-      baseURL: baseURL,
-      url,
-      data
-    });
+    try {
+      const response = await axios({
+        method,
+        baseURL: baseURL,
+        url,
+        data,
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+      return response.data;
+    } catch (error) {
+      return error.response.data;
+    }
   }
 }

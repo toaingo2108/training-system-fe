@@ -6,20 +6,20 @@ import Dropdown from '../dropdown';
 const User = () => {
   const navigate = useNavigate();
   const { user, logout } = useAuth();
-
+  const userInfo = user?.userInfo || {};
   const [openModal, setOpenModal] = useState(false);
 
   return (
     <Dropdown
-      id='user'
+      id='userInfo'
       open={openModal}
       setOpen={setOpenModal}
       buttonRender={() => {
         return (
           <img
             className='w-6 h-6 object-cover rounded-full pointer-events-none'
-            src={user?.imgLink}
-            alt={user?.lastName}
+            src={userInfo?.imgLink}
+            alt={userInfo?.lastName}
           />
         );
       }}
@@ -29,15 +29,15 @@ const User = () => {
           <div className='w-8 h-8 rounded-full'>
             <img
               className='object-cover rounded-full hover:scale-125 ease-in-out duration-500'
-              src={user?.imgLink}
-              alt={user?.lastName}
+              src={userInfo?.imgLink}
+              alt={userInfo?.lastName}
             />
           </div>
           <div className='flex flex-col ml-2'>
             <b>
-              {user?.firstName || ''} {user?.lastName || ''}
+              {userInfo?.firstName || ''} {userInfo?.lastName || ''}
             </b>
-            <i>{user?.username && `@${user?.username}`}</i>
+            <i>{userInfo?.username && `@${userInfo?.username}`}</i>
           </div>
         </div>
         <hr />

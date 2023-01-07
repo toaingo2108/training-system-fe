@@ -32,7 +32,8 @@ const LoginPage = () => {
     };
     const res = await login(user);
     loading.hide();
-    if (res.status === 'OK') {
+    console.log(res, 'res')
+    if (res.success) {
       navigate('/', { replace: true });
     } else {
       toast.warning('Tên đăng nhập hoặc mật khẩu không chính xác!');

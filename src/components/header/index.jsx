@@ -27,7 +27,7 @@ const Header = () => {
       </div>
 
       <div className='flex justify-end items-center'>
-        {user ? (
+        {user?.accessToken ? (
           <>
             <div className='mr-4'>
               <ClassesOfUser />

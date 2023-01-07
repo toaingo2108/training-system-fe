@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react';
 import { Route, Routes, useNavigate } from 'react-router-dom';
 import Layout from './components/layout';
-import ClassDetail from './pages/Class/detail';
-import Course from './pages/Course';
-import CourseDetail from './pages/Course/detail';
-import Home from './pages/Home';
-import LearningPathDetail from './pages/LearningPath/detail';
-import LoginPage from './pages/Login';
-import NotFound from './pages/NotFound';
-import Role from './pages/Role';
-import SignUpPage from './pages/SignUp';
-import Trainee from './pages/Trainee';
-import TraineeDetail from './pages/Trainee/detail';
-import Trainer from './pages/Trainer';
+import ClassDetail from './pages/class/detail';
+import Course from './pages/course';
+import CourseDetail from './pages/course/detail';
+import Home from './pages/home';
+import LearningPathDetail from './pages/learning-path/detail';
+import LoginPage from './pages/login';
+import NotFound from './pages/not-found';
+import Role from './pages/role';
+import SignUpPage from './pages/sign-up';
+import Trainee from './pages/trainee';
+import TraineeDetail from './pages/trainee/detail';
+import Trainer from './pages/trainer';
 import { fetchUser } from './utils';
 
 const App = (props) => {

@@ -1,10 +1,9 @@
+import { Avatar } from '@mui/material';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import Dropdown from '../dropdown';
 
 const User = () => {
-  const navigate = useNavigate();
   const { user, logout } = useAuth();
   const userInfo = user?.userInfo || {};
   const [openModal, setOpenModal] = useState(false);
@@ -16,10 +15,13 @@ const User = () => {
       setOpen={setOpenModal}
       buttonRender={() => {
         return (
-          <img
-            className='w-6 h-6 object-cover rounded-full pointer-events-none'
+          <Avatar
+            className='rounded-full pointer-events-none'
             src={userInfo?.imgLink}
-            alt=''
+            sx={{
+              width: 24,
+              height: 24
+            }}
           />
         );
       }}

@@ -1,9 +1,5 @@
 import { useState } from 'react';
-import {
-  DataGrid,
-  GridEditSingleSelectCell,
-  useGridApiContext
-} from '@mui/x-data-grid';
+import { DataGrid } from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
 import { useEffect } from 'react';
 import { traineeClient } from '../../clients/trainee';

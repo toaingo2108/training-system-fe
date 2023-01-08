@@ -2,6 +2,7 @@ import { LibraryAddOutlined } from '@mui/icons-material';
 import { Button } from '@mui/material';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { learningPathClient } from '../../clients/learningPath';
 import { roleClient } from '../../clients/role';
 import MyContainer from '../../components/container';
@@ -10,7 +11,6 @@ import LearningPath from '../../components/learning-path';
 import LearningPathDialogCreate from '../../components/learning-path/dialog-create';
 import MySpeedDial from '../../components/speed-dial';
 import { useLoading } from '../../hooks/loading';
-import { useRoles } from '../../hooks/roles';
 import { useToast } from '../../hooks/toast';
 import { groupBy } from '../../utils';
 
@@ -18,9 +18,9 @@ const Home = () => {
   // hooks
   const loading = useLoading();
   const toast = useToast();
+  const navigate = useNavigate();
 
   // states
-  const [roles] = useRoles();
   const [listLearningPath, setListLearningPath] = useState([]);
   const [showAddLearningPath, setShowAddLearningPath] = useState(false);
 
@@ -47,7 +47,7 @@ const Home = () => {
     loading.hide();
     if (resLearningPath.success) {
       handleCloseAddLearningPathPopup();
-      window.location.reload(false);
+      navigate(0);
       toast.success('Thêm lộ trình mới thành công!');
     } else {
       toast.error('Thêm lộ trình mới thất bại!');
@@ -59,6 +59,8 @@ const Home = () => {
     const fetchData = async () => {
       loading.show();
       const resLearningPath = await learningPathClient().getAllLearningPath();
+      const resRoles = await roleClient().getListRoles();
+      const roles = resRoles.data;
       loading.hide();
       if (resLearningPath.success) {
         const listLearningPath = groupBy(
@@ -84,8 +86,8 @@ const Home = () => {
   return (
     <MyContainer title='Lộ trình'>
       {listLearningPath?.length > 0 ? (
-        listLearningPath?.map((learningPath) => (
-          <div key={learningPath[0].forRoleId} className='pb-10'>
+        listLearningPath?.map((learningPath, index) => (
+          <div key={learningPath[0].forRoleId + index} className='pb-10'>
             <div className='font-black text-2xl mb-4 tracking-wider'>
               {learningPath[0].roleName}
             </div>

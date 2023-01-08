@@ -23,6 +23,7 @@ import { useDepartments } from '../../hooks/departments';
 import { useRoles } from '../../hooks/roles';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
+import { formatDate } from '../../utils';
 
 const LearningPathDetail = () => {
   // hooks
@@ -103,7 +104,7 @@ const LearningPathDetail = () => {
       field: 'role',
       headerName: 'Vai trò',
       width: 130,
-      valueGetter: ({ row }) => {
+      renderCell: ({ row }) => {
         return `${
           roles.find((role) => role.id === row.roleId)?.name || 'Đang cập nhật'
         }`;
@@ -113,10 +114,11 @@ const LearningPathDetail = () => {
       field: 'department',
       headerName: 'Phòng ban',
       width: 130,
-      valueGetter: ({ row }) => {
+      renderCell: ({ row }) => {
         return `${
-          departments.find((department) => department.id === row.departmentId)
-            ?.name || 'Đang cập nhật'
+          departments.find(
+            (department) => department.id === parseInt(row.departmentId)
+          )?.name || 'Đang cập nhật'
         }`;
       }
     },
@@ -124,18 +126,19 @@ const LearningPathDetail = () => {
       field: 'fullName',
       headerName: 'Họ và tên',
       width: 200,
-      valueGetter: ({ row }) => `${row.firstName || ''} ${row.lastName || ''}`
+      renderCell: ({ row }) => `${row.firstName || ''} ${row.lastName || ''}`
     },
     {
       field: 'startDate',
       headerName: 'Ngày cấp',
-      width: 200
+      width: 200,
+      renderCell: ({ row }) => formatDate(row.startDate) || ''
     },
     {
       field: 'duration',
       headerName: 'Thời hạn',
       width: 150,
-      valueGetter: ({ row }) => `${row.duration || ''} tháng`
+      renderCell: ({ row }) => `${row.duration || ''} tháng`
     },
     {
       field: 'level',

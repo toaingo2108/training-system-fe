@@ -1,5 +1,3 @@
-import { courses } from '../data/courses';
-import { learningPathCourse } from '../data/learningPathCourse';
 import { BaseClient } from './base';
 
 class CourseClient extends BaseClient {

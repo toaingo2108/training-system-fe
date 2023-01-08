@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useState } from 'react';
 import { DataGrid } from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
 import { useEffect } from 'react';
@@ -10,17 +10,17 @@ import TraineeDialogCreate from '../../components/trainee/dialog-create';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
 import CustomNoRows from '../../components/customs/no-rows';
-import { useNavigate } from 'react-router-dom';
 import { useRoles } from '../../hooks/roles';
+import { useDepartments } from '../../hooks/departments';
 
 const Trainee = () => {
   // hooks
   const loading = useLoading();
   const toast = useToast();
-  const navigate = useNavigate();
 
   // states
   const [roles] = useRoles();
+  const [departments] = useDepartments();
   const [pageSize, setPageSize] = useState(5);
   const [trainees, setTrainees] = useState([]);
   const [showAddTrainee, setShowAddTrainee] = useState(false);
@@ -43,58 +43,58 @@ const Trainee = () => {
     }
   ];
 
-  const columnsTrainee = useMemo(
-    () => [
-      {
-        field: 'imgLink',
-        headerName: 'Ảnh',
-        width: 80,
-        renderCell: ({ row }) => {
-          return (
-            <Avatar
-              className='hover:scale-125 duration-100'
-              alt={row.firstName}
-              src={row.imgLink}
-            />
-          );
-        },
-        sortable: false,
-        filterable: false,
-        description: 'Cột này ghép họ và tên, không có sort'
+  const columnsTrainee = [
+    {
+      field: 'imgLink',
+      headerName: 'Ảnh',
+      width: 80,
+      renderCell: ({ row }) => {
+        return (
+          <Avatar
+            className='hover:scale-125 duration-100'
+            alt={row.firstName}
+            src={row.imgLink}
+          />
+        );
       },
-      { field: 'id', headerName: 'ID', width: 70 },
-      {
-        field: 'role',
-        headerName: 'Role',
-        width: 130,
-        valueGetter: ({ row }) => {
-          return `${
-            roles?.find((role) => role.id === row.roleId)?.name || row.roleId
-          }`;
-        }
-      },
-      {
-        field: 'department',
-        headerName: 'Phòng ban',
-        width: 130,
-        valueGetter: ({ row }) => {
-          return `${row.departmentId || '-'}`;
-        }
-      },
-
-      { field: 'lastName', headerName: 'Họ', width: 150 },
-      { field: 'firstName', headerName: 'Tên', width: 150 },
-      {
-        field: 'fullName',
-        headerName: 'Họ và tên',
-        description: 'Cột này ghép họ và tên, không có sort',
-        sortable: false,
-        width: 200,
-        valueGetter: ({ row }) => `${row.lastName || ''} ${row.firstName || ''}`
+      sortable: false,
+      filterable: false,
+      description: 'Cột này ghép họ và tên, không có sort'
+    },
+    { field: 'id', headerName: 'ID', width: 70 },
+    {
+      field: 'role',
+      headerName: 'Role',
+      width: 130,
+      renderCell: ({ row }) => {
+        return `${
+          roles?.find((role) => role.id === row.roleId)?.name || 'Đang cập nhật'
+        }`;
       }
-    ],
-    [roles]
-  );
+    },
+    {
+      field: 'department',
+      headerName: 'Phòng ban',
+      width: 130,
+      renderCell: ({ row }) => {
+        return `${
+          departments?.find((department) => department.id === row.departmentId)
+            ?.name || 'Đang cập nhật'
+        }`;
+      }
+    },
+
+    { field: 'lastName', headerName: 'Họ', width: 150 },
+    { field: 'firstName', headerName: 'Tên', width: 150 },
+    {
+      field: 'fullName',
+      headerName: 'Họ và tên',
+      description: 'Cột này ghép họ và tên, không có sort',
+      sortable: false,
+      width: 200,
+      renderCell: ({ row }) => `${row.lastName || ''} ${row.firstName || ''}`
+    }
+  ];
 
   // methods
   const handleCloseAddTraineePopup = () => {
@@ -147,7 +147,7 @@ const Trainee = () => {
             pageSize={pageSize}
             pagination
             rowsPerPageOptions={[5, 10, 20]}
-            onRowClick={(row) => navigate(`/trainee/detail/${row.id}`)}
+            // onRowClick={(row) => navigate(`/trainee/detail/${row.id}`)}
           />
         </div>
       </MyContainer>

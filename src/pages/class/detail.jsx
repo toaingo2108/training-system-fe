@@ -1,4 +1,5 @@
-import { Avatar, Grid } from '@mui/material';
+import { AddRounded } from '@mui/icons-material';
+import { Avatar, Grid, IconButton, Tooltip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -8,6 +9,7 @@ import { traineeClient } from '../../clients/trainee';
 import MyContainer from '../../components/container';
 import CourseItem from '../../components/course';
 import CustomNoRows from '../../components/customs/no-rows';
+import { useLoading } from '../../hooks/loading';
 
 const columnsTrainee = [
   {
@@ -62,6 +64,7 @@ const columnsTrainee = [
 const ClassDetail = () => {
   // hooks
   const params = useParams();
+  const loading = useLoading();
 
   // constants
   const { classId } = params;
@@ -70,25 +73,33 @@ const ClassDetail = () => {
   const [classDetail, setClassDetail] = useState(null);
   const [courseDetail, setCourseDetail] = useState(null);
   const [traineesOfClass, setTraineesOfClass] = useState([]);
+  const [openAddTraineeDialog, setOpenAddTraineeDialog] = useState(false);
 
   // call api
   useEffect(() => {
-    const resClass = classesClient().getClass({
-      classId: parseInt(classId)
-    });
-    if (resClass) {
-      setClassDetail(resClass);
-      const resCourse = courseClient().getDetailCourse({
-        id: parseInt(resClass.courseID)
+    const fetchData = async () => {
+      const resClass = await classesClient().getClass({
+        classId: parseInt(classId)
       });
-      if (resCourse) {
-        setCourseDetail(resCourse);
+      if (resClass.success) {
+        console.log(resClass.data[0]);
+        const resCourse = await courseClient().getDetailCourse({
+          id: parseInt(resClass.data[0].courseId)
+        });
+        setClassDetail(resClass.data[0]);
+        if (resCourse.success) {
+          setCourseDetail(resCourse.data[0]);
+        }
       }
-    }
+    };
+    loading.show();
+    fetchData();
+    loading.hide();
     return () => {
       setClassDetail(null);
       setCourseDetail(null);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [classId]);
 
   useEffect(() => {
@@ -113,7 +124,17 @@ const ClassDetail = () => {
     <MyContainer title={`Thông tin lớp học ${classDetail?.name || ''}`}>
       <Grid container spacing={4}>
         <Grid item xs={12} sm={8}>
-          <div className='font-semibold'>Trainee tham gia lớp học</div>
+          <div className='flex justify-between items-center'>
+            <div className='font-semibold'>Trainee tham gia lớp học</div>
+            <Tooltip title='Thêm trainee' placement='left'>
+              <IconButton
+                size='small'
+                onClick={() => setOpenAddTraineeDialog(true)}
+              >
+                <AddRounded />
+              </IconButton>
+            </Tooltip>
+          </div>
           <div className='h-96 w-full mt-4'>
             <DataGrid
               components={{

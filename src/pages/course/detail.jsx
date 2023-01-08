@@ -270,13 +270,13 @@ const CourseDetail = () => {
                 )}
               </div>
             </div>
-            <div className='mt-6 w-full'>
+            {/* <div className='mt-6 w-full'>
               <div className='w-full flex justify-center'>
                 <button className='rounded-2xl text-xs font-semibold text-white bg-red-500 hover:bg-red-400 px-8 py-2 uppercase transition-all'>
                   Đăng ký
                 </button>
               </div>
-            </div>
+            </div> */}
           </Grid>
         </Grid>
       </MyContainer>

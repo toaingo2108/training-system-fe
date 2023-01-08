@@ -1,9 +1,11 @@
 import { LibraryAddOutlined } from '@mui/icons-material';
+import { Button } from '@mui/material';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useEffect, useState } from 'react';
 import { learningPathClient } from '../../clients/learningPath';
 import { roleClient } from '../../clients/role';
 import MyContainer from '../../components/container';
+import CustomNoRows from '../../components/customs/no-rows';
 import LearningPath from '../../components/learning-path';
 import LearningPathDialogCreate from '../../components/learning-path/dialog-create';
 import MySpeedDial from '../../components/speed-dial';
@@ -81,42 +83,55 @@ const Home = () => {
 
   return (
     <MyContainer title='Lộ trình'>
-      {listLearningPath.map((learningPath) => (
-        <div key={learningPath[0].forRoleId} className='pb-10'>
-          <div className='font-black text-2xl mb-4 tracking-wider'>
-            {learningPath[0].roleName}
+      {listLearningPath?.length > 0 ? (
+        listLearningPath?.map((learningPath) => (
+          <div key={learningPath[0].forRoleId} className='pb-10'>
+            <div className='font-black text-2xl mb-4 tracking-wider'>
+              {learningPath[0].roleName}
+            </div>
+            <Splide
+              options={{
+                perPage: 4,
+                // arrows: false,
+                breakpoints: {
+                  1024: {
+                    perPage: 3
+                  },
+                  720: {
+                    perPage: 2
+                  },
+                  640: {
+                    perPage: 1
+                  }
+                },
+                pagination: false,
+                drag: 'free',
+                gap: '1rem'
+              }}
+              aria-labelledby='learning-path-slide'
+            >
+              {learningPath.map((item) => {
+                return (
+                  <SplideSlide key={item.id}>
+                    <LearningPath learningPath={item} />
+                  </SplideSlide>
+                );
+              })}
+            </Splide>
           </div>
-          <Splide
-            options={{
-              perPage: 4,
-              // arrows: false,
-              breakpoints: {
-                1024: {
-                  perPage: 3
-                },
-                720: {
-                  perPage: 2
-                },
-                640: {
-                  perPage: 1
-                }
-              },
-              pagination: false,
-              drag: 'free',
-              gap: '1rem'
-            }}
-            aria-labelledby='learning-path-slide'
-          >
-            {learningPath.map((item) => {
-              return (
-                <SplideSlide key={item.id}>
-                  <LearningPath learningPath={item} />
-                </SplideSlide>
-              );
-            })}
-          </Splide>
-        </div>
-      ))}
+        ))
+      ) : (
+        <CustomNoRows
+          title={
+            <div className='flex flex-col items-center'>
+              <div>Không tìm thấy lộ trình!</div>
+              <Button onClick={() => setShowAddLearningPath(true)}>
+                Thêm lộ trình
+              </Button>
+            </div>
+          }
+        />
+      )}
       <div style={{ position: 'fixed' }}>
         <MySpeedDial actions={actions} />
       </div>

@@ -1,4 +1,4 @@
-import { Grid } from '@mui/material';
+import { Button, Grid } from '@mui/material';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { courseClient } from '../../clients';
@@ -9,6 +9,7 @@ import MyContainer from '../../components/container';
 import CourseDialogCreate from '../../components/course/dalog-create';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
+import CustomNoRows from '../../components/customs/no-rows';
 
 const Course = () => {
   // hooks
@@ -68,13 +69,26 @@ const Course = () => {
   return (
     <>
       <MyContainer title='Khóa học'>
-        <Grid container spacing={2}>
-          {courses.map((course) => (
-            <Grid key={course.id} item xs={12} sm={6} md={4} lg={3}>
-              <CourseItem course={course} />
-            </Grid>
-          ))}
-        </Grid>
+        {courses.length > 0 ? (
+          <Grid container spacing={2}>
+            {courses.map((course) => (
+              <Grid key={course.id} item xs={12} sm={6} md={4} lg={3}>
+                <CourseItem course={course} />
+              </Grid>
+            ))}
+          </Grid>
+        ) : (
+          <CustomNoRows
+            title={
+              <div className='flex flex-col items-center'>
+                <div>Không tìm thấy khóa học!</div>
+                <Button onClick={() => setShowAddCourse(true)}>
+                  Thêm khóa học
+                </Button>
+              </div>
+            }
+          />
+        )}
       </MyContainer>
       <div style={{ position: 'fixed' }}>
         <MySpeedDial actions={actions} />

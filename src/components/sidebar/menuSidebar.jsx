@@ -1,9 +1,10 @@
 import {
-  AccountTree,
-  Group,
-  Hail,
-  LocalLibrary,
-  Route
+  AccountTreeRounded,
+  GroupRounded,
+  HailRounded,
+  LocalLibraryRounded,
+  MeetingRoomRounded,
+  RouteRounded
 } from '@mui/icons-material';
 
 export const menuSidebar = [
@@ -11,36 +12,36 @@ export const menuSidebar = [
     key: 'HOME',
     title: 'Lộ trình',
     link: '/',
-    icon: <Route />
+    icon: <RouteRounded />
   },
   {
     key: 'COURSES',
     title: 'Học',
     link: '/course',
-    icon: <LocalLibrary />
+    icon: <LocalLibraryRounded />
   },
   {
     key: 'TRAINERS',
     title: 'Trainer',
     link: '/trainer',
-    icon: <Hail />
+    icon: <HailRounded />
   },
   {
     key: 'TRAINEES',
     title: 'Trainee',
     link: '/trainee',
-    icon: <Group />
+    icon: <GroupRounded />
   },
   {
     key: 'ROLES',
     title: 'Vai trò',
     link: '/role',
-    icon: <AccountTree />
+    icon: <AccountTreeRounded />
   },
   {
     key: 'DEPARTMENTS',
     title: 'Phòng ban',
     link: '/department',
-    icon: <AccountTree />
+    icon: <MeetingRoomRounded />
   }
 ];

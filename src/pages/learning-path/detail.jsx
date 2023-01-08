@@ -1,18 +1,8 @@
 import {
-  AccountCircle,
-  CheckRounded,
   DeleteForeverRounded,
-  WarningRounded
+  RoomPreferencesRounded
 } from '@mui/icons-material';
-import {
-  Avatar,
-  Box,
-  Button,
-  Drawer,
-  Grid,
-  InputAdornment,
-  TextField
-} from '@mui/material';
+import { Avatar } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useEffect, useState } from 'react';
@@ -98,6 +88,10 @@ const LearningPathDetail = () => {
   const [openRemove, setOpenRemove] = useState(false);
 
   const actions = [
+    {
+      icon: <RoomPreferencesRounded />,
+      name: 'Thiết lập phòng ban'
+    },
     {
       icon: <DeleteForeverRounded className='text-red-600' />,
       name: 'Xóa khóa học',

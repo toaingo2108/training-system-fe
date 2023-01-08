@@ -79,6 +79,7 @@ const ModalDelete = ({
               variant={isDelete ? 'contained' : 'outlined'}
               disabled={!isDelete}
               onClick={handleDelete}
+              color='error'
             >
               Xóa
             </LoadingButton>

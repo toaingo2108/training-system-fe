@@ -1,5 +1,6 @@
 import {
   DeleteForeverRounded,
+  LibraryAddRounded,
   RoomPreferencesRounded
 } from '@mui/icons-material';
 import { Avatar, Button } from '@mui/material';
@@ -8,10 +9,12 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { courseClient } from '../../clients';
+import { departmentClient } from '../../clients/department';
 import { learningPathClient } from '../../clients/learningPath';
 import MyContainer from '../../components/container';
 import CourseItem from '../../components/course';
 import CustomNoRows from '../../components/customs/no-rows';
+import LearningPathModalAddCourse from '../../components/learning-path/modal-add-course';
 import LearningPathModalUpdateDepartment from '../../components/learning-path/modal-update-department';
 import ModalDelete from '../../components/modal-delete';
 import MySpeedDial from '../../components/speed-dial';
@@ -85,13 +88,24 @@ const LearningPathDetail = () => {
   // states
   const [learningPath, setLearningPath] = useState(null);
   const [coursesOfLearningPath, setCoursesOfLearningPath] = useState([]);
+  const [departmentsOfLearningPath, setDepartmentsOfLearningPath] = useState(
+    []
+  );
   const [traineesCertificate, setTraineesCertificate] = useState([]);
   const [openRemove, setOpenRemove] = useState(false);
   const [openSettingDepartment, setOpenSettingDepartment] = useState(false);
+  const [openAddCourse, setOpenAddCourse] = useState(false);
 
   console.log(coursesOfLearningPath);
 
   const actions = [
+    {
+      icon: <LibraryAddRounded />,
+      name: 'Thêm khóa học vào lộ trình',
+      onClick: () => {
+        setOpenAddCourse(true);
+      }
+    },
     {
       icon: <RoomPreferencesRounded />,
       name: 'Thiết lập phòng ban',
@@ -99,6 +113,14 @@ const LearningPathDetail = () => {
         setOpenSettingDepartment(true);
       }
     },
+    {
+      icon: <RoomPreferencesRounded />,
+      name: 'Cấp chứng chỉ',
+      onClick: () => {
+        setOpenSettingDepartment(true);
+      }
+    },
+
     {
       icon: <DeleteForeverRounded className='text-red-600' />,
       name: 'Xóa khóa học',
@@ -151,22 +173,35 @@ const LearningPathDetail = () => {
       }
     };
     fetchData();
-    // return () => {
-    //   setCoursesOfLearningPath([]);
-    // };
   }, [learningPathId]);
 
   useEffect(() => {
-    const resLearningPathCertificate =
-      learningPathClient().getLearningPathCertificate({
-        learningPathId: parseInt(learningPathId)
-      });
-    if (resLearningPathCertificate) {
-      setTraineesCertificate(resLearningPathCertificate);
-    }
-    return () => {
-      setTraineesCertificate([]);
+    const fetchData = async () => {
+      const resListDepartmentOfLearningPath =
+        await departmentClient().getDepartmentsOfLearningPath({
+          learningPathId: parseInt(learningPathId)
+        });
+      if (resListDepartmentOfLearningPath.success) {
+        setDepartmentsOfLearningPath(resListDepartmentOfLearningPath.data);
+      }
     };
+    fetchData();
+  }, [learningPathId]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const resLearningPathCertificate =
+        await learningPathClient().getCertificationOfLearningPath({
+          learningPathId: parseInt(learningPathId)
+        });
+      if (resLearningPathCertificate.success) {
+        setTraineesCertificate(resLearningPathCertificate.data);
+      }
+    };
+    fetchData();
+    // return () => {
+    //   setTraineesCertificate([]);
+    // };
   }, [learningPathId]);
 
   // side effect
@@ -194,6 +229,9 @@ const LearningPathDetail = () => {
         {learningPath?.name || ''}
       </div>
       <div className='my-2 max-w-3xl'>{learningPath?.description || ''}</div>
+      <i className='text-xs'>
+        Phòng ban: {learningPath.department || 'Chưa cập nhật'}
+      </i>
       <div className='mt-6'>
         <div className='mb-4 font-bold'>Khóa học theo lộ trình</div>
         {coursesOfLearningPath.length > 0 ? (
@@ -250,9 +288,16 @@ const LearningPathDetail = () => {
         onClose={() => setOpenRemove(false)}
         onDelete={handleRemoveLearningPath}
       />
+      <LearningPathModalAddCourse
+        learningPath={learningPath}
+        open={openAddCourse}
+        currentCourses={coursesOfLearningPath}
+        onClose={() => setOpenAddCourse(false)}
+      />
       <LearningPathModalUpdateDepartment
         open={openSettingDepartment}
-        learningPathName={learningPath?.name}
+        currentDepartments={departmentsOfLearningPath}
+        learningPath={learningPath}
         onClose={() => setOpenSettingDepartment(false)}
       />
     </MyContainer>

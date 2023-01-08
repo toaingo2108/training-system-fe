@@ -12,9 +12,6 @@ const LearningPath = ({ learningPath }) => {
         {textAbstract(learningPath.description, 100)}
       </div>
       <div>
-        <i className='text-xs'>
-          Phòng ban: {learningPath.department || 'Chưa cập nhật'}
-        </i>
         <div className='text-lg'>{textAbstract(learningPath.name, 26)}</div>
       </div>
     </div>

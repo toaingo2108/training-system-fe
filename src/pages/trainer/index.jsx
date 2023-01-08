@@ -20,7 +20,7 @@ const columns = [
       return (
         <Avatar
           className='hover:scale-125 duration-100'
-          alt={row.lastName}
+          alt={row.firstName}
           src={row.imgLink}
         />
       );
@@ -30,15 +30,15 @@ const columns = [
     description: 'Cột này ghép họ và tên, không có sort'
   },
   { field: 'id', headerName: 'ID', width: 80 },
-  { field: 'firstName', headerName: 'Họ', width: 200 },
-  { field: 'lastName', headerName: 'Tên', width: 200 },
+  { field: 'lastName', headerName: 'Họ', width: 200 },
+  { field: 'firstName', headerName: 'Tên', width: 200 },
   {
     field: 'fullName',
     headerName: 'Họ và tên',
     description: 'Cột này ghép họ và tên, không có sort',
     sortable: false,
     width: 300,
-    valueGetter: ({ row }) => `${row.firstName || ''} ${row.lastName || ''}`
+    valueGetter: ({ row }) => `${row.lastName || ''} ${row.firstName || ''}`
   }
 ];
 

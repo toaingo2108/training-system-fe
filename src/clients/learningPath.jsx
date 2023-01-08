@@ -19,15 +19,24 @@ class LearningPathClient extends BaseClient {
     return super.callApi('delete', `/learningpath/${learningPathId}`, {});
   }
 
-  getLearningPathCertificate({ learningPathId }) {
-    return learningPathCertificate
-      .filter((item) => item.learningPathId === learningPathId)
-      .map((item) => {
-        return {
-          ...item,
-          ...trainees.find((trainee) => trainee.id === item.traineeId)
-        };
-      });
+  async addCourseIntoLearningPath({
+    learningPathId,
+    courseId,
+    courseOrder = 0
+  }) {
+    return super.callApi('post', '/learningpathcourse', {
+      learningPathId,
+      courseId,
+      courseOrder
+    });
+  }
+
+  async getCertificationOfLearningPath({ learningPathId }) {
+    return await super.callApi(
+      'get',
+      `/learningpath/${learningPathId}/CertificatedTrainees`,
+      {}
+    );
   }
 }
 

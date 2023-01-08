@@ -19,11 +19,11 @@ const TrainerDialogCreate = ({
   const fieldFormCreate = {
     firstName: {
       name: 'firstName',
-      label: 'Họ'
+      label: 'Tên'
     },
     lastName: {
       name: 'lastName',
-      label: 'Tên'
+      label: 'Họ'
     },
     imgLink: {
       name: 'imgLink',
@@ -77,11 +77,11 @@ const TrainerDialogCreate = ({
           <Grid item xs={6}>
             <TextField
               margin='dense'
-              name={fieldFormCreate.firstName.name}
-              label={fieldFormCreate.firstName.label}
+              name={fieldFormCreate.lastName.name}
+              label={fieldFormCreate.lastName.label}
               fullWidth
               variant='filled'
-              value={formCreate.firstName}
+              value={formCreate.lastName}
               onChange={handleChangeFormCreate}
               required
             />
@@ -89,11 +89,11 @@ const TrainerDialogCreate = ({
           <Grid item xs={6}>
             <TextField
               margin='dense'
-              name={fieldFormCreate.lastName.name}
-              label={fieldFormCreate.lastName.label}
+              name={fieldFormCreate.firstName.name}
+              label={fieldFormCreate.firstName.label}
               fullWidth
               variant='filled'
-              value={formCreate.lastName}
+              value={formCreate.firstName}
               onChange={handleChangeFormCreate}
               required
             />

@@ -1,11 +1,12 @@
 import { DataGrid } from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
-import { Grid, Box, TextField, Button, LinearProgress } from '@mui/material';
+import { Grid, Box, TextField, Button } from '@mui/material';
 import { useEffect, useState } from 'react';
 import { departmentClient } from '../../clients/department';
 import CustomNoRows from '../../components/customs/no-rows';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
+import { useDepartments } from '../../hooks/departments';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -24,8 +25,7 @@ export default function Department() {
   // constants
 
   // states
-  const [departments, setDepartments] = useState([]);
-  const [loadingTable, setLoadingTable] = useState(false);
+  const [departments, setDepartments] = useDepartments([]);
 
   // methods
   const handleCreateDepartment = async (event) => {
@@ -46,18 +46,6 @@ export default function Department() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoadingTable(true);
-      const resDepartments = await departmentClient().getListDepartments();
-      setLoadingTable(false);
-      if (resDepartments.success) {
-        setDepartments(resDepartments.data);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     document.title = 'Phòng ban';
   }, []);
 
@@ -73,10 +61,8 @@ export default function Department() {
               rowsPerPageOptions={[5]}
               components={{
                 NoResultsOverlay: CustomNoRows,
-                NoRowsOverlay: CustomNoRows,
-                LoadingOverlay: LinearProgress
+                NoRowsOverlay: CustomNoRows
               }}
-              loading={loadingTable}
             />
           </Box>
         </Grid>

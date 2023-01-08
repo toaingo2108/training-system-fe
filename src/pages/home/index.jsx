@@ -10,6 +10,7 @@ import LearningPath from '../../components/learning-path';
 import LearningPathDialogCreate from '../../components/learning-path/dialog-create';
 import MySpeedDial from '../../components/speed-dial';
 import { useLoading } from '../../hooks/loading';
+import { useRoles } from '../../hooks/roles';
 import { useToast } from '../../hooks/toast';
 import { groupBy } from '../../utils';
 
@@ -19,6 +20,7 @@ const Home = () => {
   const toast = useToast();
 
   // states
+  const [roles] = useRoles();
   const [listLearningPath, setListLearningPath] = useState([]);
   const [showAddLearningPath, setShowAddLearningPath] = useState(false);
 
@@ -57,8 +59,6 @@ const Home = () => {
     const fetchData = async () => {
       loading.show();
       const resLearningPath = await learningPathClient().getAllLearningPath();
-      const resRoles = await roleClient().getListRoles();
-      const roles = resRoles.data || [];
       loading.hide();
       if (resLearningPath.success) {
         const listLearningPath = groupBy(

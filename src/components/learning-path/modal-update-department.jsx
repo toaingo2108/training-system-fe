@@ -1,7 +1,7 @@
 import { LoadingButton } from '@mui/lab';
 import { Autocomplete, Box, Button, Drawer, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
-import { departmentClient } from '../../clients/department';
+import { useDepartments } from '../../hooks/departments';
 
 const LearningPathModalUpdateDepartment = ({
   learningPathName = '',
@@ -10,14 +10,9 @@ const LearningPathModalUpdateDepartment = ({
   onClose = () => {},
   onSubmit = async () => {}
 }) => {
-  const [textFieldValue, setTextFieldValue] = useState('');
+  const [departments] = useDepartments();
   const [loading, setLoading] = useState(false);
-  const [departments, setDepartments] = useState([]);
-
-  const handleChangeValue = (e) => {
-    const value = e.target.value;
-    setTextFieldValue(value);
-  };
+  const [departmentsCanAdd, setDepartmentsCanAdd] = useState([]);
 
   const handleSubmit = async () => {
     setLoading(true);
@@ -26,18 +21,12 @@ const LearningPathModalUpdateDepartment = ({
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      const resDepartments = await departmentClient().getListDepartments();
-      if (resDepartments.success) {
-        const listDepartment = resDepartments.data.filter(
-          (department) =>
-            !currentDepartments?.map((o) => o?.id)?.includes(department.id)
-        );
-        setDepartments(listDepartment);
-      }
-    };
-    fetchData();
-  }, [currentDepartments]);
+    const listDepartment = departments.filter(
+      (department) =>
+        !currentDepartments?.map((o) => o?.id)?.includes(department.id)
+    );
+    setDepartmentsCanAdd(listDepartment);
+  }, [currentDepartments, departments]);
 
   return (
     <Drawer anchor='right' open={open} onClose={onClose}>
@@ -62,7 +51,7 @@ const LearningPathModalUpdateDepartment = ({
             <Autocomplete
               multiple
               id='tags-department-learning-path'
-              options={departments}
+              options={departmentsCanAdd}
               getOptionLabel={(option) => option?.name || ''}
               renderInput={(params) => (
                 <TextField

@@ -8,12 +8,10 @@ import {
   DialogTitle,
   Grid,
   MenuItem,
-  Slider,
-  TextField,
-  Typography
+  TextField
 } from '@mui/material';
-import React, { useEffect, useState } from 'react';
-import { roleClient } from '../../clients/role';
+import { useState } from 'react';
+import { useDepartments } from '../../hooks/departments';
 
 const TraineeDialogCreate = ({
   open = false,
@@ -24,11 +22,11 @@ const TraineeDialogCreate = ({
   const fieldFormCreate = {
     firstName: {
       name: 'firstName',
-      label: 'Họ'
+      label: 'Tên'
     },
     lastName: {
       name: 'lastName',
-      label: 'Tên'
+      label: 'Họ'
     },
     username: {
       name: 'username',
@@ -66,7 +64,7 @@ const TraineeDialogCreate = ({
   };
 
   const [formCreate, setFormCreate] = useState(initFromCreate);
-  const [departments, setDepartments] = useState([]);
+  const [departments] = useDepartments([]);
 
   const handleChangeFormCreate = (e) => {
     const { name, value } = e.target;
@@ -96,11 +94,11 @@ const TraineeDialogCreate = ({
           <Grid item xs={6}>
             <TextField
               margin='dense'
-              name={fieldFormCreate.firstName.name}
-              label={fieldFormCreate.firstName.label}
+              name={fieldFormCreate.lastName.name}
+              label={fieldFormCreate.lastName.label}
               fullWidth
               variant='filled'
-              value={formCreate.firstName}
+              value={formCreate.lastName}
               onChange={handleChangeFormCreate}
               required
             />
@@ -108,11 +106,11 @@ const TraineeDialogCreate = ({
           <Grid item xs={6}>
             <TextField
               margin='dense'
-              name={fieldFormCreate.lastName.name}
-              label={fieldFormCreate.lastName.label}
+              name={fieldFormCreate.firstName.name}
+              label={fieldFormCreate.firstName.label}
               fullWidth
               variant='filled'
-              value={formCreate.lastName}
+              value={formCreate.firstName}
               onChange={handleChangeFormCreate}
               required
             />

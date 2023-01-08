@@ -11,8 +11,8 @@ import {
   MenuItem,
   TextField
 } from '@mui/material';
-import { useEffect, useState } from 'react';
-import { roleClient } from '../../clients/role';
+import { useState } from 'react';
+import { useRoles } from '../../hooks/roles';
 
 const LearningPathDialogCreate = ({
   open = false,
@@ -50,7 +50,7 @@ const LearningPathDialogCreate = ({
   };
 
   const [formCreate, setFormCreate] = useState(initFromCreate);
-  const [roles, setRoles] = useState([]);
+  const [roles] = useRoles();
 
   const handleChangeFormCreate = (e) => {
     const { name, value } = e.target;
@@ -66,16 +66,6 @@ const LearningPathDialogCreate = ({
     setFormCreate(initFromCreate);
     onClose();
   };
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const resRoles = await roleClient().getListRoles();
-      if (resRoles.success) {
-        setRoles(resRoles.data);
-      }
-    };
-    fetchData();
-  }, []);
 
   return (
     <Dialog open={open} onClose={handleClose}>

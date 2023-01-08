@@ -1,11 +1,12 @@
 import { DataGrid } from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
-import { Grid, Box, TextField, Button, LinearProgress } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Grid, Box, TextField, Button } from '@mui/material';
+import { useEffect } from 'react';
 import { roleClient } from '../../clients/role';
 import CustomNoRows from '../../components/customs/no-rows';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
+import { useRoles } from '../../hooks/roles';
 
 const columns = [
   { field: 'id', headerName: 'ID', width: 90 },
@@ -24,8 +25,7 @@ export default function Role() {
   // constants
 
   // states
-  const [roles, setRoles] = useState([]);
-  const [loadingTable, setLoadingTable] = useState(false);
+  const [roles, setRoles] = useRoles();
 
   // methods
   const handleCreateRole = async (event) => {
@@ -46,18 +46,6 @@ export default function Role() {
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      setLoadingTable(true);
-      const resRoles = await roleClient().getListRoles();
-      setLoadingTable(false);
-      if (resRoles.success) {
-        setRoles(resRoles.data);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
     document.title = 'Vai trò';
   }, []);
 
@@ -73,10 +61,8 @@ export default function Role() {
               rowsPerPageOptions={[5]}
               components={{
                 NoResultsOverlay: CustomNoRows,
-                NoRowsOverlay: CustomNoRows,
-                LoadingOverlay: LinearProgress
+                NoRowsOverlay: CustomNoRows
               }}
-              loading={loadingTable}
             />
           </Box>
         </Grid>

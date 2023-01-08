@@ -11,7 +11,7 @@ import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
 import CustomNoRows from '../../components/customs/no-rows';
 import { useNavigate } from 'react-router-dom';
-import { roleClient } from '../../clients/role';
+import { useRoles } from '../../hooks/roles';
 
 const Trainee = () => {
   // hooks
@@ -20,11 +20,11 @@ const Trainee = () => {
   const navigate = useNavigate();
 
   // states
+  const [roles] = useRoles();
   const [pageSize, setPageSize] = useState(5);
   const [trainees, setTrainees] = useState([]);
   const [showAddTrainee, setShowAddTrainee] = useState(false);
   const [loadingTable, setLoadingTable] = useState(false);
-  const [roles, setRoles] = useState([]);
 
   const actions = [
     {
@@ -53,7 +53,7 @@ const Trainee = () => {
           return (
             <Avatar
               className='hover:scale-125 duration-100'
-              alt={row.lastName}
+              alt={row.firstName}
               src={row.imgLink}
             />
           );
@@ -82,15 +82,15 @@ const Trainee = () => {
         }
       },
 
-      { field: 'firstName', headerName: 'Họ', width: 150 },
-      { field: 'lastName', headerName: 'Tên', width: 150 },
+      { field: 'lastName', headerName: 'Họ', width: 150 },
+      { field: 'firstName', headerName: 'Tên', width: 150 },
       {
         field: 'fullName',
         headerName: 'Họ và tên',
         description: 'Cột này ghép họ và tên, không có sort',
         sortable: false,
         width: 200,
-        valueGetter: ({ row }) => `${row.firstName || ''} ${row.lastName || ''}`
+        valueGetter: ({ row }) => `${row.lastName || ''} ${row.firstName || ''}`
       }
     ],
     [roles]
@@ -121,16 +121,6 @@ const Trainee = () => {
       setLoadingTable(false);
       if (resTrainees.success) {
         setTrainees(resTrainees.data);
-      }
-    };
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    const fetchData = async () => {
-      const resRoles = await roleClient().getListRoles();
-      if (resRoles.success) {
-        setRoles(resRoles.data);
       }
     };
     fetchData();

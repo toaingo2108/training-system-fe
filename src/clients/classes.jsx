@@ -14,6 +14,14 @@ class ClassesClient extends BaseClient {
   async createClass(newClass) {
     return await super.callApi('post', '/class', newClass);
   }
+
+  async addTraineeIntoClass({ classId, gpa, traineeId }) {
+    return await super.callApi('post', '/traineeclass', {
+      classId,
+      gpa,
+      traineeId
+    });
+  }
 }
 
 export const classesClient = () => {

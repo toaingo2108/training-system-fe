@@ -1,4 +1,4 @@
-import { Box, styled } from '@mui/material';
+import { styled } from '@mui/material';
 import React from 'react';
 
 const StyledGridOverlay = styled('div')(({ theme }) => ({

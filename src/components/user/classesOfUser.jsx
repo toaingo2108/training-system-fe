@@ -1,12 +1,7 @@
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../hooks/auth';
 import Dropdown from '../dropdown';
 
 const ClassesOfUser = () => {
-  const navigate = useNavigate();
-  const { user, logout } = useAuth();
-
   const [openModal, setOpenModal] = useState(false);
 
   return (
@@ -22,9 +17,7 @@ const ClassesOfUser = () => {
     >
       <div className='text-sm'>
         <div className='font-semibold'>Lớp học của tôi</div>
-        <div className='mt-2 w-60'>
-          Đang phát triển
-        </div>
+        <div className='mt-2 w-60'>Đang phát triển</div>
       </div>
     </Dropdown>
   );

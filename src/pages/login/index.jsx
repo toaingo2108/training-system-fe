@@ -2,13 +2,11 @@ import {
   Avatar,
   Button,
   TextField,
-  Link,
   Grid,
   Box,
   Typography
 } from '@mui/material';
 import { LockOutlined } from '@mui/icons-material';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
 import { useLoading } from '../../hooks/loading';
@@ -16,7 +14,6 @@ import { useEffect } from 'react';
 import { fetchUser } from '../../utils';
 
 const LoginPage = () => {
-  const navigate = useNavigate();
   const userInfo = fetchUser();
   const { login } = useAuth();
   const toast = useToast();

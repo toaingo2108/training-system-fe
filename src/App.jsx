@@ -1,4 +1,3 @@
-import React, { useEffect, useLayoutEffect } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import Layout from './components/layout';
 import ClassDetail from './pages/class/detail';

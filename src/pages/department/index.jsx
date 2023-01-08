@@ -1,7 +1,7 @@
 import { DataGrid } from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
 import { Grid, Box, TextField, Button, IconButton } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { departmentClient } from '../../clients/department';
 import CustomNoRows from '../../components/customs/no-rows';
 import { useLoading } from '../../hooks/loading';

@@ -1,5 +1,3 @@
-import { learningPathCertificate } from '../data/learningPathCertificate';
-import { trainees } from '../data/trainee';
 import { BaseClient } from './base';
 
 class LearningPathClient extends BaseClient {

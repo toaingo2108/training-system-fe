@@ -3,44 +3,17 @@ import { DataGrid } from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
 import { useEffect } from 'react';
 import { trainerClient } from '../../clients/trainer';
-import { Avatar, LinearProgress } from '@mui/material';
+import { Avatar, IconButton, LinearProgress } from '@mui/material';
 import MySpeedDial from '../../components/speed-dial';
-import { LibraryAddOutlined, LocalLibrary } from '@mui/icons-material';
+import {
+  EditRounded,
+  LibraryAddOutlined,
+  LocalLibrary
+} from '@mui/icons-material';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
 import CustomNoRows from '../../components/customs/no-rows';
 import TrainerDialogCreate from '../../components/trainers/dialog-create';
-
-const columns = [
-  {
-    field: 'imgLink',
-    headerName: 'Ảnh',
-    width: 80,
-    renderCell: ({ row }) => {
-      return (
-        <Avatar
-          className='hover:scale-125 duration-100'
-          alt={row.firstName}
-          src={row.imgLink}
-        />
-      );
-    },
-    sortable: false,
-    filterable: false,
-    description: 'Cột này ghép họ và tên, không có sort'
-  },
-  { field: 'id', headerName: 'ID', width: 80 },
-  { field: 'lastName', headerName: 'Họ', width: 200 },
-  { field: 'firstName', headerName: 'Tên', width: 200 },
-  {
-    field: 'fullName',
-    headerName: 'Họ và tên',
-    description: 'Cột này ghép họ và tên, không có sort',
-    sortable: false,
-    width: 300,
-    valueGetter: ({ row }) => `${row.lastName || ''} ${row.firstName || ''}`
-  }
-];
 
 const Trainer = () => {
   //hooks
@@ -69,6 +42,67 @@ const Trainer = () => {
       }
     }
   ];
+
+  const columns = [
+    {
+      field: 'imgLink',
+      headerName: 'Ảnh',
+      width: 80,
+      editable: true,
+      renderCell: ({ row }) => {
+        return (
+          <Avatar
+            className='hover:scale-125 duration-100'
+            alt={row.firstName}
+            src={row.imgLink}
+          />
+        );
+      },
+      sortable: false,
+      filterable: false,
+      description: 'Cột này ghép họ và tên, không có sort'
+    },
+    { field: 'id', headerName: 'ID', width: 80 },
+    { field: 'lastName', headerName: 'Họ', width: 200, editable: true },
+    { field: 'firstName', headerName: 'Tên', width: 200, editable: true },
+    {
+      field: 'fullName',
+      headerName: 'Họ và tên',
+      description: 'Cột này ghép họ và tên, không có sort',
+      sortable: false,
+      width: 300,
+      valueGetter: ({ row }) => `${row.lastName || ''} ${row.firstName || ''}`
+    },
+    {
+      field: 'action',
+      headerName: 'Thao tác',
+      width: 100,
+      sortable: false,
+      filterable: false,
+      renderCell: ({ row }) => {
+        return (
+          <div>
+            <IconButton onClick={() => handleUpdateTrainer(row)}>
+              <EditRounded />
+            </IconButton>
+          </div>
+        );
+      }
+    }
+  ];
+
+  const handleUpdateTrainer = async (trainer) => {
+    const resUpdateTrainer = await trainerClient().updateTrainer({
+      ...trainer
+    });
+    if (resUpdateTrainer.success) {
+      toast.success('Cập nhật thành công!');
+    } else {
+      toast.success(
+        'Đã có lỗi xảy ra. Vui lòng thử lại! ' + resUpdateTrainer.message
+      );
+    }
+  };
 
   const handleCloseAddTrainerPopup = () => {
     setShowAddTrainer(false);
@@ -120,6 +154,7 @@ const Trainer = () => {
             pageSize={pageSize}
             pagination
             rowsPerPageOptions={[5, 10, 20]}
+            editMode='row'
           />
         </div>
       </MyContainer>

@@ -106,7 +106,7 @@ const Trainee = () => {
       renderCell: ({ row }) => {
         return (
           <div>
-            <IconButton onClick={() => handleOpenUpdateTrainee(row)}>
+            <IconButton onClick={() => handleUpdateTrainee(row)}>
               <EditRounded />
             </IconButton>
           </div>
@@ -115,8 +115,7 @@ const Trainee = () => {
     }
   ];
 
-  const handleOpenUpdateTrainee = async (trainee) => {
-    console.log(trainee);
+  const handleUpdateTrainee = async (trainee) => {
     const resUpdateTrainee = await traineeClient().updateTrainee({
       ...trainee
     });

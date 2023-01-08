@@ -17,6 +17,14 @@ class TrainerClient extends BaseClient {
   async getTrainer({ trainerId }) {
     return await super.callApi('get', `/trainer/${trainerId}`, {});
   }
+
+  async updateTrainer({ id, firstName, lastName, imgLink }) {
+    return await super.callApi('put', `/trainer/${id}`, {
+      firstName,
+      lastName,
+      imgLink
+    });
+  }
 }
 
 export const trainerClient = () => {

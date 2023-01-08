@@ -1,11 +1,19 @@
 import { useState } from 'react';
-import { DataGrid } from '@mui/x-data-grid';
+import {
+  DataGrid,
+  GridEditSingleSelectCell,
+  useGridApiContext
+} from '@mui/x-data-grid';
 import MyContainer from '../../components/container';
 import { useEffect } from 'react';
 import { traineeClient } from '../../clients/trainee';
-import { Avatar, LinearProgress } from '@mui/material';
+import { Avatar, IconButton, LinearProgress } from '@mui/material';
 import MySpeedDial from '../../components/speed-dial';
-import { LibraryAddOutlined, LocalLibrary } from '@mui/icons-material';
+import {
+  EditRounded,
+  LibraryAddOutlined,
+  LocalLibrary
+} from '@mui/icons-material';
 import TraineeDialogCreate from '../../components/trainee/dialog-create';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
@@ -48,6 +56,7 @@ const Trainee = () => {
       field: 'imgLink',
       headerName: 'Ảnh',
       width: 80,
+      editable: true,
       renderCell: ({ row }) => {
         return (
           <Avatar
@@ -65,7 +74,7 @@ const Trainee = () => {
     {
       field: 'role',
       headerName: 'Role',
-      width: 130,
+      width: 200,
       renderCell: ({ row }) => {
         return `${
           roles?.find((role) => role.id === row.roleId)?.name || 'Đang cập nhật'
@@ -75,7 +84,7 @@ const Trainee = () => {
     {
       field: 'department',
       headerName: 'Phòng ban',
-      width: 130,
+      width: 180,
       renderCell: ({ row }) => {
         return `${
           departments?.find((department) => department.id === row.departmentId)
@@ -84,17 +93,45 @@ const Trainee = () => {
       }
     },
 
-    { field: 'lastName', headerName: 'Họ', width: 150 },
-    { field: 'firstName', headerName: 'Tên', width: 150 },
+    { field: 'lastName', headerName: 'Họ', width: 150, editable: true },
+    { field: 'firstName', headerName: 'Tên', width: 150, editable: true },
     {
       field: 'fullName',
       headerName: 'Họ và tên',
-      description: 'Cột này ghép họ và tên, không có sort',
-      sortable: false,
       width: 200,
       renderCell: ({ row }) => `${row.lastName || ''} ${row.firstName || ''}`
+    },
+    {
+      field: 'action',
+      headerName: 'Thao tác',
+      width: 100,
+      sortable: false,
+      filterable: false,
+      renderCell: ({ row }) => {
+        return (
+          <div>
+            <IconButton onClick={() => handleOpenUpdateTrainee(row)}>
+              <EditRounded />
+            </IconButton>
+          </div>
+        );
+      }
     }
   ];
+
+  const handleOpenUpdateTrainee = async (trainee) => {
+    console.log(trainee);
+    const resUpdateTrainee = await traineeClient().updateTrainee({
+      ...trainee
+    });
+    if (resUpdateTrainee.success) {
+      toast.success('Cập nhật thành công!');
+    } else {
+      toast.success(
+        'Đã có lỗi xảy ra. Vui lòng thử lại! ' + resUpdateTrainee.message
+      );
+    }
+  };
 
   // methods
   const handleCloseAddTraineePopup = () => {
@@ -147,6 +184,7 @@ const Trainee = () => {
             pageSize={pageSize}
             pagination
             rowsPerPageOptions={[5, 10, 20]}
+            editMode='row'
             // onRowClick={(row) => navigate(`/trainee/detail/${row.id}`)}
           />
         </div>

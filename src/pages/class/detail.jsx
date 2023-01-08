@@ -9,57 +9,9 @@ import { traineeClient } from '../../clients/trainee';
 import MyContainer from '../../components/container';
 import CourseItem from '../../components/course';
 import CustomNoRows from '../../components/customs/no-rows';
+import { useDepartments } from '../../hooks/departments';
 import { useLoading } from '../../hooks/loading';
-
-const columnsTrainee = [
-  {
-    field: 'imgLink',
-    headerName: 'Ảnh',
-    width: 80,
-    renderCell: ({ row }) => {
-      return (
-        <Avatar
-          className='hover:scale-125 duration-100'
-          alt={row.lastName}
-          src={row.imgLink}
-        />
-      );
-    },
-    sortable: false,
-    filterable: false,
-    description: 'Cột này ghép họ và tên, không có sort'
-  },
-  { field: 'id', headerName: 'ID', width: 70 },
-  {
-    field: 'role',
-    headerName: 'Role',
-    width: 130,
-    valueGetter: ({ row }) => {
-      return `${row.roleId}`;
-    }
-  },
-  {
-    field: 'department',
-    headerName: 'Phòng ban',
-    width: 130,
-    valueGetter: ({ row }) => {
-      return `${row.departmentId}`;
-    }
-  },
-  {
-    field: 'fullName',
-    headerName: 'Họ và tên',
-    description: 'Cột này ghép họ và tên, không có sort',
-    width: 200,
-    valueGetter: ({ row }) => `${row.firstName || ''} ${row.lastName || ''}`
-  },
-  {
-    field: 'GPA',
-    headerName: 'GPA',
-    description: 'Cột này ghép họ và tên, không có sort',
-    width: 200
-  }
-];
+import { useRoles } from '../../hooks/roles';
 
 const ClassDetail = () => {
   // hooks
@@ -70,10 +22,65 @@ const ClassDetail = () => {
   const { classId } = params;
 
   // states
+  const [roles] = useRoles();
+  const [departments] = useDepartments();
   const [classDetail, setClassDetail] = useState(null);
   const [courseDetail, setCourseDetail] = useState(null);
   const [traineesOfClass, setTraineesOfClass] = useState([]);
   const [openAddTraineeDialog, setOpenAddTraineeDialog] = useState(false);
+
+  const columnsTrainee = [
+    {
+      field: 'imgLink',
+      headerName: 'Ảnh',
+      width: 80,
+      renderCell: ({ row }) => {
+        return (
+          <Avatar
+            className='hover:scale-125 duration-100'
+            alt={row.lastName}
+            src={row.imgLink}
+          />
+        );
+      },
+      sortable: false,
+      filterable: false,
+      description: 'Cột này ghép họ và tên, không có sort'
+    },
+    { field: 'id', headerName: 'ID', width: 70 },
+    {
+      field: 'role',
+      headerName: 'Role',
+      width: 180,
+      renderCell: ({ row }) => {
+        return `${roles?.find((role) => role.id === row.roleId)?.name}`;
+      }
+    },
+    {
+      field: 'department',
+      headerName: 'Phòng ban',
+      width: 130,
+      renderCell: ({ row }) => {
+        return `${
+          departments?.find((department) => department.id === row.departmentId)
+            ?.name
+        }`;
+      }
+    },
+    {
+      field: 'fullName',
+      headerName: 'Họ và tên',
+      description: 'Cột này ghép họ và tên, không có sort',
+      width: 200,
+      renderCell: ({ row }) => `${row.lastName || ''} ${row.firstName || ''}`
+    },
+    {
+      field: 'GPA',
+      headerName: 'GPA',
+      description: 'Cột này ghép họ và tên, không có sort',
+      width: 60
+    }
+  ];
 
   // call api
   useEffect(() => {

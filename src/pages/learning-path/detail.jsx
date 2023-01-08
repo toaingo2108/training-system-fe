@@ -239,22 +239,33 @@ const LearningPathDetail = () => {
 
   return (
     <MyContainer>
-      <div className='text-3xl font-black tracking-widest'>
-        {learningPath?.name || ''}
+      <div className='flex justify-between'>
+        <div>
+          <div className='text-3xl font-black tracking-widest'>
+            {learningPath?.name || ''}
+          </div>
+          <div className='my-2 max-w-3xl'>
+            {learningPath?.description || ''}
+          </div>
+          <i className='text-xs'>
+            Phòng ban:{' '}
+            {departmentsOfLearningPath.length > 0
+              ? departmentsOfLearningPath?.map((department) => (
+                  <Chip
+                    className='ml-2'
+                    key={department?.id + department?.name}
+                    label={department?.name}
+                  />
+                ))
+              : 'Chưa cập nhật'}
+          </i>
+        </div>
+        <Avatar
+          src={learningPath?.imgLink}
+          variant='rounded'
+          sx={{ width: 160, height: 100 }}
+        />
       </div>
-      <div className='my-2 max-w-3xl'>{learningPath?.description || ''}</div>
-      <i className='text-xs'>
-        Phòng ban:{' '}
-        {departmentsOfLearningPath.length > 0
-          ? departmentsOfLearningPath?.map((department) => (
-              <Chip
-                className='ml-2'
-                key={department?.id + department?.name}
-                label={department?.name}
-              />
-            ))
-          : 'Chưa cập nhật'}
-      </i>
       <div className='mt-6'>
         <div className='mb-4 font-bold'>Khóa học theo lộ trình</div>
         {coursesOfLearningPath.length > 0 ? (

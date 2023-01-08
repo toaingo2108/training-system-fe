@@ -25,6 +25,25 @@ class TraineeClient extends BaseClient {
   async getTraineeDetail({ traineeId }) {
     return await super.callApi('get', `/trainee/${traineeId}`, {});
   }
+
+  async updateTrainee({
+    firstName,
+    lastName,
+    level,
+    imgLink,
+    roleId,
+    departmentId,
+    id
+  }) {
+    return await super.callApi('put', `/trainee/${id}`, {
+      firstName,
+      lastName,
+      level,
+      imgLink,
+      roleId,
+      departmentId
+    });
+  }
 }
 
 export const traineeClient = () => {

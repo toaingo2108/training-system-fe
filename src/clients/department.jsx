@@ -8,6 +8,14 @@ class DepartmentClient extends BaseClient {
   async createDepartment({ name }) {
     return super.callApi('post', '/department', { name });
   }
+
+  async updateDepartment({ id, name }) {
+    return super.callApi('put', `/department/${id}`, { name });
+  }
+
+  async deleteDepartment({ id }) {
+    return super.callApi('delete', `/department/${id}`, {});
+  }
 }
 
 export const departmentClient = () => {

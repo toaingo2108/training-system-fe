@@ -3,31 +3,21 @@ import { learningPathCourse } from '../data/learningPathCourse';
 import { BaseClient } from './base';
 
 class CourseClient extends BaseClient {
-  getAllCourses() {
-    return super.callApi('get', '/course', {});
+  async getAllCourses() {
+    return await super.callApi('get', '/course', {});
   }
 
   async getDetailCourse({ id }) {
     return super.callApi('get', `/course/${id}`, {});
-  }
-  async testApi() {
-    const q = { a: 1, b: 2 };
-    return await super.callApi('get', '/posts', { q });
-  }
-
-  async getListCourses() {
-    return await super.callApi('get', '/course', {});
   }
 
   async createCourse(newCourse) {
     return await super.callApi('post', '/course', newCourse);
   }
 
-  async getCourseByTrainee({ traineeId }) {
-    return await super.callApi('get', '/course-by-trainee', { traineeId });
+  async deleteCourse({ id }) {
+    return super.callApi('delete', `/course/${id}`, {});
   }
-
-  // async updateCourse(props: {courseId})
 
   getCoursesOfLearningPath({ learningPathId }) {
     return learningPathCourse

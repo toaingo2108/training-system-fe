@@ -22,13 +22,6 @@ const SignUpPage = () => {
   const handleSubmit = (event) => {
     event.preventDefault();
     const data = new FormData(event.currentTarget);
-    console.log({
-      username: data.get('username'),
-      password: data.get('password'),
-      firstName: data.get('firstName'),
-      lastName: data.get('lastName'),
-      roleId: data.get('roleId')
-    });
   };
 
   return (

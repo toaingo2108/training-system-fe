@@ -104,7 +104,6 @@ const Trainee = () => {
   const handleCreateTrainee = async (newTrainee) => {
     loading.show('Đang thêm trainee mới!');
     const resTrainee = await traineeClient().createTrainee(newTrainee);
-    console.log(resTrainee);
     loading.hide();
     if (resTrainee.success) {
       handleCloseAddTraineePopup();

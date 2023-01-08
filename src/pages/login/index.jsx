@@ -32,7 +32,6 @@ const LoginPage = () => {
     };
     const res = await login(user);
     loading.hide();
-    console.log(res, 'res');
     if (res.success) {
       window.location.reload();
     } else {

@@ -15,6 +15,10 @@ class LearningPathClient extends BaseClient {
     return super.callApi('get', `/learningpath/${learningPathId}`, {});
   }
 
+  async deleteLearningPath({ learningPathId }) {
+    return super.callApi('delete', `/learningpath/${learningPathId}`, {});
+  }
+
   getLearningPathCertificate({ learningPathId }) {
     return learningPathCertificate
       .filter((item) => item.learningPathId === learningPathId)

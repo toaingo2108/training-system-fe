@@ -33,13 +33,12 @@ const Course = () => {
   };
 
   const handleCreateCourse = async (newCourse) => {
-    // loading.show('Đang thêm khóa học mới!');
-    console.log(newCourse, 'newCourse');
+    loading.show('Đang thêm khóa học mới!');
     let resCourse = await courseClient().createCourse(newCourse);
+    loading.hide();
     if (resCourse.success) {
-      loading.hide();
       handleCloseAddCoursePopup();
-      console.log(newCourse, 'newCourse');
+      setCourses([...courses, resCourse.data[0]]);
       toast.success('Thêm khóa học mới thành công!');
     } else {
       toast.error('Thêm khóa học mới thất bại!');
@@ -63,6 +62,7 @@ const Course = () => {
     return () => {
       setCourses([]);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   return (

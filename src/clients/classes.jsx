@@ -8,7 +8,7 @@ class ClassesClient extends BaseClient {
 
   async getClassesByCourseId({ courseId }) {
     return await super.callApi('get', '/class', {
-      courseId
+      params: { courseId }
     });
   }
 

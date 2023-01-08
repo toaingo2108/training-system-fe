@@ -1,5 +1,6 @@
 import {
   Add,
+  DeleteForeverRounded,
   FavoriteBorderRounded,
   FavoriteRounded,
   SupervisorAccountRounded
@@ -15,6 +16,8 @@ import { trainerClient } from '../../clients/trainer';
 import ClassAddIntoCourseDialog from '../../components/classes/dialog-add-into-course';
 import MyContainer from '../../components/container';
 import CustomNoRows from '../../components/customs/no-rows';
+import ModalDelete from '../../components/modal-delete';
+import MySpeedDial from '../../components/speed-dial';
 import { useAuth } from '../../hooks/auth';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
@@ -63,6 +66,17 @@ const CourseDetail = () => {
   const [classesOfCourse, setClassesOfCourse] = useState([]);
   const [loadingTableClasses, setLoadingTableClasses] = useState(true);
   const [openAddClassDialog, setOpenAddClassDialog] = useState(false);
+  const [openremoveCourse, setOpenremoveCourse] = useState(false);
+
+  const actions = [
+    {
+      icon: <DeleteForeverRounded className='text-red-600' />,
+      name: 'Xóa khóa học',
+      onClick: () => {
+        setOpenremoveCourse(true);
+      }
+    }
+  ];
 
   // method
   const handleCloseAddClassDialog = () => {
@@ -84,12 +98,24 @@ const CourseDetail = () => {
     navigate(`/class/detail/${row.id}`);
   };
 
+  const handleRemoveCourse = async () => {
+    const resRemoveCourse = await courseClient().deleteCourse({
+      id: courseDetail?.id
+    });
+    if (resRemoveCourse.success) {
+      toast.success('Xóa khóa học thành công!');
+      navigate('/course')
+    } else {
+      toast.error('Xóa khóa học thất bại!');
+    }
+  };
+
   // get detail course
   useEffect(() => {
     const fetchData = async () => {
       loading.show();
       const resCourse = await courseClient().getDetailCourse({
-        id: courseId
+        id: parseInt(courseId)
       });
       loading.hide();
       if (resCourse.success) {
@@ -130,7 +156,6 @@ const CourseDetail = () => {
         courseId: parseInt(courseId)
       });
       setLoadingTableClasses(false);
-      console.log(resListClasses);
       if (resListClasses.success) {
         setClassesOfCourse(resListClasses.data);
       }
@@ -234,11 +259,21 @@ const CourseDetail = () => {
           </Grid>
         </Grid>
       </MyContainer>
+      <div style={{ position: 'fixed' }}>
+        <MySpeedDial actions={actions} />
+      </div>
       <ClassAddIntoCourseDialog
         open={openAddClassDialog}
         courseId={parseInt(courseId)}
         onClose={handleCloseAddClassDialog}
         onSubmit={handleAddClassIntoCourse}
+      />
+      <ModalDelete
+        name={courseDetail?.name}
+        label='Khóa học'
+        open={openremoveCourse}
+        onClose={() => setOpenremoveCourse(false)}
+        onDelete={handleRemoveCourse}
       />
     </>
   );

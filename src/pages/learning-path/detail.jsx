@@ -1,14 +1,31 @@
-import { Avatar } from '@mui/material';
+import {
+  AccountCircle,
+  CheckRounded,
+  DeleteForeverRounded,
+  WarningRounded
+} from '@mui/icons-material';
+import {
+  Avatar,
+  Box,
+  Button,
+  Drawer,
+  Grid,
+  InputAdornment,
+  TextField
+} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { courseClient } from '../../clients';
 import { learningPathClient } from '../../clients/learningPath';
 import MyContainer from '../../components/container';
 import CourseItem from '../../components/course';
 import CustomNoRows from '../../components/customs/no-rows';
+import ModalDelete from '../../components/modal-delete';
+import MySpeedDial from '../../components/speed-dial';
 import { useLoading } from '../../hooks/loading';
+import { useToast } from '../../hooks/toast';
 
 const columnsTraineeCertificate = [
   {
@@ -68,6 +85,8 @@ const LearningPathDetail = () => {
   // hooks
   const params = useParams();
   const loading = useLoading();
+  const toast = useToast();
+  const navigate = useNavigate();
 
   // constants
   const { learningPathId } = params;
@@ -76,8 +95,30 @@ const LearningPathDetail = () => {
   const [learningPath, setLearningPath] = useState(null);
   const [coursesOfLearningPath, setCoursesOfLearningPath] = useState([]);
   const [traineesCertificate, setTraineesCertificate] = useState([]);
+  const [openRemove, setOpenRemove] = useState(false);
 
-  console.log(traineesCertificate, 'traineesCertificate');
+  const actions = [
+    {
+      icon: <DeleteForeverRounded className='text-red-600' />,
+      name: 'Xóa khóa học',
+      onClick: () => {
+        setOpenRemove(true);
+      }
+    }
+  ];
+
+  // methods
+  const handleRemoveLearningPath = async () => {
+    const resDelete = await learningPathClient().deleteLearningPath({
+      learningPathId: learningPath?.id
+    });
+    if (resDelete.success) {
+      toast.success('Xóa lộ trình thành công!');
+      navigate('/');
+    } else {
+      toast.error('Xóa lộ trình thất bại!');
+    }
+  };
 
   // call api
   useEffect(() => {
@@ -129,6 +170,14 @@ const LearningPathDetail = () => {
   useEffect(() => {
     document.title = 'Chi tiết Learning path';
   }, []);
+
+  // UI
+  if (!learningPath) {
+    return (
+      <CustomNoRows title='Không tìm thấy lộ trình. Vui lòng liên hệ Admin!' />
+    );
+  }
+
   return (
     <MyContainer>
       <div className='text-3xl font-black tracking-widest'>
@@ -183,6 +232,16 @@ const LearningPathDetail = () => {
           />
         </div>
       </div>
+      <div style={{ position: 'fixed' }}>
+        <MySpeedDial actions={actions} />
+      </div>
+      <ModalDelete
+        name={learningPath?.name}
+        label='Lộ trình'
+        open={openRemove}
+        onClose={() => setOpenRemove(false)}
+        onDelete={handleRemoveLearningPath}
+      />
     </MyContainer>
   );
 };

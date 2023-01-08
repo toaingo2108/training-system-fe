@@ -21,6 +21,7 @@ export class BaseClient {
         baseURL: baseURL,
         url,
         data,
+        params: data.params,
         headers: {
           Authorization: !!user?.accessToken
             ? `Bearer ${user?.accessToken}`

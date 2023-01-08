@@ -65,7 +65,6 @@ const CourseDialogCreate = ({
 
   const handleChangeFormCreate = (e) => {
     const { name, value } = e.target;
-    console.log(name, value);
     formCreate[name] = value;
     setFormCreate({ ...formCreate });
   };

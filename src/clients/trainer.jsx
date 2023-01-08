@@ -1,5 +1,4 @@
 import { courses } from '../data/courses';
-import { trainers } from '../data/trainers';
 import { BaseClient } from './base';
 
 class TrainerClient extends BaseClient {
@@ -15,8 +14,8 @@ class TrainerClient extends BaseClient {
     return courses.find((course) => course.trainerID === trainerId);
   }
 
-  getTrainer({ trainerId }) {
-    return trainers.find((trainer) => trainer.id === trainerId);
+  async getTrainer({ trainerId }) {
+    return await super.callApi('get', `/trainer/${trainerId}`, {});
   }
 }
 

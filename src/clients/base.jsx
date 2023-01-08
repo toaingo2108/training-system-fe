@@ -15,13 +15,14 @@ export class BaseClient {
     if (!data) {
       data = {};
     }
+    const { params, ...newData } = data;
     try {
       const response = await axios({
         method,
         baseURL: baseURL,
         url,
-        data,
-        params: data.params,
+        data: newData,
+        params,
         headers: {
           Authorization: !!user?.accessToken
             ? `Bearer ${user?.accessToken}`

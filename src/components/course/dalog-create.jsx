@@ -189,7 +189,7 @@ const CourseDialogCreate = ({
                 trainers?.find((trainer) => trainer.id === formCreate.trainerID)
                   ?.imgLink
               }
-              alt={formCreate.trainerID}
+              alt={`${formCreate.trainerID}`}
             />
           </Grid>
           <Grid item xs={4}>

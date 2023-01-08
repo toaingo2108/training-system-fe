@@ -19,15 +19,12 @@ class CourseClient extends BaseClient {
     return super.callApi('delete', `/course/${id}`, {});
   }
 
-  getCoursesOfLearningPath({ learningPathId }) {
-    return learningPathCourse
-      .filter((item) => item.learningPathId === learningPathId)
-      .map((item) => {
-        return {
-          ...item,
-          course: courses.find((course) => course.id === item.courseId)
-        };
-      });
+  async getCoursesOfLearningPath({ learningPathId }) {
+    return super.callApi('get', '/course', {
+      params: {
+        learningPathId
+      }
+    });
   }
 }
 

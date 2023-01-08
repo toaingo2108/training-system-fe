@@ -5,7 +5,13 @@ import {
   FavoriteRounded,
   SupervisorAccountRounded
 } from '@mui/icons-material';
-import { Grid, IconButton, LinearProgress, Tooltip } from '@mui/material';
+import {
+  Button,
+  Grid,
+  IconButton,
+  LinearProgress,
+  Tooltip
+} from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import React, { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
@@ -60,7 +66,7 @@ const CourseDetail = () => {
   const { user } = useAuth();
 
   // state
-  const [courseDetail, setCourseDetail] = useState({});
+  const [courseDetail, setCourseDetail] = useState(null);
   const [listInterested, setListInterested] = useState([]);
   const [trainerOfCourse, setTrainerOfCourse] = useState(null);
   const [classesOfCourse, setClassesOfCourse] = useState([]);
@@ -104,7 +110,7 @@ const CourseDetail = () => {
     });
     if (resRemoveCourse.success) {
       toast.success('Xóa khóa học thành công!');
-      navigate('/course')
+      navigate('/course');
     } else {
       toast.error('Xóa khóa học thất bại!');
     }
@@ -117,22 +123,22 @@ const CourseDetail = () => {
       const resCourse = await courseClient().getDetailCourse({
         id: parseInt(courseId)
       });
-      loading.hide();
       if (resCourse.success) {
+        const resTrainer = await trainerClient().getTrainer({
+          trainerId: resCourse.data[0].trainerId
+        });
         setCourseDetail(resCourse.data[0]);
-        // const resTrainer = trainerClient().getTrainer({
-        //   trainerId: resCourse.id
-        // });
-        // if (resTrainer) {
-        //   setTrainerOfCourse(resTrainer);
-        // }
+        if (resTrainer.success) {
+          setTrainerOfCourse(resTrainer.data[0]);
+        }
       }
+      loading.hide();
     };
     fetchData();
-    return () => {
-      setCourseDetail({});
-      setTrainerOfCourse(null);
-    };
+    // return () => {
+    //   setCourseDetail(null);
+    //   setTrainerOfCourse(null);
+    // };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [courseId]);
 
@@ -167,8 +173,23 @@ const CourseDetail = () => {
   }, [courseId]);
 
   useEffect(() => {
-    document.title = `Chi tiết khóa học - ${courseDetail.name}`;
-  }, [courseDetail.name]);
+    document.title = `Chi tiết khóa học - ${courseDetail?.name}`;
+  }, [courseDetail?.name]);
+
+  console.log(courseDetail, 'courseDetail');
+
+  if (!courseDetail) {
+    return (
+      <CustomNoRows
+        title={
+          <div className='flex flex-col items-center'>
+            <div>Không tìm thấy khóa học. Vui lòng liên hệ Admin!</div>
+            <Button onClick={() => navigate(-1)}>Quay lại</Button>
+          </div>
+        }
+      />
+    );
+  }
 
   return (
     <>
@@ -176,9 +197,11 @@ const CourseDetail = () => {
         <Grid container spacing={4}>
           <Grid item xs={12} sm={8}>
             <div className='text-2xl font-bold tracking-wider'>
-              {courseDetail.name}
+              {courseDetail?.name}
             </div>
-            <div className='font-light text-xs'>{courseDetail.description}</div>
+            <div className='font-light text-xs'>
+              {courseDetail?.description}
+            </div>
             <div className='mt-6'>
               <div className='flex justify-between items-center'>
                 <div className='font-semibold'>Lớp học liên quan</div>
@@ -207,8 +230,8 @@ const CourseDetail = () => {
           </Grid>
           <Grid item xs={12} sm={4}>
             <img
-              src={courseDetail.imgLink}
-              alt={courseDetail.name}
+              src={courseDetail?.imgLink}
+              alt={courseDetail?.name}
               className='w-full h-56 object-cover rounded-xl'
             />
             <div className='mt-2 flex justify-between'>

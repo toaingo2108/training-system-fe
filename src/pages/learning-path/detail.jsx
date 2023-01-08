@@ -2,7 +2,7 @@ import {
   DeleteForeverRounded,
   RoomPreferencesRounded
 } from '@mui/icons-material';
-import { Avatar } from '@mui/material';
+import { Avatar, Button } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useEffect, useState } from 'react';
@@ -12,6 +12,7 @@ import { learningPathClient } from '../../clients/learningPath';
 import MyContainer from '../../components/container';
 import CourseItem from '../../components/course';
 import CustomNoRows from '../../components/customs/no-rows';
+import LearningPathModalUpdateDepartment from '../../components/learning-path/modal-update-department';
 import ModalDelete from '../../components/modal-delete';
 import MySpeedDial from '../../components/speed-dial';
 import { useLoading } from '../../hooks/loading';
@@ -86,11 +87,17 @@ const LearningPathDetail = () => {
   const [coursesOfLearningPath, setCoursesOfLearningPath] = useState([]);
   const [traineesCertificate, setTraineesCertificate] = useState([]);
   const [openRemove, setOpenRemove] = useState(false);
+  const [openSettingDepartment, setOpenSettingDepartment] = useState(false);
+
+  console.log(coursesOfLearningPath);
 
   const actions = [
     {
       icon: <RoomPreferencesRounded />,
-      name: 'Thiết lập phòng ban'
+      name: 'Thiết lập phòng ban',
+      onClick: () => {
+        setOpenSettingDepartment(true);
+      }
     },
     {
       icon: <DeleteForeverRounded className='text-red-600' />,
@@ -134,17 +141,19 @@ const LearningPathDetail = () => {
   }, [learningPathId]);
 
   useEffect(() => {
-    const resListCourseOfLearningPath = courseClient().getCoursesOfLearningPath(
-      {
-        learningPathId: parseInt(learningPathId)
+    const fetchData = async () => {
+      const resListCourseOfLearningPath =
+        await courseClient().getCoursesOfLearningPath({
+          learningPathId: parseInt(learningPathId)
+        });
+      if (resListCourseOfLearningPath.success) {
+        setCoursesOfLearningPath(resListCourseOfLearningPath.data);
       }
-    );
-    if (resListCourseOfLearningPath) {
-      setCoursesOfLearningPath(resListCourseOfLearningPath);
-    }
-    return () => {
-      setCoursesOfLearningPath([]);
     };
+    fetchData();
+    // return () => {
+    //   setCoursesOfLearningPath([]);
+    // };
   }, [learningPathId]);
 
   useEffect(() => {
@@ -168,7 +177,14 @@ const LearningPathDetail = () => {
   // UI
   if (!learningPath) {
     return (
-      <CustomNoRows title='Không tìm thấy lộ trình. Vui lòng liên hệ Admin!' />
+      <CustomNoRows
+        title={
+          <div className='flex flex-col items-center'>
+            <div>Không tìm thấy lộ trình. Vui lòng liên hệ Admin!</div>
+            <Button onClick={() => navigate(-1)}>Quay lại</Button>
+          </div>
+        }
+      />
     );
   }
 
@@ -201,13 +217,11 @@ const LearningPathDetail = () => {
             }}
             aria-labelledby='learning-path-course-slide'
           >
-            {coursesOfLearningPath
-              ?.sort((a, b) => a.courseOrder - b.courseOrder)
-              ?.map((item) => (
-                <SplideSlide key={item.learningPathId + item.courseId}>
-                  <CourseItem course={item.course} />
-                </SplideSlide>
-              ))}
+            {coursesOfLearningPath?.map((course) => (
+              <SplideSlide key={course?.id}>
+                <CourseItem course={course} />
+              </SplideSlide>
+            ))}
           </Splide>
         ) : (
           <CustomNoRows title='Đang cập nhật!' />
@@ -235,6 +249,11 @@ const LearningPathDetail = () => {
         open={openRemove}
         onClose={() => setOpenRemove(false)}
         onDelete={handleRemoveLearningPath}
+      />
+      <LearningPathModalUpdateDepartment
+        open={openSettingDepartment}
+        learningPathName={learningPath?.name}
+        onClose={() => setOpenSettingDepartment(false)}
       />
     </MyContainer>
   );

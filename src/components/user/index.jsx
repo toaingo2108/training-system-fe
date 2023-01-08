@@ -19,7 +19,7 @@ const User = () => {
           <img
             className='w-6 h-6 object-cover rounded-full pointer-events-none'
             src={userInfo?.imgLink}
-            alt={userInfo?.lastName}
+            alt=''
           />
         );
       }}
@@ -30,7 +30,7 @@ const User = () => {
             <img
               className='object-cover rounded-full hover:scale-125 ease-in-out duration-500'
               src={userInfo?.imgLink}
-              alt={userInfo?.lastName}
+              alt=''
             />
           </div>
           <div className='flex flex-col ml-2'>

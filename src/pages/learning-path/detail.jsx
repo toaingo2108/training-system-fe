@@ -1,79 +1,28 @@
 import {
   DeleteForeverRounded,
   LibraryAddRounded,
-  RoomPreferencesRounded
+  RoomPreferencesRounded,
+  WorkspacePremiumRounded
 } from '@mui/icons-material';
-import { Avatar, Button } from '@mui/material';
+import { Avatar, Button, Chip } from '@mui/material';
 import { DataGrid } from '@mui/x-data-grid';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { useEffect, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { courseClient } from '../../clients';
-import { departmentClient } from '../../clients/department';
 import { learningPathClient } from '../../clients/learningPath';
 import MyContainer from '../../components/container';
 import CourseItem from '../../components/course';
 import CustomNoRows from '../../components/customs/no-rows';
+import LearningPathModalAddCertificate from '../../components/learning-path/modal-add-certificate';
 import LearningPathModalAddCourse from '../../components/learning-path/modal-add-course';
 import LearningPathModalUpdateDepartment from '../../components/learning-path/modal-update-department';
 import ModalDelete from '../../components/modal-delete';
 import MySpeedDial from '../../components/speed-dial';
+import { useDepartments } from '../../hooks/departments';
+import { useRoles } from '../../hooks/roles';
 import { useLoading } from '../../hooks/loading';
 import { useToast } from '../../hooks/toast';
-
-const columnsTraineeCertificate = [
-  {
-    field: 'imgLink',
-    headerName: 'Ảnh',
-    width: 80,
-    renderCell: ({ row }) => {
-      return (
-        <Avatar
-          className='hover:scale-125 duration-100'
-          alt={row.lastName}
-          src={row.imgLink}
-        />
-      );
-    },
-    sortable: false,
-    filterable: false,
-    description: 'Cột này ghép họ và tên, không có sort'
-  },
-  { field: 'id', headerName: 'ID', width: 70 },
-  {
-    field: 'role',
-    headerName: 'Role',
-    width: 130,
-    valueGetter: ({ row }) => {
-      return `${row.roleId}`;
-    }
-  },
-  {
-    field: 'department',
-    headerName: 'Phòng ban',
-    width: 130,
-    valueGetter: ({ row }) => {
-      return `${row.departmentId}`;
-    }
-  },
-  {
-    field: 'fullName',
-    headerName: 'Họ và tên',
-    width: 200,
-    valueGetter: ({ row }) => `${row.firstName || ''} ${row.lastName || ''}`
-  },
-  {
-    field: 'startDate',
-    headerName: 'Ngày cấp',
-    width: 200
-  },
-  {
-    field: 'duration',
-    headerName: 'Thời hạn',
-    width: 200,
-    valueGetter: ({ row }) => `${row.duration || ''} tháng`
-  }
-];
 
 const LearningPathDetail = () => {
   // hooks
@@ -86,6 +35,8 @@ const LearningPathDetail = () => {
   const { learningPathId } = params;
 
   // states
+  const [roles] = useRoles();
+  const [departments] = useDepartments();
   const [learningPath, setLearningPath] = useState(null);
   const [coursesOfLearningPath, setCoursesOfLearningPath] = useState([]);
   const [departmentsOfLearningPath, setDepartmentsOfLearningPath] = useState(
@@ -95,8 +46,7 @@ const LearningPathDetail = () => {
   const [openRemove, setOpenRemove] = useState(false);
   const [openSettingDepartment, setOpenSettingDepartment] = useState(false);
   const [openAddCourse, setOpenAddCourse] = useState(false);
-
-  console.log(coursesOfLearningPath);
+  const [openAddCertificate, setOpenAddCertificate] = useState(false);
 
   const actions = [
     {
@@ -114,10 +64,10 @@ const LearningPathDetail = () => {
       }
     },
     {
-      icon: <RoomPreferencesRounded />,
+      icon: <WorkspacePremiumRounded />,
       name: 'Cấp chứng chỉ',
       onClick: () => {
-        setOpenSettingDepartment(true);
+        setOpenAddCertificate(true);
       }
     },
 
@@ -127,6 +77,70 @@ const LearningPathDetail = () => {
       onClick: () => {
         setOpenRemove(true);
       }
+    }
+  ];
+
+  const columnsTraineeCertificate = [
+    {
+      field: 'imgLink',
+      headerName: 'Ảnh',
+      width: 80,
+      renderCell: ({ row }) => {
+        return (
+          <Avatar
+            className='hover:scale-125 duration-100'
+            alt={row.lastName}
+            src={row.imgLink}
+          />
+        );
+      },
+      sortable: false,
+      filterable: false,
+      description: 'Cột này ghép họ và tên, không có sort'
+    },
+    { field: 'id', headerName: 'ID', width: 70 },
+    {
+      field: 'role',
+      headerName: 'Vai trò',
+      width: 130,
+      valueGetter: ({ row }) => {
+        return `${
+          roles.find((role) => role.id === row.roleId)?.name || 'Đang cập nhật'
+        }`;
+      }
+    },
+    {
+      field: 'department',
+      headerName: 'Phòng ban',
+      width: 130,
+      valueGetter: ({ row }) => {
+        return `${
+          departments.find((department) => department.id === row.departmentId)
+            ?.name || 'Đang cập nhật'
+        }`;
+      }
+    },
+    {
+      field: 'fullName',
+      headerName: 'Họ và tên',
+      width: 200,
+      valueGetter: ({ row }) => `${row.firstName || ''} ${row.lastName || ''}`
+    },
+    {
+      field: 'startDate',
+      headerName: 'Ngày cấp',
+      width: 200
+    },
+    {
+      field: 'duration',
+      headerName: 'Thời hạn',
+      width: 150,
+      valueGetter: ({ row }) => `${row.duration || ''} tháng`
+    },
+    {
+      field: 'level',
+      headerName: 'Level',
+      width: 150
     }
   ];
 
@@ -178,7 +192,7 @@ const LearningPathDetail = () => {
   useEffect(() => {
     const fetchData = async () => {
       const resListDepartmentOfLearningPath =
-        await departmentClient().getDepartmentsOfLearningPath({
+        await learningPathClient().getDepartmentsOfLearningPath({
           learningPathId: parseInt(learningPathId)
         });
       if (resListDepartmentOfLearningPath.success) {
@@ -199,9 +213,6 @@ const LearningPathDetail = () => {
       }
     };
     fetchData();
-    // return () => {
-    //   setTraineesCertificate([]);
-    // };
   }, [learningPathId]);
 
   // side effect
@@ -230,7 +241,16 @@ const LearningPathDetail = () => {
       </div>
       <div className='my-2 max-w-3xl'>{learningPath?.description || ''}</div>
       <i className='text-xs'>
-        Phòng ban: {learningPath.department || 'Chưa cập nhật'}
+        Phòng ban:{' '}
+        {departmentsOfLearningPath.length > 0
+          ? departmentsOfLearningPath?.map((department) => (
+              <Chip
+                className='ml-2'
+                key={department?.id + department?.name}
+                label={department?.name}
+              />
+            ))
+          : 'Chưa cập nhật'}
       </i>
       <div className='mt-6'>
         <div className='mb-4 font-bold'>Khóa học theo lộ trình</div>
@@ -299,6 +319,11 @@ const LearningPathDetail = () => {
         currentDepartments={departmentsOfLearningPath}
         learningPath={learningPath}
         onClose={() => setOpenSettingDepartment(false)}
+      />
+      <LearningPathModalAddCertificate
+        learningPath={learningPath}
+        open={openAddCertificate}
+        onClose={() => setOpenAddCertificate(false)}
       />
     </MyContainer>
   );

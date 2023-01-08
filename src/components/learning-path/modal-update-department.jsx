@@ -1,22 +1,40 @@
 import { LoadingButton } from '@mui/lab';
 import { Autocomplete, Box, Button, Drawer, TextField } from '@mui/material';
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { learningPathClient } from '../../clients/learningPath';
 import { useDepartments } from '../../hooks/departments';
+import { useToast } from '../../hooks/toast';
 
 const LearningPathModalUpdateDepartment = ({
-  learningPathName = '',
+  learningPath,
   open = false,
   currentDepartments = [],
-  onClose = () => {},
-  onSubmit = async () => {}
+  onClose = () => {}
 }) => {
+  const toast = useToast();
+  const navigate = useNavigate();
+
   const [departments] = useDepartments();
   const [loading, setLoading] = useState(false);
+  const [selectNewDepartment, setSelectNewDepartment] = useState(null);
   const [departmentsCanAdd, setDepartmentsCanAdd] = useState([]);
 
   const handleSubmit = async () => {
     setLoading(true);
-    await onSubmit();
+    const resAddDepartment =
+      await learningPathClient().addDepartmentIntoLearningPath({
+        learningPathId: learningPath?.id,
+        departmentId: selectNewDepartment?.id
+      });
+
+    if (resAddDepartment.success) {
+      toast.success('Thêm phòng ban thành công!');
+      onClose();
+      navigate(0);
+    } else {
+      toast.error('Đã có lỗi xảy ra. Vui lòng thử lại!');
+    }
     setLoading(false);
   };
 
@@ -34,31 +52,21 @@ const LearningPathModalUpdateDepartment = ({
         <div className='flex justify-between flex-col h-full'>
           <div>
             <div className='text-2xl font-black mb-10'>
-              Thiết lập lộ trình "{learningPathName}" cho phòng ban
+              Thiết lập lộ trình "{learningPath?.name}" cho phòng ban
             </div>
-            {/* <div className='my-10 flex justify-between items-center'>
-              <div>
-                <WarningRounded
-                  sx={{ fontSize: 70 }}
-                  className='mr-4 text-yellow-500'
-                />
-              </div>
-              <div>
-                Cảnh báo! Việc xóa {label?.toLowerCase()} "{name}" là không thể
-                đảo ngược. Không thể hoàn tác hành động bạn sắp thực hiện.
-              </div> 
-            </div>*/}
             <Autocomplete
-              multiple
               id='tags-department-learning-path'
               options={departmentsCanAdd}
               getOptionLabel={(option) => option?.name || ''}
+              onChange={(e, value) => setSelectNewDepartment(value)}
+              value={selectNewDepartment}
+              noOptionsText='Không tìm thấy phòng ban...'
               renderInput={(params) => (
                 <TextField
                   {...params}
                   variant='standard'
-                  label='Multiple values'
-                  placeholder='Favorites'
+                  label='Phòng ban'
+                  placeholder='Tìm kiếm phòng ban'
                 />
               )}
             />
@@ -67,7 +75,7 @@ const LearningPathModalUpdateDepartment = ({
             <LoadingButton
               loading={loading}
               variant='contained'
-              // disabled={!isSubmit}
+              disabled={!selectNewDepartment?.id}
               onClick={handleSubmit}
               color='success'
             >

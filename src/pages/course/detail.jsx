@@ -176,8 +176,6 @@ const CourseDetail = () => {
     document.title = `Chi tiết khóa học - ${courseDetail?.name}`;
   }, [courseDetail?.name]);
 
-  console.log(courseDetail, 'courseDetail');
-
   if (!courseDetail) {
     return (
       <CustomNoRows

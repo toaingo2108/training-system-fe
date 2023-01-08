@@ -31,6 +31,35 @@ class LearningPathClient extends BaseClient {
     });
   }
 
+  async addDepartmentIntoLearningPath({ learningPathId, departmentId }) {
+    return super.callApi('post', '/departmentlearningpath', {
+      learningPathId,
+      departmentId
+    });
+  }
+
+  async addCertificateIntoLearningPath({
+    learningPathId,
+    traineeId,
+    duration,
+    startDate
+  }) {
+    return super.callApi('post', '/learningpathcertificate', {
+      learningPathId,
+      traineeId,
+      duration,
+      startDate
+    });
+  }
+
+  async getDepartmentsOfLearningPath({ learningPathId }) {
+    return await super.callApi(
+      'get',
+      `/learningpath/${learningPathId}/departments`,
+      {}
+    );
+  }
+
   async getCertificationOfLearningPath({ learningPathId }) {
     return await super.callApi(
       'get',

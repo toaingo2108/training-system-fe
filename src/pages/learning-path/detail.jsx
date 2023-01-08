@@ -73,7 +73,7 @@ const LearningPathDetail = () => {
 
     {
       icon: <DeleteForeverRounded className='text-red-600' />,
-      name: 'Xóa khóa học',
+      name: 'Xóa lộ trình',
       onClick: () => {
         setOpenRemove(true);
       }
